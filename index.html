@@ -1,1443 +1,2705 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>MediRef · الموسوعة الطبية</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome 6 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediRef · الموسوعة الطبية</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+/* ===== CSS VARIABLES ===== */
+:root {
+  --bg: #f0f4f8;
+  --surface: #ffffff;
+  --surface2: #f8fafc;
+  --border: #e2e8f0;
+  --text: #0f172a;
+  --text2: #475569;
+  --text3: #94a3b8;
+  --teal: #0d9488;
+  --teal-light: #ccfbf1;
+  --teal-dark: #0f766e;
+  --navy: #0c1e35;
+  --accent: #f97316;
+  --accent-light: #fff7ed;
+  --danger: #ef4444;
+  --danger-light: #fef2f2;
+  --gold: #f59e0b;
+  --gold-light: #fffbeb;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow: 0 4px 16px rgba(0,0,0,0.07), 0 2px 6px rgba(0,0,0,0.04);
+  --shadow-lg: 0 20px 50px rgba(0,0,0,0.12);
+  --radius: 20px;
+  --radius-sm: 12px;
+  --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+}
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-            color: #0f172a;
-            line-height: 1.5;
-            -webkit-tap-highlight-color: transparent;
-        }
+[data-theme="dark"] {
+  --bg: #0a0f1a;
+  --surface: #111827;
+  --surface2: #1a2235;
+  --border: #1e2d42;
+  --text: #f1f5f9;
+  --text2: #94a3b8;
+  --text3: #475569;
+  --teal-light: #0d2e2a;
+  --accent-light: #2a1a0a;
+  --danger-light: #2a0f0f;
+  --gold-light: #2a2000;
+  --shadow: 0 4px 16px rgba(0,0,0,0.3);
+  --shadow-lg: 0 20px 50px rgba(0,0,0,0.5);
+}
 
-        /* حاوية رئيسية مناسبة للهاتف */
-        .container {
-            padding: 0 16px;
-            max-width: 480px;
-            margin: 0 auto;
-        }
+/* ===== RESET ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* الهيدر */
-        header {
-            background: white;
-            padding: 32px 16px 24px;
-            text-align: center;
-            border-bottom: 1px solid #e9edf2;
-        }
+html { scroll-behavior: smooth; }
 
-        header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            color: #0b2d4b;
-            letter-spacing: -0.3px;
-        }
+body {
+  font-family: 'Tajawal', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+  transition: background var(--transition), color var(--transition);
+}
 
-        header h1 i {
-            color: #2a9d8f;
-            margin-left: 6px;
-            font-size: 28px;
-        }
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
-        header p {
-            font-size: 15px;
-            color: #556b84;
-            max-width: 280px;
-            margin: 6px auto 12px;
-        }
+/* ===== LAYOUT ===== */
+.app-wrapper { max-width: 520px; margin: 0 auto; min-height: 100vh; position: relative; }
 
-        .badge {
-            display: inline-block;
-            background: #edf2f7;
-            border: 1px solid #d0d9e4;
-            color: #1e293b;
-            padding: 5px 14px;
-            border-radius: 40px;
-            font-size: 12px;
-            font-weight: 500;
-        }
+/* ===== HEADER ===== */
+.header {
+  background: var(--navy);
+  padding: 32px 20px 28px;
+  position: relative;
+  overflow: hidden;
+}
 
-        /* شريط البحث الثابت */
-        .search-section {
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid #e9edf2;
-            padding: 14px 0 10px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+.header::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(13,148,136,0.3), transparent 70%);
+}
 
-        .search-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto 12px;
-        }
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; left: -40px;
+  width: 150px; height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(249,115,22,0.15), transparent 70%);
+}
 
-        .search-wrapper i {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #94a3b8;
-            font-size: 16px;
-        }
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
 
-        #searchInput {
-            width: 100%;
-            padding: 12px 42px 12px 14px;
-            border-radius: 50px;
-            border: 1px solid #d0d9e4;
-            background: white;
-            font-size: 15px;
-            font-family: inherit;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-        }
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-        #searchInput:focus {
-            outline: none;
-            border-color: #2a9d8f;
-            box-shadow: 0 4px 12px rgba(42,157,143,0.1);
-        }
+.logo-icon {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, var(--teal), #06b6d4);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(13,148,136,0.4);
+}
 
-        .clear-search {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #94a3b8;
-            font-size: 16px;
-            cursor: pointer;
-            display: none;
-        }
+.logo-text h1 {
+  font-size: 22px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
 
-        .clear-search.visible {
-            display: block;
-        }
+.logo-text span {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 400;
+}
 
-        /* التصنيفات (قابلة للتمرير الأفقى) */
-        .categories {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding: 4px 0 8px;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
+.header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
 
-        .categories::-webkit-scrollbar {
-            display: none;
-        }
+.icon-btn {
+  width: 38px; height: 38px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.8);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  transition: var(--transition);
+  backdrop-filter: blur(8px);
+}
 
-        .cat-chip {
-            background: #f1f5f9;
-            border: 1px solid #d0d9e4;
-            border-radius: 40px;
-            padding: 6px 16px;
-            font-size: 13px;
-            font-weight: 500;
-            color: #2c3e50;
-            white-space: nowrap;
-            cursor: pointer;
-            transition: 0.1s;
-        }
+.icon-btn:hover { background: rgba(255,255,255,0.2); color: white; }
+.icon-btn.active { background: var(--teal); color: white; }
 
-        .cat-chip.active {
-            background: #0b2d4b;
-            color: white;
-            border-color: #0b2d4b;
-        }
+.header-stats {
+  display: flex;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
 
-        /* شبكة البطاقات (عمودية) */
-        .grid {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            padding: 20px 0 40px;
-        }
+.stat-pill {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 30px;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+  backdrop-filter: blur(8px);
+}
 
-        .card {
-            background: white;
-            border-radius: 24px;
-            padding: 18px 16px;
-            border: 1px solid #edf2f7;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.02);
-            cursor: pointer;
-            transition: 0.15s;
-        }
+.stat-pill strong { color: white; font-weight: 700; }
 
-        .card:active {
-            background: #fafbfc;
-            transform: scale(0.99);
-        }
+/* ===== SEARCH BAR ===== */
+.search-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 16px 0;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  box-shadow: var(--shadow-sm);
+  transition: background var(--transition);
+}
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
+.search-input-wrapper {
+  position: relative;
+  margin-bottom: 12px;
+}
 
-        .card-category {
-            background: #e2f0ef;
-            color: #1e7e6d;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 30px;
-            letter-spacing: 0.3px;
-        }
+.search-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text3);
+  font-size: 15px;
+  pointer-events: none;
+}
 
-        .card-icon {
-            font-size: 22px;
-            color: #0b2d4b;
-        }
+#searchInput {
+  width: 100%;
+  padding: 11px 42px 11px 42px;
+  border-radius: 50px;
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  font-size: 15px;
+  font-family: 'Tajawal', sans-serif;
+  color: var(--text);
+  outline: none;
+  transition: var(--transition);
+}
 
-        .card-abbr {
-            font-size: 24px;
-            font-weight: 700;
-            color: #0b2d4b;
-            line-height: 1.2;
-            margin-bottom: 4px;
-        }
+#searchInput:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(13,148,136,0.1);
+  background: var(--surface);
+}
 
-        .card-name {
-            font-size: 15px;
-            color: #4a5b6e;
-            margin-bottom: 12px;
-        }
+#searchInput::placeholder { color: var(--text3); }
 
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: #6b7b8c;
-            border-top: 1px solid #eef2f6;
-            padding-top: 10px;
-        }
+.clear-btn {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--border);
+  border: none;
+  color: var(--text2);
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  transition: var(--transition);
+}
 
-        .no-results {
-            text-align: center;
-            padding: 40px 20px;
-            color: #8e9fb1;
-            font-size: 15px;
-        }
+.clear-btn.visible { display: flex; }
+.clear-btn:hover { background: var(--danger); color: white; }
 
-        /* النافذة المنبثقة (مودال) */
-        .modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(10px);
-            z-index: 2000;
-            display: none;
-            justify-content: center;
-            align-items: flex-end;
-            padding: 0;
-        }
+/* ===== CATEGORIES ===== */
+.cats-scroll {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
 
-        .modal.active {
-            display: flex;
-        }
+.cats-scroll::-webkit-scrollbar { display: none; }
 
-        .modal-content {
-            background: white;
-            width: 100%;
-            max-width: 480px;
-            max-height: 85vh;
-            border-radius: 30px 30px 0 0;
-            padding: 24px 20px 28px;
-            overflow-y: auto;
-            animation: slideUp 0.3s ease;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
-        }
+.cat-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 30px;
+  padding: 5px 13px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text2);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: 'Tajawal', sans-serif;
+  flex-shrink: 0;
+}
 
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
-        }
+.cat-chip .chip-count {
+  background: var(--border);
+  color: var(--text3);
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 30px;
+  font-family: 'JetBrains Mono', monospace;
+  transition: var(--transition);
+}
 
-        .modal-header {
-            margin-bottom: 16px;
-            padding-left: 40px;
-        }
+.cat-chip:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+}
 
-        .modal-header h2 {
-            font-size: 28px;
-            color: #0b2d4b;
-        }
+.cat-chip.active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: white;
+}
 
-        .modal-header h3 {
-            font-size: 17px;
-            color: #5b6f86;
-            font-weight: 400;
-        }
+[data-theme="dark"] .cat-chip.active {
+  background: var(--teal);
+  border-color: var(--teal);
+}
 
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: #f1f5f9;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            font-size: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: #2c3e50;
-        }
+.cat-chip.active .chip-count {
+  background: rgba(255,255,255,0.2);
+  color: white;
+}
 
-        .modal-section {
-            background: #f8fafc;
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 16px;
-            border-right: 4px solid #2a9d8f;
-        }
+/* ===== RESULTS BAR ===== */
+.results-bar {
+  padding: 14px 16px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-        .modal-section.warning {
-            border-right-color: #e76f51;
-            background: #fff4f0;
-        }
+.results-count {
+  font-size: 13px;
+  color: var(--text3);
+  font-family: 'JetBrains Mono', monospace;
+}
 
-        .modal-section.treatment {
-            background: #f0f9f7;
-        }
+.results-count strong {
+  color: var(--teal);
+  font-weight: 700;
+}
 
-        .modal-section h4 {
-            font-size: 16px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #1e293b;
-        }
+.view-toggle {
+  display: flex;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 4px;
+  gap: 3px;
+}
 
-        .modal-section p {
-            font-size: 14px;
-            color: #334155;
-        }
+.view-btn {
+  background: none;
+  border: none;
+  color: var(--text3);
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 9px;
+  font-size: 13px;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+}
 
-        .range-badge {
-            background: #0b2d4b;
-            color: white;
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-size: 16px;
-            font-weight: 600;
-            display: inline-block;
-            margin-bottom: 8px;
-        }
+.view-btn i {
+  font-size: 18px;
+}
 
-        .drug-suggestion {
-            background: white;
-            border-radius: 16px;
-            padding: 14px;
-            border: 1px solid #d0d9e4;
-            font-size: 14px;
-        }
+.view-label {
+  font-size: 12px;
+}
 
-        .disclaimer {
-            background: #fff9e6;
-            border-right: 4px solid #f4a261;
-            border-radius: 16px;
-            padding: 14px;
-            font-size: 12px;
-            color: #7b5800;
-            margin-top: 16px;
-        }
+.view-btn.active {
+  background: var(--teal);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
 
-        /* تذييل */
-        footer {
-            text-align: center;
-            padding: 20px 16px;
-            font-size: 12px;
-            color: #8e9fb1;
-            border-top: 1px solid #e9edf2;
-            background: white;
-        }
-    </style>
+[data-theme="dark"] .view-btn.active {
+  background: var(--teal);
+}
+
+.view-btn:not(.active):hover {
+  color: var(--teal);
+  background: var(--teal-light);
+}
+
+/* ===== GRID ===== */
+.cards-container {
+  padding: 0 14px 100px;
+}
+
+/* List view */
+.cards-container.view-list { display: flex; flex-direction: column; gap: 10px; }
+
+/* Grid view */
+.cards-container.view-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* ===== CARD ===== */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  animation: cardIn 0.25s ease both;
+}
+
+.card:hover {
+  border-color: var(--teal);
+  box-shadow: 0 8px 24px rgba(13,148,136,0.12);
+  transform: translateY(-2px);
+}
+
+.card:active { transform: scale(0.98); }
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* List card */
+.card.list-card {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.card.list-card .card-icon-wrap {
+  width: 46px; height: 46px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.card.list-card .card-body { flex: 1; min-width: 0; }
+
+.card.list-card .card-abbr {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.card.list-card .card-name {
+  font-size: 13px;
+  color: var(--text2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card.list-card .card-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.card.list-card .cat-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.card.list-card .card-arrow {
+  color: var(--text3);
+  font-size: 13px;
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+
+.card:hover .card-arrow { color: var(--teal); transform: translateX(-3px); }
+
+/* Grid card */
+.card.grid-card {
+  padding: 14px 12px;
+}
+
+.card.grid-card .card-icon-wrap {
+  width: 38px; height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.card.grid-card .card-abbr {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+
+.card.grid-card .card-name {
+  font-size: 11px;
+  color: var(--text2);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.card.grid-card .cat-tag {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+/* Fav badge */
+.fav-dot {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: none;
+}
+
+.card.is-fav .fav-dot { display: block; }
+
+/* ===== CATEGORY COLORS ===== */
+.cat-دم { background: #fee2e2; color: #b91c1c; }
+.cat-كيمياء { background: #dbeafe; color: #1d4ed8; }
+.cat-هرمونات { background: #f3e8ff; color: #7c3aed; }
+.cat-فيتامينات { background: #fef9c3; color: #a16207; }
+.cat-أورام { background: #ffe4e6; color: #be123c; }
+.cat-مناعة { background: #dcfce7; color: #15803d; }
+.cat-سوائل { background: #e0f2fe; color: #0369a1; }
+
+[data-theme="dark"] .cat-دم { background: #3f1212; color: #fca5a5; }
+[data-theme="dark"] .cat-كيمياء { background: #1e2d4a; color: #93c5fd; }
+[data-theme="dark"] .cat-هرمونات { background: #2e1f4a; color: #c4b5fd; }
+[data-theme="dark"] .cat-فيتامينات { background: #3a2d00; color: #fde68a; }
+[data-theme="dark"] .cat-أورام { background: #3f1020; color: #fda4af; }
+[data-theme="dark"] .cat-مناعة { background: #0f2e1e; color: #86efac; }
+[data-theme="dark"] .cat-سوائل { background: #0c2233; color: #7dd3fc; }
+
+/* ===== NO RESULTS ===== */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text3);
+}
+
+.empty-state i { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
+.empty-state h3 { font-size: 18px; color: var(--text2); margin-bottom: 6px; }
+.empty-state p { font-size: 14px; }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(12px);
+  z-index: 1000;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal-sheet {
+  background: var(--surface);
+  width: 100%;
+  max-width: 520px;
+  max-height: 92vh;
+  border-radius: 28px 28px 0 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: sheetUp 0.3s cubic-bezier(0.32,0.72,0,1);
+  box-shadow: var(--shadow-lg);
+}
+
+@keyframes sheetUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.modal-drag-handle {
+  width: 36px; height: 4px;
+  background: var(--border);
+  border-radius: 99px;
+  margin: 12px auto 0;
+  flex-shrink: 0;
+}
+
+.modal-header-zone {
+  padding: 16px 20px 0;
+  flex-shrink: 0;
+}
+
+.modal-top-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.modal-abbr-block { flex: 1; }
+
+.modal-abbr {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.modal-name {
+  font-size: 16px;
+  color: var(--text2);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+/* الاسم الإنجليزي */
+.modal-name-en {
+  font-size: 14px;
+  color: var(--text3);
+  font-weight: 300;
+  margin-top: 2px;
+  font-style: italic;
+}
+
+.modal-cat-tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.modal-actions-row {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.modal-action-btn {
+  width: 40px; height: 40px;
+  border-radius: 13px;
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  color: var(--text2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: var(--transition);
+}
+
+.modal-action-btn:hover { border-color: var(--teal); color: var(--teal); }
+.modal-action-btn.fav-active { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+
+.modal-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 14px 0 0;
+}
+
+/* TABS */
+.modal-tabs {
+  display: flex;
+  gap: 0;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.modal-tabs::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 12px 14px 11px;
+  font-size: 13.5px;
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 500;
+  color: var(--text3);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: var(--transition);
+  white-space: nowrap;
+  margin-bottom: -1px;
+}
+
+.tab-btn.active {
+  color: var(--teal);
+  border-bottom-color: var(--teal);
+  font-weight: 700;
+}
+
+/* MODAL BODY */
+.modal-body {
+  overflow-y: auto;
+  padding: 20px 20px 40px;
+  flex: 1;
+}
+
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* INFO CARDS */
+.info-card {
+  background: var(--surface2);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+}
+
+.info-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.info-card-icon {
+  width: 32px; height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.icon-teal { background: var(--teal-light); color: var(--teal); }
+.icon-accent { background: var(--accent-light); color: var(--accent); }
+.icon-gold { background: var(--gold-light); color: var(--gold); }
+.icon-danger { background: var(--danger-light); color: var(--danger); }
+
+.info-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.info-card-body {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.7;
+}
+
+/* Range badge */
+.range-display {
+  background: var(--navy);
+  color: white;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+[data-theme="dark"] .range-display {
+  background: var(--teal-dark);
+}
+
+/* Warning card */
+.warning-card {
+  background: var(--danger-light);
+  border: 1.5px solid #fecaca;
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.warning-card i { color: var(--danger); font-size: 16px; margin-top: 2px; flex-shrink: 0; }
+.warning-card p { font-size: 13.5px; color: #991b1b; line-height: 1.6; }
+[data-theme="dark"] .warning-card p { color: #fca5a5; }
+
+/* Disclaimer */
+.disclaimer {
+  background: var(--gold-light);
+  border: 1px solid #fde68a;
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-top: 16px;
+}
+
+.disclaimer i { color: var(--gold); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
+.disclaimer p { font-size: 12px; color: #92400e; line-height: 1.6; }
+[data-theme="dark"] .disclaimer p { color: #fde68a; }
+
+/* ===== FAVORITES TOAST ===== */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--navy);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-family: 'Tajawal', sans-serif;
+  z-index: 2000;
+  transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+  white-space: nowrap;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ===== COMPARE MODAL ===== */
+.compare-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(16px);
+  z-index: 1100;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.compare-overlay.open { display: flex; }
+
+.compare-sheet {
+  background: var(--surface);
+  width: 100%;
+  max-width: 520px;
+  max-height: 92vh;
+  border-radius: 28px 28px 0 0;
+  padding: 20px;
+  overflow-y: auto;
+  animation: sheetUp 0.3s cubic-bezier(0.32,0.72,0,1);
+}
+
+.compare-sheet h2 {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.compare-table th {
+  background: var(--navy);
+  color: white;
+  padding: 10px 12px;
+  text-align: right;
+  font-weight: 700;
+  font-family: 'Tajawal', sans-serif;
+}
+
+.compare-table th:first-child { border-radius: 10px 0 0 0; }
+.compare-table th:last-child { border-radius: 0 10px 0 0; }
+
+.compare-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.compare-table tr:nth-child(even) td { background: var(--surface2); }
+
+.compare-table .row-label {
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+/* ===== FAVORITES PAGE ===== */
+.fav-page {
+  display: none;
+  padding: 20px 16px 100px;
+  animation: cardIn 0.2s ease;
+}
+
+.fav-page.open { display: block; }
+
+.fav-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.fav-page-header h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.clear-favs-btn {
+  background: none;
+  border: none;
+  color: var(--danger);
+  font-size: 13px;
+  cursor: pointer;
+  font-family: 'Tajawal', sans-serif;
+}
+
+/* ===== FLOATING NAV ===== */
+.bottom-nav {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--navy);
+  border-radius: 24px;
+  padding: 8px 12px;
+  display: flex;
+  gap: 4px;
+  z-index: 700;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 7px 14px;
+  border-radius: 16px;
+  border: none;
+  background: none;
+  color: rgba(255,255,255,0.45);
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: 'Tajawal', sans-serif;
+}
+
+.nav-item i { font-size: 17px; }
+.nav-item span { font-size: 10px; font-weight: 500; }
+
+.nav-item.active {
+  background: var(--teal);
+  color: white;
+}
+
+.nav-item .nav-badge {
+  position: absolute;
+  top: 4px; right: 4px;
+  background: var(--accent);
+  color: white;
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 10px;
+  font-weight: 700;
+  min-width: 16px;
+  text-align: center;
+}
+
+.nav-item { position: relative; }
+
+/* ===== VIEWS ===== */
+.main-view { display: block; }
+.main-view.hidden { display: none; }
+</style>
 </head>
-<body>
+<body data-theme="light">
 
-<header>
-    <h1><i class="fas fa-notes-medical"></i> MediRef</h1>
-    <p>Your health clarified</p>
-    <span class="badge">Powered by Khalid Jamal Alani </span>
-</header>
+<div class="app-wrapper">
 
-<div class="search-section">
-    <div class="container">
-        <div class="search-wrapper">
-            <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="ابحث بالاسم أو الاختصار...">
-            <button class="clear-search" id="clearSearchBtn"><i class="fas fa-times"></i></button>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-top">
+      <div class="header-logo">
+        <div class="logo-icon"><i class="fas fa-notes-medical"></i></div>
+        <div class="logo-text">
+          <h1>MediRef</h1>
+          
         </div>
-        <div class="categories" id="categoryContainer"></div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="darkToggleBtn" aria-label="الوضع الليلي">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
     </div>
+    <div class="header-stats">
+      <div class="stat-pill"><i class="fas fa-flask"></i> <strong id="totalCount">0</strong> تحليل</div>
+      <div class="stat-pill"><i class="fas fa-layer-group"></i> <strong>7</strong> تصنيف</div>
+      <div class="stat-pill" id="favStatPill" style="display:none"><i class="fas fa-heart"></i> <strong id="favStatCount">0</strong> مفضلة</div>
+    </div>
+    <div style="position:relative;z-index:1;margin-top:10px;font-size:11px;color:rgba(255,255,255,0.35);text-align:center">
+      © 2026 <strong style="color:rgba(255,255,255,0.6)">Khalid Jamal Alani</strong> · جميع الحقوق محفوظة
+    </div>
+  </header>
+
+  <!-- SEARCH + CATS -->
+  <div class="search-bar">
+    <div class="search-input-wrapper">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" id="searchInput" placeholder="ابحث بالاسم، الاختصار، الوصف...">
+      <button class="clear-btn" id="clearBtn" aria-label="مسح البحث"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cats-scroll" id="catsContainer"></div>
+  </div>
+
+  <!-- MAIN VIEW -->
+  <div class="main-view" id="mainView">
+    <div class="results-bar">
+      <div class="results-count">عرض <strong id="resultCount">0</strong> نتيجة</div>
+      <div class="view-toggle">
+        <button class="view-btn active" id="listViewBtn" aria-label="عرض القائمة">
+          <i class="fas fa-list-ul"></i>
+          <span class="view-label">قائمة</span>
+        </button>
+        <button class="view-btn" id="gridViewBtn" aria-label="عرض الشبكة">
+          <i class="fas fa-th-large"></i>
+          <span class="view-label">شبكة</span>
+        </button>
+      </div>
+    </div>
+    <div class="cards-container view-list" id="cardsContainer"></div>
+  </div>
+
+  <!-- FAV VIEW -->
+  <div class="fav-page" id="favView">
+    <div class="fav-page-header">
+      <h2><i class="fas fa-heart" style="color:var(--accent)"></i> المفضلة</h2>
+      <button class="clear-favs-btn" id="clearFavsBtn">مسح الكل</button>
+    </div>
+    <div class="cards-container view-list" id="favCardsContainer"></div>
+  </div>
+
+</div><!-- /.app-wrapper -->
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-sheet">
+    <div class="modal-drag-handle"></div>
+    <div class="modal-header-zone" id="modalHeaderZone"></div>
+    <div class="modal-tabs" id="modalTabs"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
 </div>
 
-<main class="container">
-    <div class="grid" id="resultsGrid"></div>
-</main>
-
-<div class="modal" id="detailModal">
-    <div class="modal-content">
-        <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
-        <div id="modalContent"></div>
-    </div>
+<!-- COMPARE MODAL -->
+<div class="compare-overlay" id="compareOverlay">
+  <div class="compare-sheet" id="compareSheet"></div>
 </div>
 
-<footer>
-    <p>© 2026 Khalid Jamal Alani – للأغراض التعليمية، استشر طبيبك</p>
-</footer>
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-item active" id="navHome" aria-label="الرئيسية">
+    <i class="fas fa-house"></i>
+    <span>الرئيسية</span>
+  </button>
+  <button class="nav-item" id="navFav" aria-label="المفضلة">
+    <i class="fas fa-heart"></i>
+    <span>المفضلة</span>
+    <div class="nav-badge" id="favBadge" style="display:none">0</div>
+  </button>
+  <button class="nav-item" id="navCompare" aria-label="مقارنة">
+    <i class="fas fa-code-compare"></i>
+    <span>مقارنة</span>
+    <div class="nav-badge" id="compareBadge" style="display:none">0</div>
+  </button>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg"></span></div>
 
 <script>
-(function() {
-    // ==================== قاعدة البيانات الكاملة (أكثر من 100 تحليل) ====================
-    const db = [
-        // -------------------- أمراض الدم (Hematology) --------------------
-        { abbr: "CBC", name: "صورة الدم الكاملة", cat: "دم", icon: "fa-droplet",
-          range: "Hb: 13-17 (رجال), 12-15 (نساء) | WBC: 4-11 | PLT: 150-450", prepare: "يفضل صيام 8 ساعات", 
-          desc: "تقييم شامل لخلايا الدم الحمراء والبيضاء والصفائح الدموية والهيموغلوبين. يستخدم للكشف عن فقر الدم، العدوى، وسرطانات الدم.",
-          drug: "فقر الدم (نقص الحديد): Ferrous Sulfate / Fumarate. فقر الدم (نقص B12): حقن Hydroxocobalamin. العدوى البكتيرية: مضاد حيوي حسب المزرعة.",
-          advice: "يُفضل إجراء التحليل صباحاً. تجنب التدخين والتمارين العنيفة قبل التحليل.",
-          interactions: "الحديد يتداخل مع مضادات الحموضة والتتراسيكلين، يجب المباعدة 4 ساعات.",
-          warning: "لا تتناول مكملات الحديد دون تشخيص دقيق (خطر تراكم الحديد)." },
-
-        { abbr: "RBC", name: "عدد الكريات الحمراء", cat: "دم", icon: "fa-circle",
-          range: "4.5-6.5 (رجال) / 3.8-5.8 (نساء) مليون/ميكرولتر", prepare: "لا يحتاج صيام", 
-          desc: "يقيس عدد خلايا الدم الحمراء التي تحمل الأكسجين.",
-          drug: "ارتفاع غير طبيعي (كثرة الحمر): قد يحتاج إلى فصد (سحب دم) أو علاج سبب كثرة الحمر.",
-          advice: "الحفاظ على ترطيب الجسم وشرب الماء.",
-          interactions: "بعض أدوية العلاج الكيميائي تخفض RBC.",
-          warning: "الانخفاض الشديد يتطلب نقل دم." },
-
-        { abbr: "HGB", name: "الهيموغلوبين", cat: "دم", icon: "fa-droplet",
-          range: "13-17 (رجال) / 12-15 (نساء) g/dL", prepare: "لا يحتاج صيام", 
-          desc: "بروتين ناقل للأكسجين في الدم. يستخدم لتشخيص فقر الدم.",
-          drug: "فقر الدم: مكملات الحديد، فيتامين B12، حمض الفوليك، أو إريثروبويتين (حسب السبب).",
-          advice: "الأغذية الغنية بالحديد (اللحوم، السبانخ) تساعد في رفعه.",
-          interactions: "مثبطات مضخة البروتون (أوميبرازول) تقلل امتصاص الحديد.",
-          warning: "انخفاض شديد <7 g/dL قد يسبب فشل قلبي." },
-
-        { abbr: "HCT", name: "الهيماتوكريت", cat: "دم", icon: "fa-chart-simple",
-          range: "40-54% (رجال) / 37-47% (نساء)", prepare: "لا يحتاج صيام", 
-          desc: "نسبة حجم خلايا الدم الحمراء إلى حجم الدم الكلي.",
-          drug: "نفس علاج الهيموغلوبين.",
-          advice: "مؤشر جيد للجفاف أو فقر الدم.",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "MCV", name: "متوسط حجم الكرية", cat: "دم", icon: "fa-maximize",
-          range: "80-100 fL", prepare: "لا يحتاج صيام", 
-          desc: "متوسط حجم كريات الدم الحمراء. يساعد في تصنيف فقر الدم (صغير الكريات أو كبير الكريات).",
-          drug: "صغير الكريات (نقص حديد): حديد. كبير الكريات (نقص B12/فولات): حقن B12، فوليك أسيد.",
-          advice: "تناول غذاء متوازن يحتوي على الحديد والفيتامينات.",
-          interactions: "---",
-          warning: "MCV > 110 قد يدل على إدمان كحول أو نقص B12." },
-
-        { abbr: "MCH", name: "متوسط هيموغلوبين الكرية", cat: "دم", icon: "fa-weight-scale",
-          range: "27-34 pg", prepare: "لا يحتاج صيام", 
-          desc: "كمية الهيموغلوبين في متوسط كرية دم حمراء.",
-          drug: "نفس علاج فقر الدم حسب النوع.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "MCHC", name: "تركيز هيموغلوبين الكرية", cat: "دم", icon: "fa-weight-hanging",
-          range: "32-36 g/dL", prepare: "لا يحتاج صيام", 
-          desc: "تركيز الهيموغلوبين في كتلة الكريات الحمراء.",
-          drug: "---",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "RDW", name: "عرض توزيع الكريات", cat: "دم", icon: "fa-chart-line",
-          range: "11.5-14.5%", prepare: "لا يحتاج صيام", 
-          desc: "قياس تباين أحجام الكريات الحمراء. ارتفاعه يدل على وجود خلايا غير متجانسة.",
-          drug: "لا يوجد علاج مباشر، يعالج السبب.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "PLT", name: "الصفائح الدموية", cat: "دم", icon: "fa-clipboard",
-          range: "150-450 ألف/ميكرولتر", prepare: "لا يحتاج صيام", 
-          desc: "خلايا مسؤولة عن تجلط الدم ومنع النزيف.",
-          drug: "ارتفاع شديد (>800): أسبرين. انخفاض شديد (<50): قد يحتاج نقل صفائح أو علاج سبب النقص.",
-          advice: "تجنب الأسبرين إذا كان الصفائح منخفضة دون استشارة.",
-          interactions: "الهيبارين قد يسبب انخفاض الصفائح (HIT).",
-          warning: "انخفاض <20 يسبب نزيف عفوي." },
-
-        { abbr: "MPV", name: "متوسط حجم الصفائح", cat: "دم", icon: "fa-maximize",
-          range: "7.5-11.5 fL", prepare: "لا يحتاج صيام", 
-          desc: "مؤشر على نشاط الصفائح.",
-          drug: "---",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "WBC", name: "كريات بيضاء", cat: "دم", icon: "fa-shield",
-          range: "4,000-11,000 / µL", prepare: "لا يحتاج صيام", 
-          desc: "مؤشر المناعة والالتهابات. ارتفاعه يدل على عدوى أو التهاب، انخفاضه قد يدل على مشكلة في النخاع.",
-          drug: "ارتفاع شديد (عدوى): مضاد حيوي مناسب. انخفاض (نقص المناعة): عوامل تحفيز النخاع (G-CSF).",
-          advice: "إذا كنت تعاني من أعراض برد، قد يرتفع بشكل مؤقت.",
-          interactions: "الكورتيزون يرفع WBC.",
-          warning: "الانخفاض الحاد (أقل من 1000) يتطلب عزلًا طبيًا." },
-
-        { abbr: "NEUT", name: "عدلات (Neutrophils)", cat: "دم", icon: "fa-shield",
-          range: "40-70% من WBC أو 2-7 آلاف/µL", prepare: "لا يحتاج صيام", 
-          desc: "أكثر أنواع الكريات البيضاء، مسؤولة عن مكافحة البكتيريا.",
-          drug: "نقص العدلات (Neutropenia): عوامل تحفيز النخاع، مضادات حيوية وقائية.",
-          advice: "---",
-          interactions: "أدوية العلاج الكيميائي تسبب نقصاً شديداً.",
-          warning: "نقص شديد (<500) يزيد خطر العدوى." },
-
-        { abbr: "LYMPH", name: "خلايا لمفاوية", cat: "دم", icon: "fa-shield",
-          range: "20-45% من WBC", prepare: "لا يحتاج صيام", 
-          desc: "مسؤولة عن المناعة الفيروسية وإنتاج الأجسام المضادة.",
-          drug: "ارتفاع (Lymphocytosis): قد يكون فيروسي أو سرطاني. انخفاض (Lymphopenia): كورتيزون، فيروس HIV.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "MONO", name: "وحيدات", cat: "دم", icon: "fa-shield",
-          range: "2-8% من WBC", prepare: "لا يحتاج صيام", 
-          desc: "تتطور إلى بلاعم وتزيل الحطام الخلوي.",
-          drug: "---",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "EO", name: "حمضات", cat: "دم", icon: "fa-shield",
-          range: "1-4% من WBC", prepare: "لا يحتاج صيام", 
-          desc: "تزداد في الحساسية والطفيليات.",
-          drug: "ارتفاع شديد: مضادات هيستامين أو كورتيزون حسب السبب.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "BASO", name: "قعدات", cat: "دم", icon: "fa-shield",
-          range: "0.5-1% من WBC", prepare: "لا يحتاج صيام", 
-          desc: "تفرز الهيبارين والهيستامين.",
-          drug: "---",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "INR", name: "النسبة المعيارية الدولية", cat: "دم", icon: "fa-clock",
-          range: "0.8-1.2 (لمن لا يتناول مميعات)", prepare: "لا يحتاج صيام", 
-          desc: "يقيس زمن التجلط، يستخدم لمتابعة مرضى الوارفارين.",
-          drug: "إذا كان مرتفعاً (>4) مع نزيف: فيتامين ك (حقن). انخفاض: زيادة جرعة الوارفارين.",
-          advice: "حافظ على ثبات النظام الغذائي للخضروات الورقية.",
-          interactions: "الكثير من الأدوية تؤثر على INR (مضادات حيوية، مسكنات).",
-          warning: "INR >5 يزيد خطر النزيف الدماغي." },
-
-        { abbr: "PT", name: "زمن البروثرومبين", cat: "دم", icon: "fa-clock",
-          range: "10-13 ثانية", prepare: "يفضل الصيام", 
-          desc: "يقيس كفاءة مسار التجلط الخارجي.",
-          drug: "نفس INR.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "PTT", name: "زمن الثرومبوبلاستين الجزئي", cat: "دم", icon: "fa-clock",
-          range: "25-35 ثانية", prepare: "لا يحتاج صيام", 
-          desc: "يقيس مسار التجلط الداخلي. يستخدم لمتابعة الهيبارين.",
-          drug: "إطالة شديدة: بروتامين سلفات (لعكس الهيبارين).",
-          advice: "---",
-          interactions: "الهيبارين، مضادات التخثر.",
-          warning: "---" },
-
-        { abbr: "D-Dimer", name: "دي دايمر", cat: "دم", icon: "fa-wave-square",
-          range: "أقل من 0.5 ميكروغرام/مل", prepare: "لا يحتاج صيام", 
-          desc: "منتج تحلل الفيبرين، مرتفع في الجلطات الحديثة.",
-          drug: "لا يوجد علاج مباشر، يستبعد الجلطة إذا كان سلبياً.",
-          advice: "إيجابية التحليل تحتاج تأكيد بأشعة.",
-          interactions: "---",
-          warning: "يرتفع في الحمل والالتهابات والسرطان." },
-
-        // -------------------- كيمياء حيوية (Clinical Chemistry) --------------------
-        { abbr: "GLU", name: "جلوكوز (سكر)", cat: "كيمياء", icon: "fa-heart-pulse",
-          range: "70-100 mg/dL (صائم)", prepare: "صيام 8-10 ساعات", 
-          desc: "يقيس مستوى السكر في الدم لتشخيص السكري.",
-          drug: "ارتفاع: ميتفورمين، أنسولين. انخفاض: جلوكوز فموي أو حقن جلوكاجون.",
-          advice: "إذا كنت مصاباً بالسكري، سجل القراءات في دفتر.",
-          interactions: "الكورتيزون يرفع السكر، مضادات السكري تخفضه.",
-          warning: "انخفاض السكر (<70) قد يسبب غيبوبة." },
-
-        { abbr: "HbA1c", name: "سكر تراكمي", cat: "كيمياء", icon: "fa-chart-line",
-          range: "أقل من 5.7% (طبيعي) ، 5.7-6.4% (مقدمات سكري)، ≥6.5% (سكري)", prepare: "لا يحتاج صيام", 
-          desc: "يعكس متوسط السكر خلال 3 أشهر.",
-          drug: "حسب درجة السيطرة: ميتفورمين، سلفونيل يوريا، أنسولين، SGLT2، GLP-1.",
-          advice: "حاول الحفاظ على HbA1c أقل من 7% إن كنت مصاباً بالسكري.",
-          interactions: "فقر الدم قد يسبب قراءة خاطئة.",
-          warning: "HbA1c >9% يعني خطر مضاعفات." },
-
-        { abbr: "UREA", name: "يوريا", cat: "كيمياء", icon: "fa-kidneys",
-          range: "7-20 mg/dL", prepare: "صيام اختياري", 
-          desc: "فضلات استقلاب البروتين، تفرزها الكلى.",
-          drug: "ارتفاع: علاج سبب ارتفاع اليوريا (الجفاف، فشل كلوي).",
-          advice: "اشرب ماء كافٍ.",
-          interactions: "المضادات الحيوية (أمينوغليكوزيد) قد ترفع اليوريا.",
-          warning: "ارتفاع شديد مع أعراض قد يستدعي غسيل كلوي." },
-
-        { abbr: "CREA", name: "كرياتينين", cat: "كيمياء", icon: "fa-kidneys",
-          range: "0.6-1.2 mg/dL", prepare: "تجنب اللحوم والرياضة العنيفة 24 ساعة", 
-          desc: "ناتج استقلاب العضلات، أفضل مؤشر لوظائف الكلى.",
-          drug: "لحماية الكلى: مثبطات ACE (ليزينوبريل) أو ARBs (لوسارتان).",
-          advice: "اشرب الماء قبل التحليل.",
-          interactions: "مضادات الالتهاب غير الستيرويدية ترفع الكرياتينين.",
-          warning: "ارتفاع حاد يستدعي تدخلاً عاجلاً." },
-
-        { abbr: "BUN", name: "نيتروجين يوريا الدم", cat: "كيمياء", icon: "fa-kidneys",
-          range: "6-20 mg/dL", prepare: "صيام اختياري", 
-          desc: "نفس اليوريا (تختلف الوحدات).",
-          drug: "نفس UREA.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "UA", name: "حمض اليوريك", cat: "كيمياء", icon: "fa-bone",
-          range: "3.5-7.2 mg/dL", prepare: "صيام 4 ساعات", 
-          desc: "ناتج استقلاب البيورينات، يسبب النقرس والحصوات.",
-          drug: "نقرس مزمن: الوبيورينول. نوبة حادة: كولشيسين، مضادات التهاب.",
-          advice: "تجنب اللحوم الحمراء، المأكولات البحرية، الكحول.",
-          interactions: "مدرات البول الثيازيدية ترفع حمض اليوريك.",
-          warning: "ارتفاع >10 يزيد خطر فشل كلوي." },
-
-        { abbr: "Ca", name: "كالسيوم", cat: "كيمياء", icon: "fa-bone",
-          range: "8.5-10.5 mg/dL", prepare: "يفضل الصيام", 
-          desc: "معدن أساسي للعظام والأعصاب والعضلات.",
-          drug: "نقص: كالسيوم وفيتامين د. ارتفاع: بايفوسفونيت، كالسيتونين.",
-          advice: "تناول منتجات الألبان.",
-          interactions: "مدرات البول الثيازيدية ترفع الكالسيوم.",
-          warning: "ارتفاع حاد (>12) حالة طارئة." },
-
-        { abbr: "P", name: "فسفور", cat: "كيمياء", icon: "fa-flask",
-          range: "2.5-4.5 mg/dL", prepare: "يفضل الصيام", 
-          desc: "مهم للعظام والطاقة.",
-          drug: "نقص: مكملات فوسفات. ارتفاع: مخفضات الفوسفات (مثل كربونات الكالسيوم).",
-          advice: "تجنب المشروبات الغازية إذا كنت تعاني من ارتفاع الفوسفور.",
-          interactions: "مضادات الحموضة المحتوية على ألومنيوم تقلل الفوسفور.",
-          warning: "---" },
-
-        { abbr: "Mg", name: "ماغنيسيوم", cat: "كيمياء", icon: "fa-flask",
-          range: "1.7-2.3 mg/dL", prepare: "لا يحتاج صيام", 
-          desc: "مهم للعضلات والأعصاب.",
-          drug: "نقص: مكملات مغنيسيوم (أكسيد، سترات). ارتفاع: سوائل وريدية، مدرات بول.",
-          advice: "المكسرات والخضروات الورقية غنية بالمغنيسيوم.",
-          interactions: "مدرات البول تزيد طرح المغنيسيوم.",
-          warning: "ارتفاع شديد يسبب توقف القلب." },
-
-        { abbr: "Na", name: "صوديوم", cat: "كيمياء", icon: "fa-flask",
-          range: "135-145 mmol/L", prepare: "لا يحتاج صيام", 
-          desc: "أيون مهم لتنظيم السوائل وضغط الدم.",
-          drug: "نقص: محاليل ملحية، علاج السبب. ارتفاع: سوائل خالية من الملح.",
-          advice: "مراقبة ضغط الدم.",
-          interactions: "مدرات البول تؤثر على الصوديوم.",
-          warning: "تغيرات حادة تسبب تشنجات وغيبوبة." },
-
-        { abbr: "K", name: "بوتاسيوم", cat: "كيمياء", icon: "fa-bolt",
-          range: "3.5-5.2 mmol/L", prepare: "تجنب قبض اليد بشدة أثناء السحب", 
-          desc: "أساسي لوظيفة القلب والعضلات.",
-          drug: "نقص: كلوريد بوتاسيوم. ارتفاع: كالسيوم غلوكونات، أنسولين+جلوكوز، مدرات بول.",
-          advice: "تناول موز، أفوكادو لرفع البوتاسيوم.",
-          interactions: "مدرات البول الحافظة للبوتاسيوم (سبيرونولاكتون) ترفع البوتاسيوم.",
-          warning: "ارتفاع >6.5 حالة طارئة تهدد الحياة." },
-
-        { abbr: "Cl", name: "كلوريد", cat: "كيمياء", icon: "fa-flask",
-          range: "98-108 mmol/L", prepare: "لا يحتاج صيام", 
-          desc: "يتغير مع الصوديوم وحموضة الدم.",
-          drug: "حسب السبب.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "CO2", name: "ثاني أكسيد الكربون (بيكربونات)", cat: "كيمياء", icon: "fa-wind",
-          range: "22-29 mmol/L", prepare: "لا يحتاج صيام", 
-          desc: "مؤشر على توازن الحموضة في الدم.",
-          drug: "حماض استقلابي: بيكربونات وريدي. قلاء: حسب السبب.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "ALT", name: "ناقلة أمين الألانين", cat: "كيمياء", icon: "fa-liver",
-          range: "7-55 U/L", prepare: "يفضل الصيام", 
-          desc: "إنزيم كبدي، ارتفاعه يدل على التهاب كبدي.",
-          drug: "لحماية الكبد: سيليمارين (مستخلص الخرفيش). علاج السبب (فيروسات، أدوية).",
-          advice: "تجنب الكحول قبل التحليل بأسبوع.",
-          interactions: "الباراسيتامول بجرعات عالية يرفع ALT بشدة.",
-          warning: "ارتفاع >1000 يدل على التهاب كبدي حاد." },
-
-        { abbr: "AST", name: "ناقلة أمين الأسبارتات", cat: "كيمياء", icon: "fa-liver",
-          range: "8-48 U/L", prepare: "يفضل الصيام", 
-          desc: "إنزيم في الكبد والعضلات والقلب.",
-          drug: "مثل ALT.",
-          advice: "قد يرتفع بعد التمارين الشاقة.",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "ALP", name: "الفوسفاتاز القلوية", cat: "كيمياء", icon: "fa-bone",
-          range: "40-130 U/L", prepare: "يفضل الصيام", 
-          desc: "إنزيم في الكبد والعظام. ارتفاعه يدل على انسداد قنوات الكبد أو أمراض عظام.",
-          drug: "حسب السبب: علاج انسداد القنوات، أو علاج أمراض العظام.",
-          advice: "الأطفال والمراهقون لديهم ALP أعلى طبيعياً.",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "GGT", name: "ناقلة الببتيد غاما غلوتاميل", cat: "كيمياء", icon: "fa-liver",
-          range: "8-61 U/L", prepare: "يفضل الصيام", 
-          desc: "إنزيم كبدي حساس للكحول وأمراض الكبد.",
-          drug: "علاج السبب (امتناع عن الكحول، علاج اليرقان).",
-          advice: "ارتفاع GGT قد يكون بسبب الكحول حتى لو كانت بقية الإنزيمات طبيعية.",
-          interactions: "بعض الأدوية مثل مضادات الصرع ترفع GGT.",
-          warning: "---" },
-
-        { abbr: "LDH", name: "نازعة هيدروجين اللاكتات", cat: "كيمياء", icon: "fa-flask",
-          range: "140-280 U/L", prepare: "لا يحتاج صيام", 
-          desc: "إنزيم في معظم الخلايا، يرتفع عند تلف الأنسجة.",
-          drug: "علاج السبب (تلف عضلات، انحلال دم، سرطان).",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "CK", name: "كرياتين كيناز", cat: "كيمياء", icon: "fa-heart",
-          range: "30-200 U/L", prepare: "تجنب التمارين الشاقة 24 ساعة", 
-          desc: "إنزيم في العضلات والقلب والدماغ.",
-          drug: "ارتفاع شديد (احتشاء عضلة القلب): علاج طارئ. ارتفاع بسبب رياضة: راحة.",
-          advice: "تجنب الرياضة العنيفة قبل التحليل.",
-          interactions: "أدوية خفض الكوليسترول (ستاتين) قد ترفع CK.",
-          warning: "ارتفاع > 10,000 قد يدل على انحلال الربيدات." },
-
-        { abbr: "CK-MB", name: "كرياتين كيناز-MB", cat: "كيمياء", icon: "fa-heart",
-          range: "0-5 ng/mL", prepare: "لا يحتاج صيام", 
-          desc: "مؤشر خاص لعضلة القلب. يستخدم لتشخيص النوبات القلبية.",
-          drug: "حسب حالة القلب.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Troponin", name: "تروبونين", cat: "كيمياء", icon: "fa-heart",
-          range: "أقل من 0.04 ng/mL", prepare: "لا يحتاج صيام", 
-          desc: "بروتين قلبي، ارتفاعه يدل على إصابة عضلة القلب (نوبة قلبية).",
-          drug: "علاج النوبة القلبية (أسبرين، مميعات، قسطرة).",
-          advice: "أي ارتفاع يتطلب تدخلاً طبياً فورياً.",
-          interactions: "---",
-          warning: "حتى الارتفاع البسيط قد يكون خطيراً." },
-
-        { abbr: "Myoglobin", name: "ميوجلوبين", cat: "كيمياء", icon: "fa-dumbbell",
-          range: "25-72 ng/mL", prepare: "لا يحتاج صيام", 
-          desc: "بروتين في العضلات، يرتفع في إصابات العضلات أو النوبات القلبية.",
-          drug: "---",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Albumin", name: "ألبومين", cat: "كيمياء", icon: "fa-droplet",
-          range: "3.5-5.0 g/dL", prepare: "لا يحتاج صيام", 
-          desc: "بروتين رئيسي في الدم، يصنع في الكبد. انخفاضه يدل على سوء تغذية أو أمراض كبد أو كلية.",
-          drug: "نقص شديد: ألبومين وريدي (في المستشفى).",
-          advice: "تناول بروتين كافٍ في الطعام.",
-          interactions: "---",
-          warning: "انخفاض شديد يسبب وذمة." },
-
-        { abbr: "TP", name: "بروتين كلي", cat: "كيمياء", icon: "fa-droplet",
-          range: "6.0-8.0 g/dL", prepare: "لا يحتاج صيام", 
-          desc: "مجموع الألبومين والغلوبيولين.",
-          drug: "حسب السبب.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Bilirubin T", name: "بيليروبين كلي", cat: "كيمياء", icon: "fa-liver",
-          range: "0.2-1.2 mg/dL", prepare: "يفضل الصيام", 
-          desc: "ناتج تكسر الهيموغلوبين. ارتفاعه يسبب اليرقان.",
-          drug: "علاج السبب (حصوة، التهاب كبد، فقر دم انحلالي).",
-          advice: "شرب الماء قد يساعد في خفض البيليروبين غير المباشر.",
-          interactions: "---",
-          warning: "ارتفاع شديد (>20) قد يسبب تلفاً عصبياً عند الأطفال." },
-
-        { abbr: "Bilirubin D", name: "بيليروبين مباشر", cat: "كيمياء", icon: "fa-liver",
-          range: "0.0-0.3 mg/dL", prepare: "يفضل الصيام", 
-          desc: "نوع يرتبط بحمض الغلوكورونيك، يرتفع في أمراض الكبد الانسدادية.",
-          drug: "---",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Amylase", name: "أميلاز", cat: "كيمياء", icon: "fa-pancreas",
-          range: "30-110 U/L", prepare: "يفضل الصيام", 
-          desc: "إنزيم البنكرياس والغدد اللعابية. ارتفاعه يدل على التهاب البنكرياس.",
-          drug: "التهاب البنكرياس: صيام، سوائل وريدية، مسكنات.",
-          advice: "تجنب الكحول والدهون.",
-          interactions: "---",
-          warning: "ارتفاع شديد >3 أضعاف يدل على التهاب بنكرياس حاد." },
-
-        { abbr: "Lipase", name: "ليبيز", cat: "كيمياء", icon: "fa-pancreas",
-          range: "10-140 U/L", prepare: "يفضل الصيام", 
-          desc: "أكثر خصوصية للبنكرياس من الأميلاز.",
-          drug: "مثل Amylase.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        // -------------------- هرمونات (Hormones) --------------------
-        { abbr: "TSH", name: "هرمون منبه الدرقية", cat: "هرمونات", icon: "fa-thyroid",
-          range: "0.4-4.5 µIU/mL", prepare: "يفضل الصباح الباكر", 
-          desc: "ينظم إفراز هرمونات الغدة الدرقية. مرتفع = خمول درقي، منخفض = فرط درقي.",
-          drug: "خمول درقي: ليفوثيروكسين. فرط درقي: ميثيمازول، كاربيمازول.",
-          advice: "تجنب البيوتين (Biotin) قبل التحليل بيومين.",
-          interactions: "الحديد والكالسيوم يقللان امتصاص الليفوثيروكسين.",
-          warning: "التغيير المفاجئ في الجرعة يحتاج إعادة تحليل بعد 6 أسابيع." },
-
-        { abbr: "FT3", name: "ثلاثي يودوثيرونين حر", cat: "هرمونات", icon: "fa-thyroid",
-          range: "2.3-4.2 pg/mL", prepare: "لا يحتاج صيام", 
-          desc: "الشكل النشط من هرمون T3.",
-          drug: "حسب الحالة.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "FT4", name: "ثيروكسين حر", cat: "هرمونات", icon: "fa-thyroid",
-          range: "0.8-1.8 ng/dL", prepare: "لا يحتاج صيام", 
-          desc: "الشكل الحر من T4.",
-          drug: "حسب الحالة.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "T3", name: "ثلاثي يودوثيرونين كلي", cat: "هرمونات", icon: "fa-thyroid",
-          range: "80-200 ng/dL", prepare: "لا يحتاج صيام", 
-          desc: "يشمل الحر والمرتبط بالبروتين.",
-          drug: "---",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "T4", name: "ثيروكسين كلي", cat: "هرمونات", icon: "fa-thyroid",
-          range: "5-12 µg/dL", prepare: "لا يحتاج صيام", 
-          desc: "---",
-          drug: "---",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Anti-TPO", name: "أجسام مضادة لبيروكسيداز الدرقية", cat: "هرمونات", icon: "fa-shield",
-          range: "أقل من 35 IU/mL", prepare: "لا يحتاج صيام", 
-          desc: "يكشف أمراض المناعة الذاتية للغدة (هاشيموتو، جريفز).",
-          drug: "لا يوجد علاج مباشر، يعالج الخلل الدرقي.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Anti-Tg", name: "أجسام مضادة للثيروغلوبيولين", cat: "هرمونات", icon: "fa-shield",
-          range: "أقل من 40 IU/mL", prepare: "لا يحتاج صيام", 
-          desc: "مؤشر آخر لأمراض المناعة الذاتية.",
-          drug: "---",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Cortisol", name: "كورتيزول", cat: "هرمونات", icon: "fa-adrenal",
-          range: "5-25 ميكروغرام/ديسيلتر (صباحاً)", prepare: "يُسحب صباحاً (8 صباحاً)", 
-          desc: "هرمون الإجهاد. يرتفع في متلازمة كوشينغ، وينخفض في قصور الكظر.",
-          drug: "نقص: هيدروكورتيزون. ارتفاع: حسب السبب (ورم، أدوية).",
-          advice: "تجنب الإجهاد قبل التحليل.",
-          interactions: "الكورتيكوستيرويدات ترفع النتائج.",
-          warning: "نقص حاد يسبب أزمة كظرية." },
-
-        { abbr: "ACTH", name: "هرمون موجه لقشر الكظر", cat: "هرمونات", icon: "fa-brain",
-          range: "10-60 pg/mL", prepare: "يُسحب صباحاً", 
-          desc: "يحفز إفراز الكورتيزول.",
-          drug: "حسب السبب.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "FSH", name: "الهرمون المنبه للجريب", cat: "هرمونات", icon: "fa-venus-mars",
-          range: "نساء: 3-10 (بداية الدورة)، رجال: 1.5-12 mIU/mL", prepare: "نساء: اليوم 2-4 من الدورة", 
-          desc: "ينظم نمو البويضات والحيوانات المنوية.",
-          drug: "ارتفاع (فشل مبيضي): علاج هرموني بديل. انخفاض: هرمونات تنشيط.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "LH", name: "الهرمون الملوتن", cat: "هرمونات", icon: "fa-venus-mars",
-          range: "نساء: 2-10 (بداية الدورة)، رجال: 1.5-9 mIU/mL", prepare: "نساء: اليوم 2-4", 
-          desc: "يحفز الإباضة وإفراز التستوستيرون.",
-          drug: "مثل FSH.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Prolactin", name: "برولاكتين", cat: "هرمونات", icon: "fa-breastfeeding",
-          range: "4-23 ng/mL (نساء)، 3-15 (رجال)", prepare: "بعد الاستيقاظ بـ3 ساعات، تجنب الإجهاد", 
-          desc: "هرمون الحليب. ارتفاعه يسبب اضطراب الدورة والعقم.",
-          drug: "ارتفاع: كابيرجولين، بروموكريبتين.",
-          advice: "تجنب شد الثدي قبل التحليل.",
-          interactions: "مضادات الذهان ترفع البرولاكتين.",
-          warning: "ارتفاع شديد قد يدل على ورم برولاكتيني." },
-
-        { abbr: "Estradiol", name: "إستراديول", cat: "هرمونات", icon: "fa-venus",
-          range: "نساء: 15-350 (حسب الدورة)، رجال: 10-40 pg/mL", prepare: "حسب توجيهات الطبيب", 
-          desc: "أهم هرمون أنثوي.",
-          drug: "نقص: استروجين. ارتفاع: مثبطات الأروماتاز.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Progesterone", name: "بروجسترون", cat: "هرمونات", icon: "fa-fetus",
-          range: "نساء: <1 (بداية الدورة) >10 (منتصف الدورة)", prepare: "اليوم 21 من الدورة", 
-          desc: "هرمون الحمل والأصفر.",
-          drug: "نقص: بروجسترون ميكرونيزد.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Testosterone", name: "تستوستيرون", cat: "هرمونات", icon: "fa-mars",
-          range: "رجال: 300-1000 ng/dL، نساء: 15-70 ng/dL", prepare: "قبل 10 صباحاً", 
-          desc: "هرمون الذكورة.",
-          drug: "نقص: تستوستيرون (جل، حقن). ارتفاع: علاج حسب السبب.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "DHEA-S", name: "ديهيدرو إيبي أندروستيرون كبريتات", cat: "هرمونات", icon: "fa-adrenal",
-          range: "رجال: 80-560، نساء: 35-430 ميكروغرام/ديسيلتر", prepare: "لا يحتاج صيام", 
-          desc: "هرمون تفرزه الغدة الكظرية.",
-          drug: "نقص: ديهيدرو إيبي أندروستيرون.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Insulin", name: "أنسولين", cat: "هرمونات", icon: "fa-syringe",
-          range: "2.6-24.9 µIU/mL (صائم)", prepare: "صيام 8 ساعات", 
-          desc: "هرمون البنكرياس الذي ينظم السكر.",
-          drug: "ارتفاع (مقاومة أنسولين): ميتفورمين. انخفاض (سكري نوع1): أنسولين.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "C-peptide", name: "ببتيد سي", cat: "هرمونات", icon: "fa-syringe",
-          range: "0.5-2.0 نانوغرام/مل", prepare: "صيام 8 ساعات", 
-          desc: "جزء من جزيء الأنسولين، يقيس إفراز البنكرياس للأنسولين.",
-          drug: "---",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "PTH", name: "هرمون جار درقي", cat: "هرمونات", icon: "fa-thyroid",
-          range: "10-65 pg/mL", prepare: "يفضل الصيام", 
-          desc: "ينظم الكالسيوم والفوسفور.",
-          drug: "ارتفاع (فرط جارات الدرق): علاج جراحي أو دوائي. نقص: كالسيوم وفيتامين د.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Calcitonin", name: "كالسيتونين", cat: "هرمونات", icon: "fa-thyroid",
-          range: "<10 pg/mL", prepare: "صيام", 
-          desc: "هرمون من الغدة الدرقية، مرتفع في سرطان الغدة الدرقية النخاعي.",
-          drug: "---",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Aldosterone", name: "ألدوستيرون", cat: "هرمونات", icon: "fa-adrenal",
-          range: "3-16 نانوغرام/ديسيلتر (واقفاً)", prepare: "يُسحب بعد وقوف 30 دقيقة", 
-          desc: "ينظم ضغط الدم والأملاح.",
-          drug: "ارتفاع: مضادات الألدوستيرون (سبيرونولاكتون). نقص: فلودروكورتيزون.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Renin", name: "رينين", cat: "هرمونات", icon: "fa-kidneys",
-          range: "0.5-4 نانوغرام/مل/ساعة", prepare: "يُسحب بعد استلقاء", 
-          desc: "إنزيم من الكلى ينظم ضغط الدم.",
-          drug: "---",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        // -------------------- فيتامينات (Vitamins) --------------------
-        { abbr: "Vit A", name: "فيتامين A", cat: "فيتامينات", icon: "fa-eye",
-          range: "30-80 ميكروغرام/ديسيلتر", prepare: "صيام 8 ساعات", 
-          desc: "مهم للنظر والجلد والمناعة.",
-          drug: "نقص: مكملات فيتامين A.",
-          advice: "لا تفرط في الجرعة لتجنب التسمم.",
-          interactions: "---",
-          warning: "تسمم فيتامين A يسبب تشوهات خلقية." },
-
-        { abbr: "Vit B1", name: "ثيامين", cat: "فيتامينات", icon: "fa-bolt",
-          range: "70-180 نانومول/لتر", prepare: "صيام", 
-          desc: "مهم لعمل الأعصاب واستقلاب الكربوهيدرات.",
-          drug: "نقص: ثيامين فموي أو حقن.",
-          advice: "الكحول يسبب نقصاً.",
-          interactions: "---",
-          warning: "نقص حاد يسبب متلازمة فيرنيك." },
-
-        { abbr: "Vit B2", name: "ريبوفلافين", cat: "فيتامينات", icon: "fa-flask",
-          range: "---", prepare: "---", 
-          desc: "مهم لإنتاج الطاقة.",
-          drug: "نقص: ريبوفلافين.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Vit B3", name: "نياسين", cat: "فيتامينات", icon: "fa-flask",
-          range: "---", prepare: "---", 
-          desc: "مهم لعمل الإنزيمات.",
-          drug: "نقص: نياسين (بلاغرا).",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Vit B6", name: "بيريدوكسين", cat: "فيتامينات", icon: "fa-flask",
-          range: "5-50 نانوغرام/مل", prepare: "صيام", 
-          desc: "مهم لتكوين النواقل العصبية.",
-          drug: "نقص: بيريدوكسين.",
-          advice: "بعض الأدوية (أيزونيازيد) تسبب نقصاً.",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Folate", name: "حمض الفوليك", cat: "فيتامينات", icon: "fa-fetus",
-          range: "3-17 نانوغرام/مل", prepare: "صيام 8 ساعات", 
-          desc: "مهم لتكوين DNA، خاصة أثناء الحمل.",
-          drug: "نقص: حمض فوليك.",
-          advice: "المرأة الحامل تحتاج 400 ميكروغرام يومياً.",
-          interactions: "الميثوتركسيت يثبط الفولات.",
-          warning: "نقص الفولات يسبب تشوهات خلقية." },
-
-        { abbr: "Vit B12", name: "فيتامين B12", cat: "فيتامينات", icon: "fa-droplet",
-          range: "200-900 pg/mL", prepare: "صيام 8 ساعات", 
-          desc: "صحة الأعصاب وتكوين الدم.",
-          drug: "نقص: حقن أو أقراص ميثيل كوبالامين.",
-          advice: "النباتيون معرضون للنقص.",
-          interactions: "ميتفورمين يقلل امتصاص B12.",
-          warning: "نقص B12 قد يسبب تلفاً عصبياً دائماً." },
-
-        { abbr: "Vit C", name: "فيتامين C", cat: "فيتامينات", icon: "fa-lemon",
-          range: "0.4-2.0 mg/dL", prepare: "صيام", 
-          desc: "مضاد أكسدة، مهم للكولاجين والمناعة.",
-          drug: "نقص: فيتامين C فموي.",
-          advice: "التدخين يزيد الحاجة لفيتامين C.",
-          interactions: "---",
-          warning: "نقص حاد يسبب داء الأسقربوط." },
-
-        { abbr: "Vit D", name: "فيتامين D", cat: "فيتامينات", icon: "fa-sun",
-          range: "30-100 ng/mL", prepare: "لا يحتاج صيام", 
-          desc: "مسؤول عن امتصاص الكالسيوم وصحة العظام.",
-          drug: "نقص: 50,000 وحدة دولية أسبوعياً لمدة 8 أسابيع ثم وقائية.",
-          advice: "التعرض للشمس 15 دقيقة يومياً.",
-          interactions: "أدوية الصرع تخفض فيتامين د.",
-          warning: "الجرعة الزائدة تسبب تسمم." },
-
-        { abbr: "Vit E", name: "فيتامين E", cat: "فيتامينات", icon: "fa-flask",
-          range: "5-20 ميكروغرام/مل", prepare: "صيام", 
-          desc: "مضاد أكسدة.",
-          drug: "نقص: مكملات فيتامين E.",
-          advice: "نادر الحدوث.",
-          interactions: "مميعات الدم: فيتامين E قد يزيد النزيف.",
-          warning: "---" },
-
-        { abbr: "Vit K", name: "فيتامين K", cat: "فيتامينات", icon: "fa-flask",
-          range: "0.1-2.5 نانوغرام/مل", prepare: "---", 
-          desc: "مهم لتجلط الدم.",
-          drug: "نقص: فيتامين K فموي أو حقن.",
-          advice: "المواليد حديثاً يعطون جرعة وقائية.",
-          interactions: "الوارفارين يعاكس فيتامين K.",
-          warning: "---" },
-
-        // -------------------- أورام (Tumor Markers) --------------------
-        { abbr: "PSA", name: "مستضد البروستاتا", cat: "أورام", icon: "fa-mars",
-          range: "<4 ng/mL (يزداد بالعمر)", prepare: "تجنب القذف وركوب الدراجة 48 ساعة", 
-          desc: "يكشف عن مشاكل البروستاتا (تضخم، التهاب، سرطان).",
-          drug: "تضخم حميد: دوتاستيرايد، تامسولوسين. سرطان: علاج هرموني أو جراحي.",
-          advice: "لا يعني الارتفاع سرطاناً قطعاً.",
-          interactions: "مثبطات الـ5-ألفا ريدوكتاز تخفض PSA.",
-          warning: "الارتفاع السريع يستدعي فحص طبيب." },
-
-        { abbr: "CEA", name: "مستضد سرطاني مضغي", cat: "أورام", icon: "fa-flask",
-          range: "<3 ng/mL (غير مدخنين)", prepare: "لا يحتاج صيام", 
-          desc: "مرتفع في أورام القولون والمستقيم والبنكرياس.",
-          drug: "لا يستخدم للتشخيص المبكر بل للمتابعة.",
-          advice: "التدخين يرفع CEA.",
-          interactions: "---",
-          warning: "قد يرتفع في أمراض غير سرطانية." },
-
-        { abbr: "AFP", name: "ألفا فيتو بروتين", cat: "أورام", icon: "fa-flask",
-          range: "<10 ng/mL", prepare: "لا يحتاج صيام", 
-          desc: "مرتفع في سرطان الكبد والخصية.",
-          drug: "يتطلب تدخلاً جراحياً أو كيميائياً.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "CA19-9", name: "مستضد 19-9", cat: "أورام", icon: "fa-flask",
-          range: "<37 U/mL", prepare: "---", 
-          desc: "مرتبط بسرطان البنكرياس والمرارة.",
-          drug: "---",
-          advice: "---",
-          interactions: "---",
-          warning: "قد يرتفع في التهاب البنكرياس." },
-
-        { abbr: "CA15-3", name: "مستضد 15-3", cat: "أورام", icon: "fa-venus",
-          range: "<30 U/mL", prepare: "---", 
-          desc: "سرطان الثدي.",
-          drug: "---",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "CA125", name: "مستضد 125", cat: "أورام", icon: "fa-venus",
-          range: "<35 U/mL", prepare: "---", 
-          desc: "سرطان المبيض.",
-          drug: "---",
-          advice: "---",
-          interactions: "---",
-          warning: "يرتفع في التهاب الحوض والحمل." },
-
-        { abbr: "Beta-hCG", name: "موجهة الغدد التناسلية", cat: "أورام", icon: "fa-fetus",
-          range: "<5 mIU/mL (غير حامل)", prepare: "---", 
-          desc: "مرتفع في الحمل وبعض أورام الخصية.",
-          drug: "---",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Calcitonin", name: "كالسيتونين", cat: "أورام", icon: "fa-thyroid",
-          range: "<10 pg/mL", prepare: "صيام", 
-          desc: "سرطان الغدة الدرقية النخاعي.",
-          drug: "---",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        // -------------------- مناعة (Immunology) --------------------
-        { abbr: "CRP", name: "بروتين سي التفاعلي", cat: "مناعة", icon: "fa-flask",
-          range: "<5 mg/L", prepare: "لا يحتاج صيام", 
-          desc: "مؤشر التهاب عام.",
-          drug: "ارتفاع: مضادات التهاب (إيبوبروفين) أو علاج السبب.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "ESR", name: "سرعة ترسيب", cat: "مناعة", icon: "fa-clock",
-          range: "0-20 مم/ساعة", prepare: "لا يحتاج صيام", 
-          desc: "مؤشر التهاب بطيء.",
-          drug: "نفس CRP.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "RF", name: "عامل روماتويدي", cat: "مناعة", icon: "fa-bone",
-          range: "<14 IU/mL", prepare: "---", 
-          desc: "يكشف التهاب المفاصل الروماتويدي.",
-          drug: "مرتفع: مضادات روماتيزم (ميثوتريكسيت).",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "ASO", name: "مضاد ستريبتوليزين O", cat: "مناعة", icon: "fa-bacteria",
-          range: "<200 IU/mL", prepare: "---", 
-          desc: "يكشف عدوى سابقة بالمكورات السبحية.",
-          drug: "مضاد حيوي إذا كانت العدوى نشطة.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "ANA", name: "أجسام مضادة للنواة", cat: "مناعة", icon: "fa-microscope",
-          range: "سلبي", prepare: "---", 
-          desc: "يكشف أمراض المناعة الذاتية (الذئبة).",
-          drug: "إيجابي: كورتيكوستيرويدات، مثبطات مناعة.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "HBsAg", name: "مستضد التهاب الكبد B", cat: "مناعة", icon: "fa-virus",
-          range: "سلبي", prepare: "---", 
-          desc: "يكشف وجود عدوى فيروس B حالية.",
-          drug: "إيجابي: مضادات فيروس (تينوفوفير، إنترفيرون).",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "HCV Ab", name: "أجسام مضادة لالتهاب الكبد C", cat: "مناعة", icon: "fa-virus",
-          range: "سلبي", prepare: "---", 
-          desc: "يكشف التعرض السابق أو الحالي لفيروس C.",
-          drug: "إيجابي: أدوية مضادة للفيروسات (داكلاتاسفير، سوفوسبوفير).",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "HIV Ab", name: "أجسام مضادة للإيدز", cat: "مناعة", icon: "fa-virus",
-          range: "سلبي", prepare: "---", 
-          desc: "يكشف عدوى فيروس نقص المناعة.",
-          drug: "إيجابي: علاج مضاد للفيروسات (مضادات فيروسات).",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        // -------------------- سوائل (Body Fluids) --------------------
-        { abbr: "Urinalysis", name: "تحليل بول شامل", cat: "سوائل", icon: "fa-flask",
-          range: "خالي من الجلوكوز والبروتين والدم", prepare: "عينة الصباح الأولى", 
-          desc: "يكشف التهابات المسالك، السكري، مشاكل الكلى.",
-          drug: "التهاب مسالك: مضاد حيوي حسب المزرعة.",
-          advice: "نظف المنطقة قبل أخذ العينة.",
-          interactions: "فيتامين C بجرعات كبيرة يعطي نتائج سلبية كاذبة للدم.",
-          warning: "وجود صديد ونتريت يدل على التهاب." },
-
-        { abbr: "Stool analysis", name: "تحليل براز", cat: "سوائل", icon: "fa-toilet",
-          range: "خالي من الدم والطفيليات", prepare: "عينة طازجة", 
-          desc: "يكشف الطفيليات، الدم الخفي، البكتيريا.",
-          drug: "حسب النتيجة: مضادات طفيليات، مضادات حيوية.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "SFA", name: "تحليل سائل منوي", cat: "سوائل", icon: "fa-mars",
-          range: "العدد >15 مليون/مل", prepare: "امتناع 3-5 أيام", 
-          desc: "تقييم الخصوبة.",
-          drug: "لتحسين الجودة: إل-كارنيتين، زنك، فيتامين E.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "CSF", name: "تحليل السائل الدماغي الشوكي", cat: "سوائل", icon: "fa-brain",
-          range: "صافي، خالي من الخلايا", prepare: "بزل قطني", 
-          desc: "يكشف التهاب السحايا، نزيف، أمراض عصبية.",
-          drug: "حسب السبب (مضادات حيوية، علاج داعم).",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Pleural fluid", name: "تحليل سائل الجنبة", cat: "سوائل", icon: "fa-lungs",
-          range: "حسب النوع", prepare: "بزل", 
-          desc: "يفرق بين الارتشاح والإفراز.",
-          drug: "حسب السبب.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        { abbr: "Ascitic fluid", name: "تحليل سائل استسقاء", cat: "سوائل", icon: "fa-stomach",
-          range: "حسب النوع", prepare: "بزل", 
-          desc: "يكشف العدوى أو الورم في البطن.",
-          drug: "حسب السبب.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" },
-
-        // -------------------- الدهون (Lipid Profile) --------------------
-        { abbr: "Chol", name: "كوليسترول كلي", cat: "كيمياء", icon: "fa-heart",
-          range: "أقل من 200 mg/dL (مرغوب)", prepare: "صيام 9-12 ساعة", 
-          desc: "مجموع الكوليسترول في الدم، يشمل HDL و LDL. ارتفاعه يزيد خطر أمراض القلب.",
-          drug: "ارتفاع: ستاتين (أتورفاستاتين، رسيوفاستاتين)، إيزيتمايب، فيبرات.",
-          advice: "تجنب الدهون المشبعة والمقليات قبل التحليل.",
-          interactions: "بعض الأدوية مثل مدرات البول قد ترفع الكوليسترول.",
-          warning: "ارتفاع شديد قد يسبب تصلب الشرايين." },
-
-        { abbr: "TG", name: "دهون ثلاثية", cat: "كيمياء", icon: "fa-droplet",
-          range: "أقل من 150 mg/dL", prepare: "صيام 9-12 ساعة", 
-          desc: "نوع من الدهون في الدم، يرتفع مع السكريات والكحول والسمنة.",
-          drug: "ارتفاع: فيبرات (فينوفايبرات)، ستاتين، أوميغا-3.",
-          advice: "تجنب السكريات والكحول قبل التحليل.",
-          interactions: "الكورتيزون ومدرات البول ترفع الدهون الثلاثية.",
-          warning: "ارتفاع >500 يزيد خطر التهاب البنكرياس." },
-
-        { abbr: "HDL", name: "كوليسترول نافع", cat: "كيمياء", icon: "fa-thumbs-up",
-          range: "رجال >40 mg/dL، نساء >50 mg/dL", prepare: "صيام 9-12 ساعة", 
-          desc: "البروتين الدهني مرتفع الكثافة، يساعد في إزالة الكوليسترول من الشرايين.",
-          drug: "انخفاض: تمارين رياضية، نياسين، فيبرات.",
-          advice: "الرياضة والمكسرات وزيت الزيتون ترفع HDL.",
-          interactions: "الستاتين قد ترفع HDL قليلاً.",
-          warning: "انخفاض HDL يزيد خطر أمراض القلب." },
-
-        { abbr: "LDL", name: "كوليسترول ضار", cat: "كيمياء", icon: "fa-thumbs-down",
-          range: "أقل من 100 mg/dL (مثالي)", prepare: "صيام 9-12 ساعة", 
-          desc: "البروتين الدهني منخفض الكثافة، يترسب في الشرايين ويسبب تصلبها.",
-          drug: "ارتفاع: ستاتين (أتورفاستاتين)، إيزيتمايب.",
-          advice: "تجنب الدهون المشبعة والمتحولة.",
-          interactions: "الستاتين هي الخيار الأول.",
-          warning: "ارتفاع LDL >190 يحتاج علاج دوائي." },
-
-        { abbr: "VLDL", name: "كوليسترول ضار جداً", cat: "كيمياء", icon: "fa-flask",
-          range: "2-30 mg/dL", prepare: "صيام 9-12 ساعة", 
-          desc: "يحمل الدهون الثلاثية، ارتفاعه مرتبط بأمراض القلب.",
-          drug: "نفس علاج الدهون الثلاثية.",
-          advice: "---",
-          interactions: "---",
-          warning: "---" }
-    ];
-
-    // ==================== متغيرات التطبيق ====================
-    let activeCategory = 'الكل';
-    let currentData = db;
-
-    const searchInput = document.getElementById('searchInput');
-    const clearBtn = document.getElementById('clearSearchBtn');
-    const categoryContainer = document.getElementById('categoryContainer');
-    const resultsGrid = document.getElementById('resultsGrid');
-    const modal = document.getElementById('detailModal');
-    const modalContent = document.getElementById('modalContent');
-    const modalClose = document.getElementById('modalClose');
-
-    // عرض التصنيفات
-    function renderCategories() {
-        const cats = ['الكل', ...new Set(db.map(item => item.cat))];
-        categoryContainer.innerHTML = cats.map(cat => 
-            `<div class="cat-chip ${cat === activeCategory ? 'active' : ''}" data-cat="${cat}">${cat}</div>`
-        ).join('');
-
-        document.querySelectorAll('.cat-chip').forEach(chip => {
-            chip.addEventListener('click', function() {
-                activeCategory = this.dataset.cat;
-                filterData();
-                renderCategories();
-            });
-        });
-    }
-
-    // تصفية البيانات حسب البحث والفئة
-    function filterData() {
-        let filtered = db;
-        if (activeCategory !== 'الكل') {
-            filtered = filtered.filter(item => item.cat === activeCategory);
-        }
-        const term = searchInput.value.trim().toLowerCase();
-        if (term !== '') {
-            filtered = filtered.filter(item =>
-                item.abbr.toLowerCase().includes(term) ||
-                item.name.includes(term) ||
-                (item.desc && item.desc.includes(term))
-            );
-            clearBtn.classList.add('visible');
-        } else {
-            clearBtn.classList.remove('visible');
-        }
-        currentData = filtered;
-        renderGrid();
-    }
-
-    // عرض البطاقات
-    function renderGrid() {
-        if (currentData.length === 0) {
-            resultsGrid.innerHTML = '<div class="no-results">لا توجد نتائج</div>';
-            return;
-        }
-        resultsGrid.innerHTML = currentData.map(item => `
-            <div class="card" data-abbr="${item.abbr}">
-                <div class="card-header">
-                    <span class="card-category">${item.cat}</span>
-                    <i class="fas ${item.icon || 'fa-flask'} card-icon"></i>
-                </div>
-                <h3 class="card-abbr">${item.abbr}</h3>
-                <p class="card-name">${item.name}</p>
-                <div class="card-footer">
-                    <span><i class="fas fa-thermometer-half"></i> ${item.range.substring(0, 20)}...</span>
-                    <span><i class="fas fa-chevron-left"></i> التفاصيل</span>
-                </div>
-            </div>
-        `).join('');
-
-        document.querySelectorAll('.card').forEach(card => {
-            card.addEventListener('click', function() {
-                const abbr = this.dataset.abbr;
-                const item = db.find(i => i.abbr === abbr);
-                if (item) openModal(item);
-            });
-        });
-    }
-
-    // فتح النافذة المنبثقة
-    function openModal(item) {
-        modalContent.innerHTML = `
-            <div class="modal-header">
-                <h2>${item.abbr}</h2>
-                <h3>${item.name}</h3>
-            </div>
-            <div class="modal-section">
-                <h4><i class="fas fa-microscope"></i> الوصف</h4>
-                <p>${item.desc}</p>
-            </div>
-            <div class="modal-section">
-                <h4><i class="fas fa-chart-bar"></i> النطاق المرجعي</h4>
-                <div class="range-badge">${item.range}</div>
-            </div>
-            <div class="modal-section">
-                <h4><i class="fas fa-vial"></i> التحضير</h4>
-                <p>${item.prepare || 'لا توجد شروط خاصة'}</p>
-            </div>
-            <div class="modal-section treatment">
-                <h4><i class="fas fa-capsules"></i> العلاج</h4>
-                <div class="drug-suggestion">${item.drug || 'يعتمد على التشخيص'}</div>
-            </div>
-            ${item.advice && item.advice !== '---' ? `
-            <div class="modal-section">
-                <h4><i class="fas fa-lightbulb"></i> نصائح</h4>
-                <p>${item.advice}</p>
-            </div>` : ''}
-            ${item.warning && item.warning !== '---' ? `
-            <div class="modal-section warning">
-                <h4><i class="fas fa-exclamation-triangle"></i> تحذير</h4>
-                <p>${item.warning}</p>
-            </div>` : ''}
-            <div class="disclaimer">
-                <i class="fas fa-balance-scale"></i> للأغراض التعليمية فقط، استشر طبيبك.
-            </div>
-        `;
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-        modal.classList.remove('active');
-        document.body.style.overflow = 'auto';
-    }
-
-    // أحداث
-    searchInput.addEventListener('input', function() {
-        filterData();
-        renderCategories();
+// ==================== قاعدة البيانات الأساسية (تحاليل طبية حقيقية) ====================
+let DB = [
+  // ==================== دم (Hematology) ====================
+  { abbr:"CBC", name:"صورة الدم الكاملة", name_en:"Complete Blood Count", cat:"دم", icon:"fa-droplet",
+    range:"Hb: 13-17 g/dL (رجال) | 12-15 (نساء)\nWBC: 4-11 ×10³/µL\nPLT: 150-450 ×10³/µL",
+    prepare:"يفضل صيام 8 ساعات",
+    desc:"تقييم شامل لخلايا الدم الحمراء والبيضاء والصفائح والهيموغلوبين. أساسي للكشف عن فقر الدم، العدوى، وسرطانات الدم.",
+    drug:"• Iron deficiency anemia: Ferrous sulfate / fumarate\n• B12 deficiency: Hydroxocobalamin injections\n• Bacterial infection: Antibiotics according to culture",
+    advice:"يُفضل إجراء التحليل صباحاً. تجنب التدخين والتمارين العنيفة قبله.",
+    interactions:"الحديد يتداخل مع مضادات الحموضة والتتراسيكلين (فارق 4 ساعات).",
+    warning:"لا تتناول مكملات الحديد دون تشخيص دقيق (خطر تراكم الحديد)." },
+
+  { abbr:"RBC", name:"عدد الكريات الحمراء", name_en:"Red Blood Cell Count", cat:"دم", icon:"fa-circle",
+    range:"رجال: 4.5-6.5 مليون/µL\nنساء: 3.8-5.8 مليون/µL",
+    prepare:"لا يحتاج صيام",
+    desc:"يقيس عدد خلايا الدم الحمراء التي تحمل الأكسجين إلى الأنسجة.",
+    drug:"Elevated (polycythemia): Phlebotomy or treat cause. Low: Treat underlying cause.",
+    advice:"الترطيب الجيد وشرب الماء يُبقي القراءة دقيقة.",
+    interactions:"العلاج الكيميائي يخفض RBC بشدة.",
+    warning:"انخفاض حاد يستدعي نقل دم فوري." },
+
+  { abbr:"HGB", name:"الهيموغلوبين", name_en:"Hemoglobin", cat:"دم", icon:"fa-droplet",
+    range:"رجال: 13-17 g/dL\nنساء: 12-15 g/dL",
+    prepare:"لا يحتاج صيام",
+    desc:"البروتين الناقل للأكسجين في الدم. المؤشر الرئيسي لتشخيص فقر الدم.",
+    drug:"• Iron deficiency: Ferrous sulfate\n• B12 deficiency: Methylcobalamin injections\n• Folate deficiency: Folic acid",
+    advice:"الأغذية الغنية بالحديد (لحوم، سبانخ) مع فيتامين C تحسّن الامتصاص.",
+    interactions:"مثبطات مضخة البروتون (أوميبرازول) تقلل امتصاص الحديد.",
+    warning:"انخفاض < 7 g/dL قد يسبب فشل قلبي." },
+
+  { abbr:"HCT", name:"الهيماتوكريت", name_en:"Hematocrit", cat:"دم", icon:"fa-chart-simple",
+    range:"رجال: 40-54%\nنساء: 37-47%",
+    prepare:"لا يحتاج صيام",
+    desc:"نسبة حجم كريات الدم الحمراء إلى حجم الدم الكلي. مؤشر للجفاف وفقر الدم.",
+    drug:"Same as for hemoglobin treatment.",
+    advice:"ارتفاع مفاجئ قد يدل على جفاف وليس مرضاً.",
+    interactions:"---", warning:"---" },
+
+  { abbr:"MCV", name:"متوسط حجم الكرية", name_en:"Mean Corpuscular Volume", cat:"دم", icon:"fa-expand",
+    range:"80-100 fL",
+    prepare:"لا يحتاج صيام",
+    desc:"يحدد نوع فقر الدم: صغير الكريات (< 80 نقص حديد) أو كبير الكريات (> 100 نقص B12/فولات).",
+    drug:"< 80: Iron supplements. > 100: B12 injections + folic acid.",
+    advice:"تناول غذاء متوازن يحتوي الحديد والفيتامينات.",
+    interactions:"---",
+    warning:"MCV > 110 قد يدل على إدمان كحول أو نقص B12 الشديد." },
+
+  { abbr:"MCH", name:"متوسط هيموغلوبين الكرية", name_en:"Mean Corpuscular Hemoglobin", cat:"دم", icon:"fa-weight-scale",
+    range:"27-34 pg",
+    prepare:"لا يحتاج صيام",
+    desc:"كمية الهيموغلوبين في متوسط كرية دم حمراء واحدة.",
+    drug:"Same as anemia treatment per type.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"MCHC", name:"تركيز هيموغلوبين الكرية", name_en:"Mean Corpuscular Hemoglobin Concentration", cat:"دم", icon:"fa-weight-hanging",
+    range:"32-36 g/dL",
+    prepare:"لا يحتاج صيام",
+    desc:"تركيز الهيموغلوبين داخل كتلة الكريات الحمراء.",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"RDW", name:"عرض توزيع الكريات", name_en:"Red Cell Distribution Width", cat:"دم", icon:"fa-chart-line",
+    range:"11.5-14.5%",
+    prepare:"لا يحتاج صيام",
+    desc:"يقيس تباين أحجام الكريات الحمراء. ارتفاعه يدل على خلايا غير متجانسة الحجم.",
+    drug:"No direct treatment; treat underlying cause.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"PLT", name:"الصفائح الدموية", name_en:"Platelet Count", cat:"دم", icon:"fa-shield",
+    range:"150-450 ألف/µL",
+    prepare:"لا يحتاج صيام",
+    desc:"خلايا مسؤولة عن تجلط الدم ومنع النزيف. ارتفاعها وانخفاضها كلاهما خطر.",
+    drug:"Severe elevation >800: Aspirin. Low <50: Platelet transfusion or treat cause.",
+    advice:"تجنب الأسبرين إذا كانت الصفائح منخفضة دون استشارة طبيبك.",
+    interactions:"الهيبارين يسبب انخفاض الصفائح (HIT).",
+    warning:"أقل من 20 ألف يسبب نزيفاً عفوياً." },
+
+  { abbr:"MPV", name:"متوسط حجم الصفائح", name_en:"Mean Platelet Volume", cat:"دم", icon:"fa-expand",
+    range:"7.5-11.5 fL",
+    prepare:"لا يحتاج صيام",
+    desc:"مؤشر على نشاط وحجم الصفائح الدموية.",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"WBC", name:"كريات بيضاء", name_en:"White Blood Cell Count", cat:"دم", icon:"fa-shield-halved",
+    range:"4,000-11,000/µL",
+    prepare:"لا يحتاج صيام",
+    desc:"جيش المناعة. ارتفاعه يدل على عدوى أو التهاب، انخفاضه قد يشير لمشكلة في نخاع العظم.",
+    drug:"Elevated (infection): Antibiotics. Low: G-CSF.",
+    advice:"الضغط النفسي والتدخين يرفعان WBC مؤقتاً.",
+    interactions:"الكورتيزون يرفع WBC بشكل وهمي.",
+    warning:"أقل من 1000 يتطلب عزلاً طبياً عاجلاً." },
+
+  { abbr:"NEUT", name:"عدلات (Neutrophils)", name_en:"Neutrophils", cat:"دم", icon:"fa-shield",
+    range:"40-70% | 2-7 ألف/µL",
+    prepare:"لا يحتاج صيام",
+    desc:"أكثر أنواع الكريات البيضاء، الخط الأول ضد البكتيريا.",
+    drug:"Neutropenia: G-CSF + prophylactic antibiotics.",
+    advice:"---",
+    interactions:"العلاج الكيميائي يُدمر العدلات.",
+    warning:"أقل من 500 يزيد خطر العدوى الشديدة جداً." },
+
+  { abbr:"LYMPH", name:"خلايا لمفاوية", name_en:"Lymphocytes", cat:"دم", icon:"fa-shield",
+    range:"20-45% من WBC",
+    prepare:"لا يحتاج صيام",
+    desc:"مسؤولة عن المناعة الفيروسية وإنتاج الأجسام المضادة.",
+    drug:"Elevated: viral or malignant. Low: corticosteroids, HIV.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"MONO", name:"وحيدات", name_en:"Monocytes", cat:"دم", icon:"fa-shield",
+    range:"2-8% من WBC",
+    prepare:"لا يحتاج صيام",
+    desc:"تتطور إلى بلاعم وتزيل الحطام الخلوي والجراثيم.",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"EO", name:"حمضات (Eosinophils)", name_en:"Eosinophils", cat:"دم", icon:"fa-shield",
+    range:"1-4% من WBC",
+    prepare:"لا يحتاج صيام",
+    desc:"تزداد في الحساسية والطفيليات والأمراض الالتهابية.",
+    drug:"Severe elevation: Antihistamines or corticosteroids depending on cause.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"BASO", name:"قعدات (Basophils)", name_en:"Basophils", cat:"دم", icon:"fa-shield",
+    range:"0.5-1% من WBC",
+    prepare:"لا يحتاج صيام",
+    desc:"تفرز الهيبارين والهيستامين، دورها في الحساسية والتخثر.",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"INR", name:"النسبة المعيارية الدولية", name_en:"International Normalized Ratio", cat:"دم", icon:"fa-clock",
+    range:"0.8-1.2 (طبيعي)\n2-3 (مرضى وارفارين)",
+    prepare:"لا يحتاج صيام",
+    desc:"يقيس زمن التجلط، يُراقَب لدى مرضى الوارفارين لضبط الجرعة بدقة.",
+    drug:"Elevated >4 with bleeding: Vitamin K injection. Low: Increase warfarin dose.",
+    advice:"حافظ على ثبات استهلاك الخضروات الورقية (تحتوي فيتامين K).",
+    interactions:"مئات الأدوية تؤثر على INR (مضادات حيوية، مسكنات).",
+    warning:"INR > 5 يزيد خطر النزيف الدماغي." },
+
+  { abbr:"PT", name:"زمن البروثرومبين", name_en:"Prothrombin Time", cat:"دم", icon:"fa-clock",
+    range:"10-13 ثانية",
+    prepare:"يفضل الصيام",
+    desc:"يقيس كفاءة مسار التجلط الخارجي.",
+    drug:"Same as INR.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"PTT", name:"زمن الثرومبوبلاستين الجزئي", name_en:"Partial Thromboplastin Time", cat:"دم", icon:"fa-clock",
+    range:"25-35 ثانية",
+    prepare:"لا يحتاج صيام",
+    desc:"يقيس مسار التجلط الداخلي. يستخدم لمتابعة علاج الهيبارين.",
+    drug:"Severe prolongation: Protamine sulfate to reverse heparin.",
+    advice:"---",
+    interactions:"الهيبارين يطيله.",
+    warning:"---" },
+
+  { abbr:"D-Dimer", name:"دي-دايمر", name_en:"D-Dimer", cat:"دم", icon:"fa-wave-square",
+    range:"< 0.5 µg/mL",
+    prepare:"لا يحتاج صيام",
+    desc:"منتج تحلل الفيبرين. يستخدم لاستبعاد الجلطات الوريدية والرئوية الحديثة.",
+    drug:"No direct treatment; positive result requires imaging confirmation.",
+    advice:"ارتفاعه لا يؤكد الجلطة بل يستدعي مزيداً من الفحوصات.",
+    interactions:"---",
+    warning:"يرتفع في الحمل، الالتهابات، السرطان، الجراحة." },
+
+  // ==================== كيمياء حيوية (Clinical Chemistry) ====================
+  { abbr:"GLU", name:"جلوكوز (سكر الدم)", name_en:"Glucose", cat:"كيمياء", icon:"fa-heart-pulse",
+    range:"صائم: 70-100 mg/dL\nبعد أكل: < 140 mg/dL",
+    prepare:"صيام 8-10 ساعات",
+    desc:"يقيس مستوى السكر في الدم. يستخدم لتشخيص السكري ومتابعته.",
+    drug:"High: Metformin, sulfonylureas, insulin. Low: Oral glucose or IV dextrose.",
+    advice:"سجّل قراءاتك في دفتر إذا كنت مصاباً بالسكري.",
+    interactions:"الكورتيزون يرفع السكر. البيتا بلوكر يخفي أعراض انخفاض السكر.",
+    warning:"أقل من 70 mg/dL يسبب غيبوبة إذا لم يُعالج فوراً." },
+
+  { abbr:"HbA1c", name:"سكر تراكمي", name_en:"Hemoglobin A1c", cat:"كيمياء", icon:"fa-chart-line",
+    range:"طبيعي: < 5.7%\nمقدمات سكري: 5.7-6.4%\nسكري: ≥ 6.5%",
+    prepare:"لا يحتاج صيام",
+    desc:"يعكس متوسط السكر خلال 3 أشهر. الأفضل لمتابعة السيطرة على السكري.",
+    drug:"Based on level: Metformin → sulfonylureas → GLP-1 → SGLT2 → insulin.",
+    advice:"الهدف < 7% لمعظم مرضى السكري لتجنب المضاعفات.",
+    interactions:"فقر الدم الانحلالي يُعطي قراءة أقل من الحقيقية.",
+    warning:"HbA1c > 9% يعني خطر مضاعفات خطيرة." },
+
+  { abbr:"UREA", name:"يوريا", name_en:"Urea", cat:"كيمياء", icon:"fa-flask",
+    range:"7-20 mg/dL",
+    prepare:"صيام اختياري",
+    desc:"فضلات استقلاب البروتين، تفرزها الكلى. يرتفع في الجفاف وفشل الكلى.",
+    drug:"Treat cause: dehydration (IV fluids), renal failure (dialysis).",
+    advice:"اشرب ماءً كافياً يومياً.",
+    interactions:"المضادات الحيوية من نوع أمينوغليكوزيد ترفع اليوريا.",
+    warning:"ارتفاع حاد مع أعراض قد يستدعي غسيل الكلى." },
+
+  { abbr:"CREA", name:"كرياتينين", name_en:"Creatinine", cat:"كيمياء", icon:"fa-flask",
+    range:"0.6-1.2 mg/dL",
+    prepare:"تجنب اللحوم الحمراء والرياضة 24 ساعة قبل",
+    desc:"أفضل مؤشر لوظائف الكلى. ناتج استقلاب العضلات يُطرح بالكلى.",
+    drug:"For kidney protection: ACE inhibitors (lisinopril) or ARBs (losartan).",
+    advice:"الكرياتينين يرتفع طبيعياً مع الكتلة العضلية الكبيرة.",
+    interactions:"مضادات الالتهاب غير الستيرويدية (إيبوبروفين) ترفع الكرياتينين.",
+    warning:"ارتفاع حاد مفاجئ يستدعي تدخلاً طارئاً." },
+
+  { abbr:"BUN", name:"نيتروجين يوريا الدم", name_en:"Blood Urea Nitrogen", cat:"كيمياء", icon:"fa-flask",
+    range:"6-20 mg/dL",
+    prepare:"صيام اختياري",
+    desc:"نفس اليوريا لكن بوحدات مختلفة. يستخدم بالتوازي مع الكرياتينين.",
+    drug:"Same as UREA.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"UA", name:"حمض اليوريك", name_en:"Uric Acid", cat:"كيمياء", icon:"fa-bone",
+    range:"3.5-7.2 mg/dL",
+    prepare:"صيام 4 ساعات",
+    desc:"ناتج استقلاب البيورينات. ارتفاعه يسبب النقرس وحصوات الكلى.",
+    drug:"Chronic gout: Allopurinol. Acute attack: Colchicine + NSAIDs.",
+    advice:"تجنب اللحوم الحمراء، المأكولات البحرية، الكحول.",
+    interactions:"مدرات البول الثيازيدية ترفع حمض اليوريك.",
+    warning:"ارتفاع > 10 يزيد خطر فشل كلوي." },
+
+  { abbr:"Ca", name:"كالسيوم", name_en:"Calcium", cat:"كيمياء", icon:"fa-bone",
+    range:"8.5-10.5 mg/dL",
+    prepare:"يفضل الصيام",
+    desc:"معدن أساسي للعظام والأعصاب والعضلات وتجلط الدم.",
+    drug:"Low: Calcium + Vitamin D supplements. High: Bisphosphonates, calcitonin.",
+    advice:"تناول منتجات الألبان.",
+    interactions:"مدرات البول الثيازيدية ترفع الكالسيوم.",
+    warning:"ارتفاع حاد (> 12 mg/dL) حالة طارئة." },
+
+  { abbr:"P", name:"فسفور", name_en:"Phosphorus", cat:"كيمياء", icon:"fa-flask",
+    range:"2.5-4.5 mg/dL",
+    prepare:"يفضل الصيام",
+    desc:"مهم للعظام وإنتاج الطاقة (ATP) وعمل الأغشية الخلوية.",
+    drug:"Low: Phosphate supplements. High: Phosphate binders (calcium carbonate).",
+    advice:"تجنب المشروبات الغازية إذا كنت تعاني من ارتفاع الفوسفور.",
+    interactions:"مضادات الحموضة المحتوية على ألومنيوم تقلل الفوسفور.",
+    warning:"---" },
+
+  { abbr:"Mg", name:"ماغنيسيوم", name_en:"Magnesium", cat:"كيمياء", icon:"fa-flask",
+    range:"1.7-2.3 mg/dL",
+    prepare:"لا يحتاج صيام",
+    desc:"مهم للعضلات والأعصاب وأكثر من 300 تفاعل إنزيمي في الجسم.",
+    drug:"Low: Magnesium supplements (oxide, citrate). High: IV fluids + diuretics.",
+    advice:"المكسرات والخضروات الورقية غنية بالمغنيسيوم.",
+    interactions:"مدرات البول تزيد طرح المغنيسيوم.",
+    warning:"ارتفاع شديد يسبب توقف القلب." },
+
+  { abbr:"Na", name:"صوديوم", name_en:"Sodium", cat:"كيمياء", icon:"fa-flask",
+    range:"135-145 mmol/L",
+    prepare:"لا يحتاج صيام",
+    desc:"أيون رئيسي لتنظيم السوائل وضغط الدم ووظيفة الأعصاب.",
+    drug:"Low: Saline solutions with caution. High: Free water replacement.",
+    advice:"التغيرات السريعة أخطر من التغيرات التدريجية.",
+    interactions:"مدرات البول تؤثر على الصوديوم بشدة.",
+    warning:"تغيرات حادة تسبب تشنجات وغيبوبة." },
+
+  { abbr:"K", name:"بوتاسيوم", name_en:"Potassium", cat:"كيمياء", icon:"fa-bolt",
+    range:"3.5-5.2 mmol/L",
+    prepare:"تجنب قبض اليد بشدة أثناء سحب الدم",
+    desc:"أساسي لوظيفة القلب والعضلات. تغيراته الحادة تسبب اضطرابات قلبية خطيرة.",
+    drug:"Low: Potassium chloride. High: Calcium gluconate + insulin/glucose.",
+    advice:"الموز، الأفوكادو، البطاطا والحمضيات ترفع البوتاسيوم.",
+    interactions:"مدرات البول تخفض البوتاسيوم.",
+    warning:"K > 6.5 حالة طارئة تهدد الحياة!" },
+
+  { abbr:"Cl", name:"كلوريد", name_en:"Chloride", cat:"كيمياء", icon:"fa-flask",
+    range:"98-108 mmol/L",
+    prepare:"لا يحتاج صيام",
+    desc:"يتغير مع الصوديوم ويعكس توازن حموضة الدم.",
+    drug:"Depends on cause.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"CO2", name:"بيكربونات (HCO3)", name_en:"Bicarbonate", cat:"كيمياء", icon:"fa-wind",
+    range:"22-29 mmol/L",
+    prepare:"لا يحتاج صيام",
+    desc:"مؤشر على توازن الحموضة القاعدية في الدم.",
+    drug:"Metabolic acidosis: IV bicarbonate. Alkalosis: Treat cause.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"ALT", name:"ناقلة أمين الألانين", name_en:"Alanine Aminotransferase", cat:"كيمياء", icon:"fa-flask",
+    range:"7-55 U/L",
+    prepare:"يفضل الصيام",
+    desc:"الإنزيم الكبدي الأكثر خصوصية. ارتفاعه يدل على التهاب أو تلف خلايا الكبد.",
+    drug:"For liver protection: Silymarin (milk thistle extract). Treat cause.",
+    advice:"تجنب الكحول والدهون لأسبوع قبل التحليل.",
+    interactions:"الباراسيتامول بجرعات عالية يرفع ALT بشدة.",
+    warning:"ALT > 1000 يدل على التهاب كبدي حاد." },
+
+  { abbr:"AST", name:"ناقلة أمين الأسبارتات", name_en:"Aspartate Aminotransferase", cat:"كيمياء", icon:"fa-flask",
+    range:"8-48 U/L",
+    prepare:"يفضل الصيام",
+    desc:"إنزيم في الكبد والعضلات والقلب. أقل خصوصية من ALT.",
+    drug:"Same as ALT.",
+    advice:"يرتفع بعد التمارين الشاقة طبيعياً.",
+    interactions:"---", warning:"---" },
+
+  { abbr:"ALP", name:"الفوسفاتاز القلوية", name_en:"Alkaline Phosphatase", cat:"كيمياء", icon:"fa-bone",
+    range:"40-130 U/L",
+    prepare:"يفضل الصيام",
+    desc:"إنزيم في الكبد والعظام. ارتفاعه يدل على انسداد القنوات الصفراوية أو أمراض العظام.",
+    drug:"Treat cause: biliary obstruction or bone disease.",
+    advice:"الأطفال والمراهقون لديهم ALP أعلى طبيعياً (نمو العظام).",
+    interactions:"---", warning:"---" },
+
+  { abbr:"GGT", name:"غاما غلوتاميل ترانسفيراز", name_en:"Gamma-Glutamyl Transferase", cat:"كيمياء", icon:"fa-flask",
+    range:"8-61 U/L",
+    prepare:"يفضل الصيام",
+    desc:"إنزيم كبدي حساس جداً للكحول وأمراض الكبد.",
+    drug:"Treat cause (abstain from alcohol, treat jaundice).",
+    advice:"ارتفاع GGT قد يكون بسبب الكحول حتى لو كانت بقية الإنزيمات طبيعية.",
+    interactions:"بعض أدوية الصرع ترفع GGT.",
+    warning:"---" },
+
+  { abbr:"LDH", name:"نازعة هيدروجين اللاكتات", name_en:"Lactate Dehydrogenase", cat:"كيمياء", icon:"fa-flask",
+    range:"140-280 U/L",
+    prepare:"لا يحتاج صيام",
+    desc:"إنزيم في معظم خلايا الجسم، يرتفع عند تلف الأنسجة بأي سبب.",
+    drug:"Treat cause (muscle damage, hemolysis, cancer).",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"CK", name:"كرياتين كيناز", name_en:"Creatine Kinase", cat:"كيمياء", icon:"fa-dumbbell",
+    range:"30-200 U/L",
+    prepare:"تجنب التمارين الشاقة 24 ساعة قبل",
+    desc:"إنزيم في العضلات والقلب والدماغ. يرتفع في النوبات القلبية وإصابات العضلات.",
+    drug:"Myocardial infarction: emergency treatment. Exercise: rest.",
+    advice:"تجنب الرياضة العنيفة قبل التحليل.",
+    interactions:"أدوية خفض الكوليسترول (ستاتين) قد ترفع CK.",
+    warning:"CK > 10,000 يدل على انحلال الربيدات (أزمة طارئة)." },
+
+  { abbr:"CK-MB", name:"كرياتين كيناز-MB", name_en:"Creatine Kinase-MB", cat:"كيمياء", icon:"fa-heart",
+    range:"0-5 ng/mL",
+    prepare:"لا يحتاج صيام",
+    desc:"النوع القلبي من CK. يستخدم لتشخيص النوبات القلبية الحادة.",
+    drug:"Cardiac-specific treatment.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Troponin", name:"تروبونين", name_en:"Troponin", cat:"كيمياء", icon:"fa-heart",
+    range:"< 0.04 ng/mL",
+    prepare:"لا يحتاج صيام",
+    desc:"بروتين قلبي خاص جداً. ارتفاعه يؤكد إصابة عضلة القلب (نوبة قلبية).",
+    drug:"Heart attack treatment: Aspirin + anticoagulants + emergency angioplasty.",
+    advice:"أي ارتفاع يستدعي الطوارئ فوراً.",
+    interactions:"---",
+    warning:"حتى الارتفاع البسيط خطير ويستدعي تقييماً طارئاً." },
+
+  { abbr:"Myoglobin", name:"ميوجلوبين", name_en:"Myoglobin", cat:"كيمياء", icon:"fa-dumbbell",
+    range:"25-72 ng/mL",
+    prepare:"لا يحتاج صيام",
+    desc:"بروتين في العضلات، يرتفع مبكراً في إصابات العضلات والنوبات القلبية.",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Albumin", name:"ألبومين", name_en:"Albumin", cat:"كيمياء", icon:"fa-droplet",
+    range:"3.5-5.0 g/dL",
+    prepare:"لا يحتاج صيام",
+    desc:"أهم بروتين في الدم، يصنعه الكبد. انخفاضه يدل على سوء تغذية أو أمراض كبد/كلية.",
+    drug:"Severe low: IV albumin in hospital.",
+    advice:"تناول بروتيناً كافياً من اللحوم والبقوليات والبيض.",
+    interactions:"---",
+    warning:"انخفاض شديد يسبب وذمة (تورماً في الساقين والبطن)." },
+
+  { abbr:"TP", name:"بروتين كلي", name_en:"Total Protein", cat:"كيمياء", icon:"fa-droplet",
+    range:"6.0-8.0 g/dL",
+    prepare:"لا يحتاج صيام",
+    desc:"مجموع الألبومين والغلوبيولين في الدم.",
+    drug:"Depends on cause.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Bilirubin T", name:"بيليروبين كلي", name_en:"Total Bilirubin", cat:"كيمياء", icon:"fa-flask",
+    range:"0.2-1.2 mg/dL",
+    prepare:"يفضل الصيام",
+    desc:"ناتج تكسر الهيموغلوبين. ارتفاعه يسبب اليرقان (اصفرار الجلد والعينين).",
+    drug:"Treat cause: gallstones, hepatitis, hemolytic anemia.",
+    advice:"شرب الماء قد يساعد في إزالة البيليروبين غير المباشر.",
+    interactions:"---",
+    warning:"ارتفاع > 20 يسبب تلفاً عصبياً عند الأطفال حديثي الولادة." },
+
+  { abbr:"Bilirubin D", name:"بيليروبين مباشر", name_en:"Direct Bilirubin", cat:"كيمياء", icon:"fa-flask",
+    range:"0.0-0.3 mg/dL",
+    prepare:"يفضل الصيام",
+    desc:"النوع المرتبط بحمض الغلوكورونيك. يرتفع في أمراض الكبد الانسدادية.",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Amylase", name:"أميلاز", name_en:"Amylase", cat:"كيمياء", icon:"fa-flask",
+    range:"30-110 U/L",
+    prepare:"يفضل الصيام",
+    desc:"إنزيم البنكرياس والغدد اللعابية. ارتفاعه يدل على التهاب البنكرياس.",
+    drug:"Pancreatitis: fasting + IV fluids + analgesics.",
+    advice:"تجنب الكحول والدهون الزائدة.",
+    interactions:"---",
+    warning:"ارتفاع > 3 أضعاف الطبيعي = التهاب بنكرياس حاد." },
+
+  { abbr:"Lipase", name:"ليبيز", name_en:"Lipase", cat:"كيمياء", icon:"fa-flask",
+    range:"10-140 U/L",
+    prepare:"يفضل الصيام",
+    desc:"أكثر خصوصية للبنكرياس من الأميلاز. يبقى مرتفعاً لفترة أطول.",
+    drug:"Same as Amylase.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Chol", name:"كوليسترول كلي", name_en:"Total Cholesterol", cat:"كيمياء", icon:"fa-heart",
+    range:"مرغوب: < 200 mg/dL\nحدي: 200-239\nمرتفع: ≥ 240",
+    prepare:"صيام 9-12 ساعة",
+    desc:"مجموع الكوليسترول في الدم. ارتفاعه يزيد خطر أمراض القلب والجلطات الدماغية.",
+    drug:"High: Statins (atorvastatin, rosuvastatin), ezetimibe, fibrates.",
+    advice:"تجنب الدهون المشبعة والمقليات.",
+    interactions:"مدرات البول والكورتيزون يرفعان الكوليسترول.",
+    warning:"ارتفاع طويل الأمد يسبب تصلب الشرايين والنوبات القلبية." },
+
+  { abbr:"TG", name:"دهون ثلاثية", name_en:"Triglycerides", cat:"كيمياء", icon:"fa-droplet",
+    range:"طبيعي: < 150 mg/dL\nمرتفع: ≥ 200",
+    prepare:"صيام 9-12 ساعة",
+    desc:"دهون مرتبطة بالسكريات والكحول والسمنة. ترفع خطر أمراض القلب والبنكرياس.",
+    drug:"High: Fibrates (fenofibrate), high-dose omega-3.",
+    advice:"تجنب السكريات المكررة والكحول.",
+    interactions:"الكورتيزون ومدرات البول يرفعانها.",
+    warning:"TG > 500 يزيد خطر التهاب البنكرياس الحاد." },
+
+  { abbr:"HDL", name:"كوليسترول نافع", name_en:"HDL Cholesterol", cat:"كيمياء", icon:"fa-heart-circle-plus",
+    range:"رجال: > 40 mg/dL\nنساء: > 50 mg/dL\nمثالي: > 60",
+    prepare:"صيام 9-12 ساعة",
+    desc:"يُعيد الكوليسترول من الشرايين إلى الكبد. كلما ارتفع كلما كان أفضل.",
+    drug:"To raise: Niacin, fibrates, regular exercise.",
+    advice:"التمارين الهوائية والمكسرات وزيت الزيتون يرفعون HDL.",
+    interactions:"---",
+    warning:"انخفاض HDL يزيد خطر أمراض القلب بشكل مستقل." },
+
+  { abbr:"LDL", name:"كوليسترول ضار", name_en:"LDL Cholesterol", cat:"كيمياء", icon:"fa-heart-crack",
+    range:"مثالي: < 100 mg/dL\nمقبول: 100-129\nمرتفع: ≥ 160",
+    prepare:"صيام 9-12 ساعة",
+    desc:"يترسب في جدران الشرايين ويسبب تصلبها. العدو الأول لصحة القلب والأوعية.",
+    drug:"First line: Statins (atorvastatin). Add: Ezetimibe.",
+    advice:"تجنب الدهون المشبعة والمتحولة (الفاست فود).",
+    interactions:"الستاتين هو الخيار الأول والأكثر فعالية.",
+    warning:"LDL > 190 يحتاج علاجاً دوائياً فورياً." },
+
+  { abbr:"VLDL", name:"كوليسترول ضار جداً", name_en:"VLDL Cholesterol", cat:"كيمياء", icon:"fa-flask",
+    range:"2-30 mg/dL",
+    prepare:"صيام 9-12 ساعة",
+    desc:"يحمل الدهون الثلاثية. ارتفاعه مرتبط بأمراض القلب.",
+    drug:"Same as triglyceride treatment.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  // ==================== هرمونات (Hormones) ====================
+  { abbr:"TSH", name:"هرمون منبه الدرقية", name_en:"Thyroid Stimulating Hormone", cat:"هرمونات", icon:"fa-circle-nodes",
+    range:"0.4-4.5 µIU/mL",
+    prepare:"يفضل الصباح الباكر",
+    desc:"ينظم إفراز هرمونات الغدة الدرقية. مرتفع = خمول درقي. منخفض = فرط نشاط درقي.",
+    drug:"Hypothyroidism: Levothyroxine. Hyperthyroidism: Methimazole or carbimazole.",
+    advice:"تجنب البيوتين (Biotin) قبل التحليل بيومين لأنه يُشوّه النتائج.",
+    interactions:"الحديد والكالسيوم يقللان امتصاص ليفوثيروكسين.",
+    warning:"لا تغير الجرعة وحدك؛ أعد التحليل بعد 6 أسابيع من أي تعديل." },
+
+  { abbr:"FT3", name:"ثلاثي يودوثيرونين حر", name_en:"Free T3", cat:"هرمونات", icon:"fa-circle-nodes",
+    range:"2.3-4.2 pg/mL",
+    prepare:"لا يحتاج صيام",
+    desc:"الشكل النشط من هرمون الغدة الدرقية T3. يُحوّل من T4 في الأنسجة.",
+    drug:"Based on condition.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"FT4", name:"ثيروكسين حر", name_en:"Free T4", cat:"هرمونات", icon:"fa-circle-nodes",
+    range:"0.8-1.8 ng/dL",
+    prepare:"لا يحتاج صيام",
+    desc:"الشكل الحر من هرمون الغدة الدرقية T4. أدق من T4 الكلي.",
+    drug:"Based on condition with TSH.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"T3", name:"ثلاثي يودوثيرونين كلي", name_en:"Total T3", cat:"هرمونات", icon:"fa-circle-nodes",
+    range:"80-200 ng/dL",
+    prepare:"لا يحتاج صيام",
+    desc:"يشمل الحر والمرتبط بالبروتين.",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"T4", name:"ثيروكسين كلي", name_en:"Total T4", cat:"هرمونات", icon:"fa-circle-nodes",
+    range:"5-12 µg/dL",
+    prepare:"لا يحتاج صيام",
+    desc:"الشكل الكلي لهرمون T4.",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Anti-TPO", name:"أجسام مضادة لـ TPO", name_en:"Anti-Thyroid Peroxidase Antibodies", cat:"هرمونات", icon:"fa-shield",
+    range:"< 35 IU/mL",
+    prepare:"لا يحتاج صيام",
+    desc:"يكشف أمراض المناعة الذاتية للغدة الدرقية (هاشيموتو، جريفز).",
+    drug:"No direct treatment for antibodies; treat resulting thyroid dysfunction.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Anti-Tg", name:"أجسام مضادة للثيروغلوبيولين", name_en:"Anti-Thyroglobulin Antibodies", cat:"هرمونات", icon:"fa-shield",
+    range:"< 40 IU/mL",
+    prepare:"لا يحتاج صيام",
+    desc:"مؤشر آخر لأمراض المناعة الذاتية للغدة الدرقية.",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Cortisol", name:"كورتيزول", name_en:"Cortisol", cat:"هرمونات", icon:"fa-brain",
+    range:"صباحاً: 5-25 µg/dL\nمساءً: 2-14 µg/dL",
+    prepare:"يُسحب صباحاً (8 صباحاً بالضبط)",
+    desc:"هرمون الإجهاد. مرتفع في متلازمة كوشينغ، منخفض في قصور الغدة الكظرية.",
+    drug:"Low: Hydrocortisone. High: Treat cause (tumor, medications).",
+    advice:"تجنب الإجهاد ليلة التحليل.",
+    interactions:"الكورتيكوستيرويدات الخارجية ترفع النتائج.",
+    warning:"نقص حاد يسبب أزمة كظرية (حالة طارئة تهدد الحياة)." },
+
+  { abbr:"ACTH", name:"هرمون موجه لقشر الكظر", name_en:"Adrenocorticotropic Hormone", cat:"هرمونات", icon:"fa-brain",
+    range:"10-60 pg/mL",
+    prepare:"يُسحب صباحاً مبكراً",
+    desc:"يحفز الغدة الكظرية على إفراز الكورتيزول.",
+    drug:"Based on cause (pituitary tumor, adrenal insufficiency).",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"FSH", name:"الهرمون المنبه للجريب", name_en:"Follicle Stimulating Hormone", cat:"هرمونات", icon:"fa-venus-mars",
+    range:"نساء (بداية الدورة): 3-10 mIU/mL\nرجال: 1.5-12 mIU/mL",
+    prepare:"نساء: اليوم 2-4 من الدورة",
+    desc:"ينظم نمو البويضات والحيوانات المنوية. مؤشر احتياطي المبيض.",
+    drug:"High (ovarian failure): Hormone replacement therapy.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"LH", name:"الهرمون الملوتن", name_en:"Luteinizing Hormone", cat:"هرمونات", icon:"fa-venus-mars",
+    range:"نساء (بداية الدورة): 2-10 mIU/mL\nرجال: 1.5-9 mIU/mL",
+    prepare:"نساء: اليوم 2-4 من الدورة",
+    desc:"يحفز الإباضة (ذروته وسط الدورة) وإفراز التستوستيرون عند الرجال.",
+    drug:"Similar to FSH.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Prolactin", name:"برولاكتين", name_en:"Prolactin", cat:"هرمونات", icon:"fa-droplet",
+    range:"نساء: 4-23 ng/mL\nرجال: 3-15 ng/mL",
+    prepare:"بعد الاستيقاظ بـ3 ساعات، تجنب الإجهاد والإثارة",
+    desc:"هرمون الحليب. ارتفاعه يسبب اضطراب الدورة والعقم وتسرب الحليب.",
+    drug:"High: Cabergoline or bromocriptine.",
+    advice:"تجنب أي لمس للثدي قبل التحليل.",
+    interactions:"مضادات الذهان والميتوكلوبراميد يرفعانه.",
+    warning:"ارتفاع شديد قد يدل على ورم برولاكتيني في الغدة النخامية." },
+
+  { abbr:"Estradiol", name:"إستراديول (E2)", name_en:"Estradiol", cat:"هرمونات", icon:"fa-venus",
+    range:"نساء (متفاوت بالدورة): 15-350 pg/mL\nرجال: 10-40 pg/mL",
+    prepare:"حسب توجيهات طبيبك",
+    desc:"أهم هرمون أنثوي. يُنظّم الدورة الشهرية ويحافظ على العظام والقلب.",
+    drug:"Low: Estrogen. High (men): Aromatase inhibitors.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Progesterone", name:"بروجسترون", name_en:"Progesterone", cat:"هرمونات", icon:"fa-seedling",
+    range:"نساء (بداية الدورة): < 1 ng/mL\nمنتصف: > 10 ng/mL",
+    prepare:"اليوم 21 من الدورة الشهرية",
+    desc:"هرمون الحمل والجسم الأصفر. يثبّت بطانة الرحم للحمل.",
+    drug:"Low: Micronized progesterone.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Testosterone", name:"تستوستيرون", name_en:"Testosterone", cat:"هرمونات", icon:"fa-mars",
+    range:"رجال: 300-1000 ng/dL\nنساء: 15-70 ng/dL",
+    prepare:"قبل الساعة 10 صباحاً (ذروة الإفراز)",
+    desc:"هرمون الذكورة. ينظم الرغبة الجنسية والكتلة العضلية وكثافة العظام.",
+    drug:"Low: Testosterone (gel, injections, patch). High (women): Treat cause.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"DHEA-S", name:"ديهيدرو إيبي أندروستيرون كبريتات", name_en:"Dehydroepiandrosterone Sulfate", cat:"هرمونات", icon:"fa-flask",
+    range:"رجال: 80-560 µg/dL\nنساء: 35-430 µg/dL",
+    prepare:"لا يحتاج صيام",
+    desc:"هرمون أندروجيني تفرزه الغدة الكظرية. ينخفض بشكل طبيعي مع التقدم بالعمر.",
+    drug:"Low: DHEA supplements.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Insulin", name:"أنسولين", name_en:"Insulin", cat:"هرمونات", icon:"fa-syringe",
+    range:"صائم: 2.6-24.9 µIU/mL",
+    prepare:"صيام 8 ساعات",
+    desc:"هرمون البنكرياس الذي ينظم دخول السكر إلى الخلايا.",
+    drug:"High (insulin resistance): Metformin. Low (type 1 diabetes): Insulin.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"C-peptide", name:"ببتيد سي", name_en:"C-peptide", cat:"هرمونات", icon:"fa-syringe",
+    range:"0.5-2.0 ng/mL",
+    prepare:"صيام 8 ساعات",
+    desc:"جزء من جزيء الأنسولين. يقيس إفراز البنكرياس الداخلي للأنسولين.",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"PTH", name:"هرمون جار الدرقية", name_en:"Parathyroid Hormone", cat:"هرمونات", icon:"fa-circle-nodes",
+    range:"10-65 pg/mL",
+    prepare:"يفضل الصيام",
+    desc:"ينظم مستوى الكالسيوم والفوسفور. ارتفاعه يُضعف العظام.",
+    drug:"High: Surgery or cinacalcet. Low: Calcium + Vitamin D.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Calcitonin", name:"كالسيتونين", name_en:"Calcitonin", cat:"هرمونات", icon:"fa-circle-nodes",
+    range:"< 10 pg/mL",
+    prepare:"صيام",
+    desc:"هرمون من الغدة الدرقية يُخفض الكالسيوم. ارتفاعه الشديد يدل على سرطان الدرقية النخاعي.",
+    drug:"---",
+    advice:"---",
+    interactions:"---",
+    warning:"ارتفاع شديد يستدعي فحصاً تفصيلياً للغدة الدرقية." },
+
+  { abbr:"Aldosterone", name:"ألدوستيرون", name_en:"Aldosterone", cat:"هرمونات", icon:"fa-flask",
+    range:"3-16 ng/dL (واقفاً)",
+    prepare:"يُسحب بعد الوقوف 30 دقيقة",
+    desc:"ينظم ضغط الدم والأملاح. ارتفاعه يسبب ارتفاع ضغط الدم ونقص البوتاسيوم.",
+    drug:"High: Aldosterone antagonists (spironolactone). Low: Fludrocortisone.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Renin", name:"رينين", name_en:"Renin", cat:"هرمونات", icon:"fa-flask",
+    range:"0.5-4 ng/mL/ساعة",
+    prepare:"يُسحب بعد استلقاء",
+    desc:"إنزيم من الكلى ينظم ضغط الدم عبر نظام رينين-أنجيوتنسين.",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"GH", name:"هرمون النمو", name_en:"Growth Hormone", cat:"هرمونات", icon:"fa-child",
+    range:"رجال: < 5 ng/mL\nنساء: < 10 ng/mL",
+    prepare:"صيام + راحة تامة قبل السحب",
+    desc:"ينظم النمو وبناء العضلات وحرق الدهون. يُفرز ليلاً أثناء النوم.",
+    drug:"Low in children: Synthetic growth hormone injections.",
+    advice:"النوم الكافي والرياضة يحفزان إفرازه.",
+    interactions:"---",
+    warning:"ارتفاع مزمن يسبب ضخامة الأطراف (Acromegaly)." },
+
+  { abbr:"IGF-1", name:"عامل النمو الشبيه بالأنسولين", name_en:"Insulin-like Growth Factor 1", cat:"هرمونات", icon:"fa-child",
+    range:"حسب العمر: 100-300 ng/mL (بالغون)",
+    prepare:"لا يحتاج صيام",
+    desc:"وسيط تأثير هرمون النمو. أثبت من قياس GH المتقلب.",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  // ==================== فيتامينات (Vitamins) ====================
+  { abbr:"Vit A", name:"فيتامين A (ريتينول)", name_en:"Vitamin A (Retinol)", cat:"فيتامينات", icon:"fa-eye",
+    range:"30-80 µg/dL",
+    prepare:"صيام 8 ساعات",
+    desc:"ضروري للرؤية الليلية والجلد والمناعة ونمو الخلايا.",
+    drug:"Low: Vitamin A supplements.",
+    advice:"الجزر، البطاطا الحلوة، الكبدة غنية به.",
+    interactions:"---",
+    warning:"الجرعة الزائدة تسبب تشوهات خلقية. لا تزد عن الحد الموصى." },
+
+  { abbr:"Vit B1", name:"ثيامين (B1)", name_en:"Thiamine (Vitamin B1)", cat:"فيتامينات", icon:"fa-bolt",
+    range:"70-180 nmol/L",
+    prepare:"صيام",
+    desc:"ضروري لاستقلاب الكربوهيدرات ووظيفة الأعصاب والقلب.",
+    drug:"Low: Oral or IV thiamine.",
+    advice:"الكحول يُدمر B1 ويسبب نقصه الحاد.",
+    interactions:"---",
+    warning:"نقص حاد يسبب متلازمة فيرنيك-كورساكوف العصبية الخطيرة." },
+
+  { abbr:"Vit B2", name:"ريبوفلافين (B2)", name_en:"Riboflavin (Vitamin B2)", cat:"فيتامينات", icon:"fa-flask",
+    range:"106-638 nmol/L",
+    prepare:"---",
+    desc:"ضروري لإنتاج الطاقة ووظيفة الإنزيمات الميتوكوندرية.",
+    drug:"Low: Oral riboflavin.",
+    advice:"الألبان والبيض واللحوم غنية به.",
+    interactions:"---", warning:"---" },
+
+  { abbr:"Vit B3", name:"نياسين (B3)", name_en:"Niacin (Vitamin B3)", cat:"فيتامينات", icon:"fa-flask",
+    range:"30-86 nmol/mL",
+    prepare:"---",
+    desc:"ضروري لعمل الإنزيمات واستقلاب الطاقة.",
+    drug:"Low: Niacin (treats pellagra).",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Vit B5", name:"حمض البانتوثينيك (B5)", name_en:"Pantothenic Acid (Vitamin B5)", cat:"فيتامينات", icon:"fa-flask",
+    range:"0.2-1.8 µg/mL",
+    prepare:"---",
+    desc:"ضروري لتصنيع الهرمونات الستيرويدية ومعالجة الدهون.",
+    drug:"Low: B5 supplements.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Vit B6", name:"بيريدوكسين (B6)", name_en:"Pyridoxine (Vitamin B6)", cat:"فيتامينات", icon:"fa-flask",
+    range:"5-50 ng/mL",
+    prepare:"صيام",
+    desc:"ضروري لتكوين النواقل العصبية والهيموغلوبين وتمثيل الأحماض الأمينية.",
+    drug:"Low: Oral pyridoxine.",
+    advice:"بعض الأدوية (أيزونيازيد لعلاج السل) تسبب نقصه.",
+    interactions:"---", warning:"---" },
+
+  { abbr:"Vit B7", name:"بيوتين (B7)", name_en:"Biotin (Vitamin B7)", cat:"فيتامينات", icon:"fa-flask",
+    range:"133-329 pmol/L",
+    prepare:"---",
+    desc:"ضروري لتمثيل الدهون والبروتين وصحة الشعر والأظافر.",
+    drug:"Low: Biotin supplements.",
+    advice:"الجرعات العالية من البيوتين تُشوّه نتائج تحاليل الغدة الدرقية.",
+    interactions:"---", warning:"---" },
+
+  { abbr:"Folate", name:"حمض الفوليك (B9)", name_en:"Folate (Vitamin B9)", cat:"فيتامينات", icon:"fa-seedling",
+    range:"3-17 ng/mL",
+    prepare:"صيام 8 ساعات",
+    desc:"ضروري لبناء DNA وانقسام الخلايا. حيوي جداً قبل الحمل وأثناءه.",
+    drug:"Low: Folic acid 400-800 µg daily.",
+    advice:"المرأة الحامل تحتاج 400+ µg يومياً لمنع تشوهات الأنبوب العصبي.",
+    interactions:"الميثوتريكسيت يُعاكس الفولات.",
+    warning:"نقصه يسبب تشوهات خلقية خطيرة في الأشهر الأولى." },
+
+  { abbr:"Vit B12", name:"فيتامين B12 (كوبالامين)", name_en:"Vitamin B12 (Cobalamin)", cat:"فيتامينات", icon:"fa-pills",
+    range:"200-900 pg/mL",
+    prepare:"صيام 8 ساعات",
+    desc:"ضروري لصحة الأعصاب وتكوين خلايا الدم. نقصه شائع عند كبار السن والنباتيين.",
+    drug:"Low: Methylcobalamin (monthly injections or daily tablets).",
+    advice:"النباتيون يحتاجون مكملاً دورياً دون استثناء.",
+    interactions:"ميتفورمين يقلل امتصاص B12 بشكل تدريجي.",
+    warning:"نقص مزمن يسبب تلفاً عصبياً دائماً لا يُعكس." },
+
+  { abbr:"Vit C", name:"فيتامين C (حمض الأسكوربيك)", name_en:"Vitamin C (Ascorbic Acid)", cat:"فيتامينات", icon:"fa-lemon",
+    range:"0.4-2.0 mg/dL",
+    prepare:"صيام",
+    desc:"مضاد أكسدة قوي. ضروري لبناء الكولاجين والمناعة وامتصاص الحديد.",
+    drug:"Low: Vitamin C 500-1000 mg daily.",
+    advice:"التدخين يزيد الحاجة لفيتامين C بمقدار مرتين.",
+    interactions:"جرعات عالية قد تُعطي نتائج إيجابية كاذبة للدم في البول.",
+    warning:"نقص حاد يسبب داء الأسقربوط (نزيف اللثة وضعف الجروح)." },
+
+  { abbr:"Vit D", name:"فيتامين D (25-OH)", name_en:"Vitamin D (25-Hydroxy)", cat:"فيتامينات", icon:"fa-sun",
+    range:"كافٍ: 30-100 ng/mL\nنقص: 20-30\nعوز حاد: < 20",
+    prepare:"لا يحتاج صيام",
+    desc:"ضروري لامتصاص الكالسيوم وصحة العظام والمناعة. الأكثر نقصاً على مستوى العالم.",
+    drug:"Deficiency: 50,000 IU weekly x 8 weeks. Maintenance: 1000-2000 IU daily.",
+    advice:"15 دقيقة في الشمس يومياً. الأسماك الدهنية ترفعه.",
+    interactions:"أدوية الصرع (فينيتوين) تخفضه.",
+    warning:"الجرعة الزائدة المزمنة تسبب تسمماً وتكلساً في الأعضاء." },
+
+  { abbr:"Vit E", name:"فيتامين E (توكوفيرول)", name_en:"Vitamin E (Tocopherol)", cat:"فيتامينات", icon:"fa-flask",
+    range:"5-20 µg/mL",
+    prepare:"صيام",
+    desc:"مضاد أكسدة يحمي خلايا الجسم من التلف التأكسدي.",
+    drug:"Low: Vitamin E supplements.",
+    advice:"المكسرات وزيت الزيتون غنية به. نقصه نادر.",
+    interactions:"جرعات عالية مع مضادات التخثر قد تزيد النزيف.",
+    warning:"---" },
+
+  { abbr:"Vit K", name:"فيتامين K", name_en:"Vitamin K", cat:"فيتامينات", icon:"fa-flask",
+    range:"0.1-2.5 ng/mL",
+    prepare:"---",
+    desc:"ضروري لتجلط الدم وصحة العظام.",
+    drug:"Low: Oral or injectable Vitamin K.",
+    advice:"المواليد حديثاً يُعطَون جرعة وقائية بعد الولادة مباشرة.",
+    interactions:"الوارفارين يعاكس تأثير فيتامين K.",
+    warning:"---" },
+
+  // ==================== أورام (Tumor Markers) ====================
+  { abbr:"PSA", name:"مستضد البروستاتا النوعي", name_en:"Prostate Specific Antigen", cat:"أورام", icon:"fa-mars",
+    range:"< 4 ng/mL (يزيد طبيعياً مع العمر)",
+    prepare:"تجنب القذف وركوب الدراجة والتدليك 48 ساعة قبل",
+    desc:"يكشف مشاكل البروستاتا (تضخم، التهاب، سرطان). ليس مؤكداً 100% للسرطان.",
+    drug:"Benign enlargement: Dutasteride + tamsulosin. Cancer: Hormones, surgery, radiation.",
+    advice:"لا يعني الارتفاع سرطاناً قطعاً؛ التضخم الحميد يرفعه أيضاً.",
+    interactions:"مثبطات 5-ألفا ريدوكتاز تخفض PSA.",
+    warning:"الارتفاع السريع خلال أشهر يستدعي خزعة فورية." },
+
+  { abbr:"CEA", name:"مستضد سرطاني مضغي", name_en:"Carcinoembryonic Antigen", cat:"أورام", icon:"fa-flask",
+    range:"< 3 ng/mL (غير مدخنين)\n< 5 (مدخنون)",
+    prepare:"لا يحتاج صيام",
+    desc:"مرتبط بأورام القولون والمستقيم والبنكرياس والثدي. يُستخدم للمتابعة لا التشخيص الأولي.",
+    drug:"No direct treatment; treat underlying cancer.",
+    advice:"التدخين يرفع CEA.",
+    interactions:"---",
+    warning:"قد يرتفع في أمراض غير سرطانية (التهاب الكبد، القولون العصبي)." },
+
+  { abbr:"AFP", name:"ألفا فيتو بروتين", name_en:"Alpha-fetoprotein", cat:"أورام", icon:"fa-flask",
+    range:"< 10 ng/mL",
+    prepare:"لا يحتاج صيام",
+    desc:"مرتفع في سرطان الكبد الخلوي الأولي وبعض أورام الخصية والمبيض.",
+    drug:"Surgery or chemotherapy depending on stage.",
+    advice:"يُستخدم للمتابعة بعد العلاج.",
+    interactions:"---", warning:"---" },
+
+  { abbr:"CA19-9", name:"مستضد CA 19-9", name_en:"CA 19-9", cat:"أورام", icon:"fa-flask",
+    range:"< 37 U/mL",
+    prepare:"---",
+    desc:"مرتبط بسرطان البنكرياس والقنوات الصفراوية والمعدة.",
+    drug:"---", advice:"---",
+    interactions:"---",
+    warning:"يرتفع في التهاب البنكرياس الحاد وأمراض الكبد." },
+
+  { abbr:"CA15-3", name:"مستضد CA 15-3", name_en:"CA 15-3", cat:"أورام", icon:"fa-venus",
+    range:"< 30 U/mL",
+    prepare:"---",
+    desc:"يُستخدم لمتابعة سرطان الثدي بعد العلاج.",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"CA125", name:"مستضد CA 125", name_en:"CA 125", cat:"أورام", icon:"fa-venus",
+    range:"< 35 U/mL",
+    prepare:"---",
+    desc:"مرتبط بسرطان المبيض. يُستخدم للمتابعة لدى المريضات.",
+    drug:"---", advice:"---",
+    interactions:"---",
+    warning:"يرتفع في التهاب الحوض والحمل والبطانة الرحمية المهاجرة." },
+
+  { abbr:"Beta-hCG", name:"موجهة الغدد التناسلية المشيمائية", name_en:"Beta-hCG", cat:"أورام", icon:"fa-seedling",
+    range:"< 5 mIU/mL (غير حامل)",
+    prepare:"---",
+    desc:"مرتفع في الحمل وبعض أورام الخصية والمبيض.",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"NSE", name:"إينولاز خلوي عصبي", name_en:"Neuron Specific Enolase", cat:"أورام", icon:"fa-flask",
+    range:"< 16.3 ng/mL",
+    prepare:"---",
+    desc:"مرتبط بسرطان الرئة صغير الخلايا والأورام العصبية الصماوية.",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"SCC", name:"مستضد خلية الحرشفية", name_en:"Squamous Cell Carcinoma Antigen", cat:"أورام", icon:"fa-flask",
+    range:"< 1.5 ng/mL",
+    prepare:"---",
+    desc:"يُستخدم لمتابعة سرطانات الخلايا الحرشفية (عنق الرحم، الرئة).",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  // ==================== مناعة (Immunology) ====================
+  { abbr:"CRP", name:"بروتين سي التفاعلي", name_en:"C-Reactive Protein", cat:"مناعة", icon:"fa-fire-flame-simple",
+    range:"طبيعي: < 5 mg/L\nhs-CRP: < 1 mg/L (مثالي للقلب)",
+    prepare:"لا يحتاج صيام",
+    desc:"مؤشر التهاب سريع الاستجابة. يرتفع في العدوى والالتهاب والنوبات القلبية.",
+    drug:"High: Treat cause (antibiotics, NSAIDs).",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"ESR", name:"سرعة الترسيب", name_en:"Erythrocyte Sedimentation Rate", cat:"مناعة", icon:"fa-clock",
+    range:"رجال: 0-15 مم/ساعة\nنساء: 0-20 مم/ساعة",
+    prepare:"لا يحتاج صيام",
+    desc:"مؤشر التهاب بطيء وغير نوعي. يرتفع في أمراض المناعة الذاتية والسرطان.",
+    drug:"Treat cause.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"RF", name:"عامل روماتويدي", name_en:"Rheumatoid Factor", cat:"مناعة", icon:"fa-bone",
+    range:"< 14 IU/mL",
+    prepare:"---",
+    desc:"يكشف التهاب المفاصل الروماتويدي.",
+    drug:"High: Methotrexate, hydroxychloroquine, biologics.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"ASO", name:"مضاد ستريبتوليزين O", name_en:"Anti-Streptolysin O", cat:"مناعة", icon:"fa-bacteria",
+    range:"< 200 IU/mL",
+    prepare:"---",
+    desc:"يكشف عدوى سابقة بالمكورات السبحية (استرببتوكوك). يرتفع في الحمى الروماتيزمية.",
+    drug:"Active infection: Penicillin or amoxicillin.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"ANA", name:"أجسام مضادة للنواة", name_en:"Antinuclear Antibodies", cat:"مناعة", icon:"fa-microscope",
+    range:"سلبي",
+    prepare:"---",
+    desc:"يكشف أمراض المناعة الذاتية (الذئبة الحمراء، تصلب الجلد).",
+    drug:"Positive: Corticosteroids, immunosuppressants depending on disease.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Anti-dsDNA", name:"أجسام مضادة لـ dsDNA", name_en:"Anti-dsDNA Antibodies", cat:"مناعة", icon:"fa-dna",
+    range:"سلبي",
+    prepare:"---",
+    desc:"نوعي للذئبة الحمراء (SLE). ارتفاعه يدل على نشاط المرض.",
+    drug:"Corticosteroids, hydroxychloroquine.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"HBsAg", name:"مستضد التهاب الكبد B", name_en:"Hepatitis B Surface Antigen", cat:"مناعة", icon:"fa-virus",
+    range:"سلبي",
+    prepare:"---",
+    desc:"يكشف وجود عدوى فيروس التهاب الكبد B الحالية (الحادة أو المزمنة).",
+    drug:"Chronic: Tenofovir or entecavir.",
+    advice:"اللقاح يوفر حماية كاملة وآمنة.",
+    interactions:"---", warning:"---" },
+
+  { abbr:"HBsAb", name:"أجسام مضادة لـ HBs", name_en:"Hepatitis B Surface Antibody", cat:"مناعة", icon:"fa-shield-virus",
+    range:"> 10 IU/L يدل على مناعة",
+    prepare:"---",
+    desc:"يكشف المناعة ضد التهاب الكبد B (بعد اللقاح أو الشفاء).",
+    drug:"---", advice:"التأكد من اللقاح ضروري.", interactions:"---", warning:"---" },
+
+  { abbr:"HCV Ab", name:"أجسام مضادة للكبد C", name_en:"Hepatitis C Antibody", cat:"مناعة", icon:"fa-virus",
+    range:"سلبي",
+    prepare:"---",
+    desc:"يكشف التعرض للفيروس C الحالي أو السابق.",
+    drug:"Positive: Sofosbuvir + daclatasvir (cure rate ~98%).",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"HIV Ab", name:"أجسام مضادة للإيدز", name_en:"HIV Antibody", cat:"مناعة", icon:"fa-virus",
+    range:"سلبي",
+    prepare:"---",
+    desc:"يكشف عدوى فيروس نقص المناعة البشرية HIV.",
+    drug:"Positive: Antiretroviral therapy (ART).",
+    advice:"العلاج المبكر يمنع تطور المرض.",
+    interactions:"---", warning:"---" },
+
+  { abbr:"IgE", name:"غلوبيولين مناعي E", name_en:"Immunoglobulin E", cat:"مناعة", icon:"fa-flask",
+    range:"< 100 IU/mL",
+    prepare:"---",
+    desc:"يرتفع في الحساسية والطفيليات.",
+    drug:"Allergy: Antihistamines, inhaled corticosteroids.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"IgG", name:"غلوبيولين مناعي G", name_en:"Immunoglobulin G", cat:"مناعة", icon:"fa-shield",
+    range:"700-1600 mg/dL",
+    prepare:"---",
+    desc:"أكثر الأجسام المضادة في الدم. يعكس المناعة الطويلة الأمد.",
+    drug:"Low: Immunoglobulin injections.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"IgM", name:"غلوبيولين مناعي M", name_en:"Immunoglobulin M", cat:"مناعة", icon:"fa-shield",
+    range:"40-230 mg/dL",
+    prepare:"---",
+    desc:"أول جسم مضاد يُنتَج في العدوى الحادة. مؤشر العدوى الجديدة.",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  // ==================== سوائل الجسم (Body Fluids) ====================
+  { abbr:"Urinalysis", name:"تحليل بول شامل", name_en:"Urinalysis", cat:"سوائل", icon:"fa-flask",
+    range:"خالٍ من الجلوكوز والبروتين والدم والبكتيريا",
+    prepare:"عينة الصباح الأولى، نظّف المنطقة جيداً",
+    desc:"يكشف التهابات المسالك البولية، السكري، ومشاكل الكلى.",
+    drug:"UTI: Antibiotics according to culture.",
+    advice:"نظّف المنطقة التناسلية قبل أخذ العينة.",
+    interactions:"فيتامين C بجرعات عالية يُعطي نتائج سلبية كاذبة للدم.",
+    warning:"وجود صديد ونتريت يؤكد الالتهاب." },
+
+  { abbr:"Urine Culture", name:"مزرعة بول", name_en:"Urine Culture", cat:"سوائل", icon:"fa-bacteria",
+    range:"سالبة (لا نمو بكتيري)",
+    prepare:"عينة الصباح الأولى في وعاء معقم",
+    desc:"تحدد نوع البكتيريا المسببة للالتهاب والمضاد الحيوي المناسب.",
+    drug:"Based on culture and sensitivity.",
+    advice:"لا تتناول مضاداً حيوياً قبل أخذ العينة.",
+    interactions:"---", warning:"---" },
+
+  { abbr:"Stool", name:"تحليل براز", name_en:"Stool Analysis", cat:"سوائل", icon:"fa-microscope",
+    range:"خالٍ من الدم والطفيليات والبيوض",
+    prepare:"عينة طازجة خلال ساعتين",
+    desc:"يكشف الطفيليات والدم الخفي والبكتيريا في الجهاز الهضمي.",
+    drug:"Parasites: Metronidazole or albendazole. Bacteria: according to culture.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"SFA", name:"تحليل سائل منوي", name_en:"Semen Analysis", cat:"سوائل", icon:"fa-mars",
+    range:"العدد > 15 مليون/مل\nالحركية > 40%\nالشكل > 4%",
+    prepare:"امتناع جنسي 3-5 أيام",
+    desc:"يقيّم الخصوبة الذكرية (العدد، الحركة، الشكل).",
+    drug:"To improve: L-carnitine, zinc, vitamin E, coenzyme Q10.",
+    advice:"تجنب الحرارة الزائدة (حمام ساخن) والتدخين.",
+    interactions:"---", warning:"---" },
+
+  { abbr:"CSF", name:"تحليل السائل الدماغي الشوكي", name_en:"Cerebrospinal Fluid Analysis", cat:"سوائل", icon:"fa-brain",
+    range:"صافٍ، خالٍ من الخلايا، بروتين 15-45 mg/dL",
+    prepare:"بزل قطني في المستشفى",
+    desc:"يكشف التهاب السحايا والنزيف الدماغي والأمراض العصبية التنكسية.",
+    drug:"Bacterial meningitis: IV antibiotics immediately.",
+    advice:"---", interactions:"---",
+    warning:"التأخر في علاج التهاب السحايا يسبب وفاة أو إعاقة دائمة." },
+
+  { abbr:"Pleural fluid", name:"سائل الجنبة", name_en:"Pleural Fluid Analysis", cat:"سوائل", icon:"fa-lungs",
+    range:"حسب النوع (ارتشاح/إفراز)",
+    prepare:"بزل في المستشفى",
+    desc:"يُفرّق بين الارتشاح (أمراض قلب/كلى) والإفراز (التهاب/سرطان).",
+    drug:"Depends on cause.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Ascitic fluid", name:"سائل الاستسقاء", name_en:"Ascitic Fluid Analysis", cat:"سوائل", icon:"fa-flask",
+    range:"حسب النوع",
+    prepare:"بزل في المستشفى",
+    desc:"يكشف سبب تجمع السوائل في البطن (تليف كبد، سرطان، قصور قلب).",
+    drug:"Depends on cause.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  // ==================== وظائف الكلى (Kidney Function) ====================
+  { abbr:"eGFR", name:"معدل الترشيح الكبيبي المقدَّر", name_en:"Estimated Glomerular Filtration Rate", cat:"كيمياء", icon:"fa-flask",
+    range:"طبيعي: > 90 mL/min/1.73m²",
+    prepare:"تجنب اللحوم 24 ساعة",
+    desc:"يقيّم كفاءة وظيفة الكلى. يُستخدم لتصنيف مراحل الفشل الكلوي.",
+    drug:"Kidney protection: ACE inhibitors, ARBs.",
+    advice:"انتبه لأي علامات فشل كلوي (وذمة، تعب، قلة بول).",
+    interactions:"NSAIDs والصبغات الإشعاعية تضر الكلى.",
+    warning:"eGFR < 15 يستدعي غسيل الكلى." },
+
+  { abbr:"Microalbumin", name:"ألبومين دقيق في البول", name_en:"Microalbuminuria", cat:"كيمياء", icon:"fa-flask",
+    range:"< 30 mg/g كرياتينين",
+    prepare:"عينة البول الصباحية",
+    desc:"أول مؤشر لتلف الكلى في مرضى السكري وارتفاع ضغط الدم.",
+    drug:"ACE inhibitors or ARBs.",
+    advice:"السيطرة على السكر والضغط تحمي الكلى.",
+    interactions:"---",
+    warning:"ارتفاعه يستدعي علاجاً فورياً لمنع تطور الفشل الكلوي." },
+
+  // ==================== الغدة الدرقية الإضافية ====================
+  { abbr:"TgAb", name:"أجسام مضادة للثيروغلوبيولين", name_en:"Thyroglobulin Antibodies", cat:"هرمونات", icon:"fa-shield",
+    range:"< 115 IU/mL",
+    prepare:"لا يحتاج صيام",
+    desc:"يكشف أمراض المناعة الذاتية للدرقية. يؤثر على دقة تحليل الثيروغلوبيولين.",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Thyroglobulin", name:"ثيروغلوبيولين", name_en:"Thyroglobulin", cat:"أورام", icon:"fa-circle-nodes",
+    range:"< 55 ng/mL",
+    prepare:"---",
+    desc:"يُستخدم لمتابعة سرطان الغدة الدرقية التفاضلي بعد استئصالها.",
+    drug:"---",
+    advice:"---",
+    interactions:"---",
+    warning:"ارتفاعه بعد الاستئصال يدل على عودة الورم." },
+
+  // ==================== تحاليل إضافية متنوعة ====================
+  { abbr:"Ferritin", name:"فيريتين", name_en:"Ferritin", cat:"كيمياء", icon:"fa-droplet",
+    range:"رجال: 12-300 ng/mL\nنساء: 12-150 ng/mL",
+    prepare:"لا يحتاج صيام",
+    desc:"بروتين تخزين الحديد. أدق مؤشر لمخزون الحديد في الجسم.",
+    drug:"Low: Iron supplements + vitamin C. High: Treat cause.",
+    advice:"أفضل مؤشر لفقر الدم الحديدي قبل ظهور أعراضه.",
+    interactions:"الالتهاب يرفع الفيريتين كاذباً.",
+    warning:"ارتفاع شديد قد يدل على التهاب أو داء ترسب الأصبغة الدموية." },
+
+  { abbr:"Transferrin", name:"ترانسفيرين", name_en:"Transferrin", cat:"كيمياء", icon:"fa-flask",
+    range:"200-360 mg/dL",
+    prepare:"لا يحتاج صيام",
+    desc:"بروتين نقل الحديد في الدم.",
+    drug:"Low: Treat cause (malnutrition, liver disease).",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"TIBC", name:"الطاقة الرابطة للحديد الكلية", name_en:"Total Iron Binding Capacity", cat:"كيمياء", icon:"fa-flask",
+    range:"250-370 µg/dL",
+    prepare:"لا يحتاج صيام",
+    desc:"يقيس الطاقة القصوى لربط الحديد في الدم.",
+    drug:"High with low iron: Iron supplements.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Serum Iron", name:"حديد المصل", name_en:"Serum Iron", cat:"كيمياء", icon:"fa-droplet",
+    range:"60-170 µg/dL",
+    prepare:"صيام صباحي",
+    desc:"كمية الحديد الحر في مصل الدم.",
+    drug:"Low: Iron supplements.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Homocysteine", name:"هوموسيستئين", name_en:"Homocysteine", cat:"كيمياء", icon:"fa-heart",
+    range:"< 15 µmol/L",
+    prepare:"صيام 8-12 ساعة",
+    desc:"حمض أميني. ارتفاعه يزيد خطر أمراض القلب والجلطات الدماغية.",
+    drug:"B12, B6, folate deficiency: Supplement them.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"hs-CRP", name:"بروتين سي التفاعلي عالي الحساسية", name_en:"High-Sensitivity CRP", cat:"مناعة", icon:"fa-heart",
+    range:"< 1 mg/L (خطر منخفض)\n1-3 (متوسط)\n> 3 (خطر عالٍ)",
+    prepare:"لا يحتاج صيام",
+    desc:"نسخة عالية الحساسية من CRP. يتنبأ بخطر أمراض القلب.",
+    drug:"High: Lifestyle changes, statins.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"BNP", name:"ببتيد ناتريوريتيك دماغي", name_en:"Brain Natriuretic Peptide", cat:"كيمياء", icon:"fa-heart",
+    range:"< 100 pg/mL",
+    prepare:"لا يحتاج صيام",
+    desc:"يُفرز من عضلة القلب تحت ضغط. مؤشر قصور القلب.",
+    drug:"Heart failure: Diuretics, ACE inhibitors, beta-blockers.",
+    advice:"---", interactions:"---",
+    warning:"ارتفاع شديد يدل على قصور قلب حاد." },
+
+  { abbr:"NT-proBNP", name:"NT-proBNP", name_en:"N-terminal pro BNP", cat:"كيمياء", icon:"fa-heart",
+    range:"< 125 pg/mL",
+    prepare:"لا يحتاج صيام",
+    desc:"أكثر ثباتاً من BNP. يستخدم لتشخيص ومتابعة قصور القلب.",
+    drug:"Same as BNP.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Procalcitonin", name:"بروكالسيتونين", name_en:"Procalcitonin", cat:"مناعة", icon:"fa-bacteria",
+    range:"< 0.5 ng/mL",
+    prepare:"لا يحتاج صيام",
+    desc:"مؤشر نوعي للعدوى البكتيرية الشديدة والإنتان.",
+    drug:"High: Immediate potent antibiotics.",
+    advice:"---", interactions:"---",
+    warning:"ارتفاع > 10 يدل على إنتان شديد (طارئ)." },
+
+  { abbr:"Lactate", name:"لاكتات (حمض اللبنيك)", name_en:"Lactate", cat:"كيمياء", icon:"fa-flask",
+    range:"0.5-2.2 mmol/L",
+    prepare:"بدون قبض اليد",
+    desc:"ناتج الاستقلاب اللاهوائي. ارتفاعه يدل على نقص الأكسجين في الأنسجة.",
+    drug:"Treat cause (shock, sepsis, hypoxia).",
+    advice:"---", interactions:"---",
+    warning:"ارتفاع > 4 مع صدمة = حالة طارئة تهدد الحياة." },
+
+  { abbr:"Ammonia", name:"أمونيا", name_en:"Ammonia", cat:"كيمياء", icon:"fa-flask",
+    range:"15-45 µg/dL",
+    prepare:"عينة دم شرياني",
+    desc:"ناتج تكسر البروتين. ارتفاعه في فشل الكبد يسبب اعتلال الدماغ.",
+    drug:"Lactulose, rifaximin.",
+    advice:"---", interactions:"---",
+    warning:"ارتفاع شديد يسبب غيبوبة كبدية." },
+
+  { abbr:"Uric Acid Urine", name:"حمض اليوريك في البول", name_en:"Urine Uric Acid", cat:"سوائل", icon:"fa-flask",
+    range:"250-750 mg/24 ساعة",
+    prepare:"جمع بول 24 ساعة",
+    desc:"يساعد في تحديد سبب حصوات الكلى والنقرس.",
+    drug:"Based on result.",
+    advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Creatinine Urine", name:"كرياتينين في البول", name_en:"Urine Creatinine", cat:"سوائل", icon:"fa-flask",
+    range:"800-1800 mg/24 ساعة",
+    prepare:"جمع بول 24 ساعة",
+    desc:"يُستخدم مع كرياتينين الدم لحساب معدل الترشيح الكبيبي.",
+    drug:"---", advice:"---", interactions:"---", warning:"---" },
+
+  { abbr:"Protein Urine", name:"بروتين في البول", name_en:"Urine Protein", cat:"سوائل", icon:"fa-flask",
+    range:"< 150 mg/24 ساعة",
+    prepare:"جمع بول 24 ساعة أو عينة صباحية",
+    desc:"ارتفاعه يدل على مشكلة في الكلى (كبيبات أو أنابيب).",
+    drug:"ACE inhibitors or ARBs for kidney protection.",
+    advice:"---", interactions:"---",
+    warning:"ارتفاع > 3.5 g/يوم يدل على متلازمة كلوية." },
+];
+
+// ==================== STATE ====================
+const state = {
+  activeCat: 'الكل',
+  searchTerm: '',
+  viewMode: 'list',
+  favorites: JSON.parse(localStorage.getItem('mediref_favs') || '[]'),
+  compareList: [],
+  currentView: 'home'
+};
+
+// ==================== HELPERS ====================
+function saveFavs() {
+  localStorage.setItem('mediref_favs', JSON.stringify(state.favorites));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function getFilteredData() {
+  let data = DB;
+  if (state.activeCat !== 'الكل') data = data.filter(i => i.cat === state.activeCat);
+  if (state.searchTerm) {
+    const t = state.searchTerm.toLowerCase();
+    data = data.filter(i =>
+      i.abbr.toLowerCase().includes(t) ||
+      i.name.includes(t) ||
+      (i.name_en && i.name_en.toLowerCase().includes(t)) ||
+      (i.desc && i.desc.includes(t)) ||
+      (i.cat && i.cat.includes(t))
+    );
+  }
+  return data;
+}
+
+function getCatColor(cat) {
+  const map = {
+    'دم': '#b91c1c',
+    'كيمياء': '#1d4ed8',
+    'هرمونات': '#7c3aed',
+    'فيتامينات': '#a16207',
+    'أورام': '#be123c',
+    'مناعة': '#15803d',
+    'سوائل': '#0369a1'
+  };
+  return map[cat] || '#475569';
+}
+
+function getCatBg(cat) {
+  const map = {
+    'دم': '#fee2e2',
+    'كيمياء': '#dbeafe',
+    'هرمونات': '#f3e8ff',
+    'فيتامينات': '#fef9c3',
+    'أورام': '#ffe4e6',
+    'مناعة': '#dcfce7',
+    'سوائل': '#e0f2fe'
+  };
+  return map[cat] || '#f1f5f9';
+}
+
+// ==================== RENDER CATEGORIES ====================
+function renderCats() {
+  const cats = ['الكل', ...new Set(DB.map(i => i.cat))];
+  const counts = {};
+  DB.forEach(i => { counts[i.cat] = (counts[i.cat] || 0) + 1; });
+
+  document.getElementById('catsContainer').innerHTML = cats.map(c => {
+    const count = c === 'الكل' ? DB.length : (counts[c] || 0);
+    return `<button class="cat-chip ${c === state.activeCat ? 'active' : ''}" data-cat="${c}">
+      ${c}
+      <span class="chip-count">${count}</span>
+    </button>`;
+  }).join('');
+
+  document.querySelectorAll('.cat-chip').forEach(el => {
+    el.addEventListener('click', () => {
+      state.activeCat = el.dataset.cat;
+      renderCats();
+      renderCards();
     });
+  });
+}
 
-    clearBtn.addEventListener('click', function() {
-        searchInput.value = '';
-        activeCategory = 'الكل';
-        filterData();
-        renderCategories();
-    });
+// ==================== RENDER CARDS ====================
+function buildCardHTML(item, mode) {
+  const isFav = state.favorites.includes(item.abbr);
+  const isCompare = state.compareList.includes(item.abbr);
+  const catColorBg = getCatBg(item.cat);
+  const catColorFg = getCatColor(item.cat);
 
-    modalClose.addEventListener('click', closeModal);
-    window.addEventListener('click', function(e) {
-        if (e.target === modal) closeModal();
-    });
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
-    });
+  if (mode === 'list') {
+    return `<div class="card list-card ${isFav ? 'is-fav' : ''}" data-abbr="${item.abbr}">
+      <div class="fav-dot"></div>
+      <div class="card-icon-wrap" style="background:${catColorBg}">
+        <i class="fas ${item.icon || 'fa-flask'}" style="color:${catColorFg}"></i>
+      </div>
+      <div class="card-body">
+        <div class="card-abbr">${item.abbr}</div>
+        <div class="card-name">${item.name}</div>
+        <div class="card-meta">
+          <span class="cat-tag cat-${item.cat}">${item.cat}</span>
+          ${isCompare ? '<span style="font-size:10px;color:var(--teal);font-weight:700"><i class="fas fa-check-circle"></i> مقارنة</span>' : ''}
+        </div>
+      </div>
+      <i class="fas fa-chevron-left card-arrow"></i>
+    </div>`;
+  } else {
+    return `<div class="card grid-card ${isFav ? 'is-fav' : ''}" data-abbr="${item.abbr}">
+      <div class="fav-dot"></div>
+      <div class="card-icon-wrap" style="background:${catColorBg}">
+        <i class="fas ${item.icon || 'fa-flask'}" style="color:${catColorFg}"></i>
+      </div>
+      <div class="card-abbr">${item.abbr}</div>
+      <div class="card-name">${item.name}</div>
+      <span class="cat-tag cat-${item.cat}">${item.cat}</span>
+    </div>`;
+  }
+}
 
-    // بدء التطبيق
-    renderCategories();
-    renderGrid();
-})();
+function renderCards() {
+  const data = getFilteredData();
+  const container = document.getElementById('cardsContainer');
+  document.getElementById('resultCount').textContent = data.length;
+
+  container.className = `cards-container view-${state.viewMode}`;
+
+  if (data.length === 0) {
+    container.innerHTML = `<div class="empty-state">
+      <i class="fas fa-magnifying-glass"></i>
+      <h3>لا توجد نتائج</h3>
+      <p>جرّب كلمة بحث مختلفة</p>
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = data.map(item => buildCardHTML(item, state.viewMode)).join('');
+}
+
+function renderFavCards() {
+  const data = DB.filter(i => state.favorites.includes(i.abbr));
+  const container = document.getElementById('favCardsContainer');
+  container.className = 'cards-container view-list';
+
+  if (data.length === 0) {
+    container.innerHTML = `<div class="empty-state">
+      <i class="fas fa-heart"></i>
+      <h3>المفضلة فارغة</h3>
+      <p>اضغط على ❤️ في أي تحليل لإضافته</p>
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = data.map(item => buildCardHTML(item, 'list')).join('');
+}
+
+// ==================== MODAL ====================
+function openModal(item) {
+  const isFav = state.favorites.includes(item.abbr);
+  const isCompare = state.compareList.includes(item.abbr);
+  const catColorBg = getCatBg(item.cat);
+  const catColorFg = getCatColor(item.cat);
+
+  document.getElementById('modalHeaderZone').innerHTML = `
+    <div class="modal-top-row">
+      <div class="modal-abbr-block">
+        <div class="modal-abbr">${item.abbr}</div>
+        <div class="modal-name">${item.name}</div>
+        <div class="modal-name-en">${item.name_en || ''}</div>
+        <span class="modal-cat-tag cat-${item.cat}">
+          <i class="fas ${item.icon || 'fa-flask'}"></i> ${item.cat}
+        </span>
+      </div>
+      <div class="modal-actions-row">
+        <button class="modal-action-btn ${isFav ? 'fav-active' : ''}" id="modalFavBtn" aria-label="مفضلة">
+          <i class="fas fa-heart"></i>
+        </button>
+        <button class="modal-action-btn ${isCompare ? 'fav-active' : ''}" id="modalCompareBtn" aria-label="أضف للمقارنة">
+          <i class="fas fa-code-compare"></i>
+        </button>
+      </div>
+    </div>
+    <div class="modal-divider"></div>
+  `;
+
+  document.getElementById('modalTabs').innerHTML = `
+    <button class="tab-btn active" data-tab="info">المعلومات</button>
+    <button class="tab-btn" data-tab="range">القيم الطبيعية</button>
+    <button class="tab-btn" data-tab="drug">العلاج</button>
+    <button class="tab-btn" data-tab="prep">التحضير</button>
+  `;
+
+  // إخفاء الأقسام الفارغة
+  const infoHTML = `
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon icon-teal"><i class="fas fa-microscope"></i></div>
+        <div class="info-card-title">وصف التحليل</div>
+      </div>
+      <div class="info-card-body">${item.desc || 'لا يوجد وصف.'}</div>
+    </div>
+    ${item.advice && item.advice !== '---' ? `
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon icon-gold"><i class="fas fa-lightbulb"></i></div>
+        <div class="info-card-title">نصائح مهمة</div>
+      </div>
+      <div class="info-card-body">${item.advice}</div>
+    </div>` : ''}
+    ${item.interactions && item.interactions !== '---' ? `
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon icon-accent"><i class="fas fa-pills"></i></div>
+        <div class="info-card-title">التفاعلات الدوائية</div>
+      </div>
+      <div class="info-card-body">${item.interactions}</div>
+    </div>` : ''}
+    ${item.warning && item.warning !== '---' ? `
+    <div class="warning-card">
+      <i class="fas fa-triangle-exclamation"></i>
+      <p>${item.warning}</p>
+    </div>` : ''}
+    <div class="disclaimer">
+      <i class="fas fa-scale-balanced"></i>
+      <p>هذه المعلومات للأغراض التعليمية فقط. استشر طبيبك قبل أي قرار علاجي.</p>
+    </div>
+  `;
+
+  const rangeHTML = `
+    <div class="range-display">${(item.range || '---').replace(/\n/g, '<br>')}</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon icon-teal"><i class="fas fa-info-circle"></i></div>
+        <div class="info-card-title">ملاحظة</div>
+      </div>
+      <div class="info-card-body">القيم المرجعية قد تختلف قليلاً بين المختبرات وتعتمد على الجنس والعمر والحالة الصحية. دائماً راجع قيم مختبرك.</div>
+    </div>
+    <div class="disclaimer">
+      <i class="fas fa-scale-balanced"></i>
+      <p>للأغراض التعليمية فقط. استشر طبيبك.</p>
+    </div>
+  `;
+
+  const drugHTML = `
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon icon-teal"><i class="fas fa-capsules"></i></div>
+        <div class="info-card-title">الخيارات العلاجية</div>
+      </div>
+      <div class="info-card-body" style="white-space:pre-line">${item.drug || 'يعتمد على التشخيص الكامل.'}</div>
+    </div>
+    <div class="disclaimer">
+      <i class="fas fa-scale-balanced"></i>
+      <p>لا تتناول أي دواء دون وصفة من طبيبك. هذه المعلومات للتثقيف الصحي فقط.</p>
+    </div>
+  `;
+
+  const prepHTML = `
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon icon-gold"><i class="fas fa-vial"></i></div>
+        <div class="info-card-title">كيف تستعد للتحليل؟</div>
+      </div>
+      <div class="info-card-body">${item.prepare || 'لا توجد شروط تحضير خاصة.'}</div>
+    </div>
+    <div class="disclaimer">
+      <i class="fas fa-scale-balanced"></i>
+      <p>اتبع تعليمات مختبرك دائماً.</p>
+    </div>
+  `;
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="tab-pane active" id="pane-info">${infoHTML}</div>
+    <div class="tab-pane" id="pane-range">${rangeHTML}</div>
+    <div class="tab-pane" id="pane-drug">${drugHTML}</div>
+    <div class="tab-pane" id="pane-prep">${prepHTML}</div>
+  `;
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('pane-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  document.getElementById('modalFavBtn').addEventListener('click', () => {
+    const idx = state.favorites.indexOf(item.abbr);
+    if (idx === -1) {
+      state.favorites.push(item.abbr);
+      showToast('أُضيف إلى المفضلة ❤️');
+    } else {
+      state.favorites.splice(idx, 1);
+      showToast('حُذف من المفضلة');
+    }
+    saveFavs();
+    updateFavUI();
+    document.getElementById('modalFavBtn').classList.toggle('fav-active', state.favorites.includes(item.abbr));
+    renderCards();
+    renderFavCards();
+  });
+
+  document.getElementById('modalCompareBtn').addEventListener('click', () => {
+    const idx = state.compareList.indexOf(item.abbr);
+    if (idx === -1) {
+      if (state.compareList.length >= 3) { showToast('الحد الأقصى 3 تحاليل للمقارنة'); return; }
+      state.compareList.push(item.abbr);
+      showToast('أُضيف للمقارنة ✅');
+    } else {
+      state.compareList.splice(idx, 1);
+      showToast('حُذف من المقارنة');
+    }
+    updateCompareUI();
+    document.getElementById('modalCompareBtn').classList.toggle('fav-active', state.compareList.includes(item.abbr));
+    renderCards();
+  });
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+});
+
+// ==================== FAV UI ====================
+function updateFavUI() {
+  const count = state.favorites.length;
+  const badge = document.getElementById('favBadge');
+  badge.textContent = count;
+  badge.style.display = count > 0 ? 'block' : 'none';
+  document.getElementById('favStatCount').textContent = count;
+  document.getElementById('favStatPill').style.display = count > 0 ? 'flex' : 'none';
+}
+
+// ==================== COMPARE UI ====================
+function updateCompareUI() {
+  const count = state.compareList.length;
+  const badge = document.getElementById('compareBadge');
+  badge.textContent = count;
+  badge.style.display = count > 0 ? 'block' : 'none';
+}
+
+function openCompare() {
+  if (state.compareList.length < 2) {
+    showToast('أضف تحليلين على الأقل للمقارنة');
+    return;
+  }
+  const items = state.compareList.map(abbr => DB.find(i => i.abbr === abbr)).filter(Boolean);
+  const fields = [
+    { label: 'الاسم', key: 'name' },
+    { label: 'الاسم الإنجليزي', key: 'name_en' },
+    { label: 'التصنيف', key: 'cat' },
+    { label: 'النطاق الطبيعي', key: 'range' },
+    { label: 'التحضير', key: 'prepare' },
+    { label: 'العلاج', key: 'drug' },
+    { label: 'تحذيرات', key: 'warning' }
+  ];
+
+  const headerCols = items.map(i => `<th>${i.abbr}</th>`).join('');
+  const rows = fields.map(f => {
+    const cells = items.map(i => `<td>${(i[f.key] || '---').replace(/\n/g,'<br>')}</td>`).join('');
+    return `<tr><td class="row-label">${f.label}</td>${cells}</tr>`;
+  }).join('');
+
+  document.getElementById('compareSheet').innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <h2><i class="fas fa-code-compare" style="color:var(--teal)"></i> مقارنة التحاليل</h2>
+      <button id="closeCompareBtn" aria-label="إغلاق"
+        style="background:var(--border);border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="compare-table">
+        <thead><tr><th>الحقل</th>${headerCols}</tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <button id="clearCompareBtn"
+      style="margin-top:16px;width:100%;background:var(--danger-light);color:var(--danger);border:1.5px solid #fecaca;border-radius:14px;padding:10px;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;cursor:pointer">
+      <i class="fas fa-trash"></i> مسح قائمة المقارنة
+    </button>
+  `;
+
+  document.getElementById('closeCompareBtn').addEventListener('click', () => {
+    document.getElementById('compareOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  });
+
+  document.getElementById('clearCompareBtn').addEventListener('click', () => {
+    state.compareList = [];
+    updateCompareUI();
+    renderCards();
+    document.getElementById('compareOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+    showToast('مُسحت قائمة المقارنة');
+  });
+
+  document.getElementById('compareOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+document.getElementById('compareOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('compareOverlay')) {
+    document.getElementById('compareOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+});
+
+// ==================== SWITCH VIEW ====================
+function switchView(view) {
+  state.currentView = view;
+  document.getElementById('mainView').classList.toggle('hidden', view !== 'home');
+  document.getElementById('favView').classList.toggle('open', view === 'fav');
+  document.getElementById('navHome').classList.toggle('active', view === 'home');
+  document.getElementById('navFav').classList.toggle('active', view === 'fav');
+  if (view === 'fav') renderFavCards();
+}
+
+// ==================== DARK MODE ====================
+const darkBtn = document.getElementById('darkToggleBtn');
+let isDark = localStorage.getItem('mediref_dark') === '1';
+
+function applyTheme() {
+  document.body.dataset.theme = isDark ? 'dark' : 'light';
+  darkBtn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+  darkBtn.classList.toggle('active', isDark);
+}
+
+darkBtn.addEventListener('click', () => {
+  isDark = !isDark;
+  localStorage.setItem('mediref_dark', isDark ? '1' : '0');
+  applyTheme();
+});
+
+applyTheme();
+
+// ==================== EVENTS ====================
+const searchInput = document.getElementById('searchInput');
+const clearBtn = document.getElementById('clearBtn');
+
+// Debounce للبحث
+let debounceTimer;
+searchInput.addEventListener('input', () => {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => {
+    state.searchTerm = searchInput.value.trim();
+    clearBtn.classList.toggle('visible', state.searchTerm.length > 0);
+    renderCards();
+  }, 300);
+});
+
+clearBtn.addEventListener('click', () => {
+  searchInput.value = '';
+  state.searchTerm = '';
+  state.activeCat = 'الكل';
+  clearBtn.classList.remove('visible');
+  renderCats();
+  renderCards();
+});
+
+document.getElementById('listViewBtn').addEventListener('click', () => {
+  state.viewMode = 'list';
+  document.getElementById('listViewBtn').classList.add('active');
+  document.getElementById('gridViewBtn').classList.remove('active');
+  renderCards();
+});
+
+document.getElementById('gridViewBtn').addEventListener('click', () => {
+  state.viewMode = 'grid';
+  document.getElementById('gridViewBtn').classList.add('active');
+  document.getElementById('listViewBtn').classList.remove('active');
+  renderCards();
+});
+
+document.getElementById('clearFavsBtn').addEventListener('click', () => {
+  state.favorites = [];
+  saveFavs();
+  updateFavUI();
+  renderFavCards();
+  renderCards();
+  showToast('مُسحت المفضلة');
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// أزرار التنقل (بدون onclick في HTML)
+document.getElementById('navHome').addEventListener('click', () => switchView('home'));
+document.getElementById('navFav').addEventListener('click', () => switchView('fav'));
+document.getElementById('navCompare').addEventListener('click', openCompare);
+
+// Event delegation للبطاقات (تجنب إعادة ربط الأحداث)
+document.getElementById('cardsContainer').addEventListener('click', (e) => {
+  const card = e.target.closest('.card');
+  if (card) {
+    const item = DB.find(i => i.abbr === card.dataset.abbr);
+    if (item) openModal(item);
+  }
+});
+
+document.getElementById('favCardsContainer').addEventListener('click', (e) => {
+  const card = e.target.closest('.card');
+  if (card) {
+    const item = DB.find(i => i.abbr === card.dataset.abbr);
+    if (item) openModal(item);
+  }
+});
+
+// ==================== INIT ====================
+document.getElementById('totalCount').textContent = DB.length;
+renderCats();
+renderCards();
+updateFavUI();
+updateCompareUI();
 </script>
 </body>
 </html>
