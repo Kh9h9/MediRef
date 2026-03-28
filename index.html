@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MediRef · الموسوعة الطبية الشاملة</title>
+<title>MediRef · الموسوعة الطبية الشاملة · أنابيب دقيقة لكل تحليل</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
@@ -26,9 +26,9 @@
   --gold: #f59e0b;
   --gold-light: #fffbeb;
   --purple: #8b5cf6;
-  --purple-light: #f5f3ff;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-  --shadow: 0 4px 16px rgba(0,0,0,0.07);
+  --purple-light: #ede9fe;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow: 0 4px 16px rgba(0,0,0,0.07), 0 2px 6px rgba(0,0,0,0.04);
   --shadow-lg: 0 20px 50px rgba(0,0,0,0.12);
   --radius: 20px;
   --radius-sm: 12px;
@@ -46,194 +46,1055 @@
   --accent-light: #2a1a0a;
   --danger-light: #2a0f0f;
   --gold-light: #2a2000;
-  --purple-light: #1e1535;
+  --purple-light: #2d2742;
   --shadow: 0 4px 16px rgba(0,0,0,0.3);
   --shadow-lg: 0 20px 50px rgba(0,0,0,0.5);
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;-webkit-tap-highlight-color:transparent;transition:background var(--transition),color var(--transition)}
-::-webkit-scrollbar{width:5px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
-.app-wrapper{max-width:520px;margin:0 auto;min-height:100vh;position:relative}
-.header{background:var(--navy);padding:32px 20px 28px;position:relative;overflow:hidden}
-.header::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(13,148,136,0.3),transparent 70%)}
-.header::after{content:'';position:absolute;bottom:-40px;left:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(249,115,22,0.15),transparent 70%)}
-.header-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
-.header-logo{display:flex;align-items:center;gap:10px}
-.logo-icon{width:44px;height:44px;background:linear-gradient(135deg,var(--teal),#06b6d4);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;color:white;box-shadow:0 4px 12px rgba(13,148,136,0.4)}
-.logo-text h1{font-size:22px;font-weight:800;color:white;letter-spacing:-0.5px;line-height:1}
-.logo-text span{font-size:11px;color:rgba(255,255,255,0.5);font-weight:400}
-.header-actions{display:flex;gap:8px;align-items:center;position:relative;z-index:1}
-.icon-btn{width:38px;height:38px;border-radius:12px;border:none;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:var(--transition);backdrop-filter:blur(8px)}
-.icon-btn:hover{background:rgba(255,255,255,0.2);color:white}
-.header-stats{display:flex;gap:12px;position:relative;z-index:1;flex-wrap:wrap}
-.stat-pill{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:30px;padding:6px 14px;display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,0.7);backdrop-filter:blur(8px)}
-.stat-pill strong{color:white;font-weight:700}
-.search-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 16px 0;position:sticky;top:0;z-index:900;box-shadow:var(--shadow-sm);transition:background var(--transition)}
-.search-input-wrapper{position:relative;margin-bottom:12px}
-.search-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:15px;pointer-events:none}
-#searchInput{width:100%;padding:11px 42px 11px 42px;border-radius:50px;border:1.5px solid var(--border);background:var(--surface2);font-size:15px;font-family:'Tajawal',sans-serif;color:var(--text);outline:none;transition:var(--transition)}
-#searchInput:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,148,136,0.1);background:var(--surface)}
-#searchInput::placeholder{color:var(--text3)}
-.clear-btn{position:absolute;left:12px;top:50%;transform:translateY(-50%);background:var(--border);border:none;color:var(--text2);width:22px;height:22px;border-radius:50%;cursor:pointer;display:none;align-items:center;justify-content:center;font-size:11px;transition:var(--transition)}
-.clear-btn.visible{display:flex}
-.clear-btn:hover{background:var(--danger);color:white}
-.cats-scroll{display:flex;gap:7px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.cats-scroll::-webkit-scrollbar{display:none}
-.cat-chip{display:flex;align-items:center;gap:5px;background:var(--surface2);border:1.5px solid var(--border);border-radius:30px;padding:5px 13px;font-size:12.5px;font-weight:500;color:var(--text2);white-space:nowrap;cursor:pointer;transition:var(--transition);font-family:'Tajawal',sans-serif;flex-shrink:0}
-.cat-chip .chip-count{background:var(--border);color:var(--text3);font-size:10px;padding:1px 6px;border-radius:30px;font-family:'JetBrains Mono',monospace;transition:var(--transition)}
-.cat-chip:hover{border-color:var(--teal);color:var(--teal)}
-.cat-chip.active{background:var(--navy);border-color:var(--navy);color:white}
-[data-theme="dark"] .cat-chip.active{background:var(--teal);border-color:var(--teal)}
-.cat-chip.active .chip-count{background:rgba(255,255,255,0.2);color:white}
-.results-bar{padding:14px 16px 8px;display:flex;align-items:center;justify-content:space-between}
-.results-count{font-size:13px;color:var(--text3);font-family:'JetBrains Mono',monospace}
-.results-count strong{color:var(--teal);font-weight:700}
-.view-toggle{display:flex;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:4px;gap:3px}
-.view-btn{background:none;border:none;color:var(--text3);cursor:pointer;padding:6px 12px;border-radius:9px;transition:var(--transition);display:flex;align-items:center;gap:5px;font-family:'Tajawal',sans-serif;font-weight:500}
-.view-btn i{font-size:18px}
-.view-label{font-size:12px}
-.view-btn.active{background:var(--teal);color:white;box-shadow:var(--shadow-sm)}
-.view-btn:not(.active):hover{color:var(--teal);background:var(--teal-light)}
-.cards-container{padding:0 14px 100px}
-.cards-container.view-list{display:flex;flex-direction:column;gap:10px}
-.cards-container.view-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.card{background:var(--surface);border-radius:var(--radius);border:1.5px solid var(--border);cursor:pointer;transition:var(--transition);position:relative;overflow:hidden;animation:cardIn 0.25s ease both}
-.card:hover{border-color:var(--teal);box-shadow:0 8px 24px rgba(13,148,136,0.12);transform:translateY(-2px)}
-.card:active{transform:scale(0.98)}
-@keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.card.list-card{padding:14px 16px;display:flex;align-items:center;gap:14px}
-.card.list-card .card-icon-wrap{width:46px;height:46px;flex-shrink:0;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.card.list-card .card-body{flex:1;min-width:0}
-.card.list-card .card-abbr{font-size:17px;font-weight:800;color:var(--text);line-height:1.2}
-.card.list-card .card-name{font-size:13px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.card.list-card .card-meta{display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap}
-.card.list-card .cat-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
-.tube-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:var(--purple-light);color:var(--purple);display:inline-flex;align-items:center;gap:3px}
-[data-theme="dark"] .tube-badge{background:#1e1535;color:#c4b5fd}
-.card.list-card .card-arrow{color:var(--text3);font-size:13px;flex-shrink:0;transition:var(--transition)}
-.card:hover .card-arrow{color:var(--teal);transform:translateX(-3px)}
-.card.grid-card{padding:14px 12px}
-.card.grid-card .card-icon-wrap{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:10px}
-.card.grid-card .card-abbr{font-size:15px;font-weight:800;color:var(--text);line-height:1.2;margin-bottom:2px}
-.card.grid-card .card-name{font-size:11px;color:var(--text2);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:8px}
-.card.grid-card .cat-tag{font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;display:inline-block}
-.fav-dot{position:absolute;top:10px;left:10px;width:8px;height:8px;background:var(--accent);border-radius:50%;display:none}
-.card.is-fav .fav-dot{display:block}
-.cat-دم{background:#fee2e2;color:#b91c1c}
-.cat-كيمياء{background:#dbeafe;color:#1d4ed8}
-.cat-هرمونات{background:#f3e8ff;color:#7c3aed}
-.cat-فيتامينات{background:#fef9c3;color:#a16207}
-.cat-أورام{background:#ffe4e6;color:#be123c}
-.cat-مناعة{background:#dcfce7;color:#15803d}
-.cat-سوائل{background:#e0f2fe;color:#0369a1}
-.cat-وراثة{background:#e9e5ff;color:#5b21b6}
-[data-theme="dark"] .cat-دم{background:#3f1212;color:#fca5a5}
-[data-theme="dark"] .cat-كيمياء{background:#1e2d4a;color:#93c5fd}
-[data-theme="dark"] .cat-هرمونات{background:#2e1f4a;color:#c4b5fd}
-[data-theme="dark"] .cat-فيتامينات{background:#3a2d00;color:#fde68a}
-[data-theme="dark"] .cat-أورام{background:#3f1020;color:#fda4af}
-[data-theme="dark"] .cat-مناعة{background:#0f2e1e;color:#86efac}
-[data-theme="dark"] .cat-سوائل{background:#0c2233;color:#7dd3fc}
-[data-theme="dark"] .cat-وراثة{background:#2e1a6b;color:#c4b5fd}
-.empty-state{text-align:center;padding:60px 20px;color:var(--text3)}
-.empty-state i{font-size:48px;margin-bottom:16px;opacity:0.4}
-.empty-state h3{font-size:18px;color:var(--text2);margin-bottom:6px}
-.empty-state p{font-size:14px}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(12px);z-index:1000;display:none;align-items:flex-end;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal-sheet{background:var(--surface);width:100%;max-width:520px;max-height:92vh;border-radius:28px 28px 0 0;overflow:hidden;display:flex;flex-direction:column;animation:sheetUp 0.3s cubic-bezier(0.32,0.72,0,1);box-shadow:var(--shadow-lg)}
-@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.modal-drag-handle{width:36px;height:4px;background:var(--border);border-radius:99px;margin:12px auto 0;flex-shrink:0}
-.modal-header-zone{padding:16px 20px 0;flex-shrink:0}
-.modal-top-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.modal-abbr-block{flex:1}
-.modal-abbr{font-size:32px;font-weight:800;color:var(--text);line-height:1.1;letter-spacing:-0.5px}
-.modal-name{font-size:16px;color:var(--text2);font-weight:400;margin-top:2px}
-.modal-name-en{font-size:14px;color:var(--text3);font-weight:300;margin-top:2px;font-style:italic}
-.modal-cat-tag{font-size:11px;font-weight:700;padding:4px 12px;border-radius:30px;display:inline-flex;align-items:center;gap:4px;margin-top:8px}
-.modal-actions-row{display:flex;gap:8px;flex-shrink:0}
-.modal-action-btn{width:40px;height:40px;border-radius:13px;border:1.5px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:var(--transition)}
-.modal-action-btn:hover{border-color:var(--teal);color:var(--teal)}
-.modal-action-btn.fav-active{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
-.modal-divider{height:1px;background:var(--border);margin:14px 0 0}
-.modal-tabs{display:flex;padding:0 20px;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;scrollbar-width:none}
-.modal-tabs::-webkit-scrollbar{display:none}
-.tab-btn{background:none;border:none;padding:12px 14px 11px;font-size:13.5px;font-family:'Tajawal',sans-serif;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:var(--transition);white-space:nowrap;margin-bottom:-1px}
-.tab-btn.active{color:var(--teal);border-bottom-color:var(--teal);font-weight:700}
-.modal-body{overflow-y:auto;padding:20px 20px 40px;flex:1}
-.tab-pane{display:none}
-.tab-pane.active{display:block}
-.info-card{background:var(--surface2);border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid var(--border)}
-.info-card-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.info-card-icon{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.icon-teal{background:var(--teal-light);color:var(--teal)}
-.icon-accent{background:var(--accent-light);color:var(--accent)}
-.icon-gold{background:var(--gold-light);color:var(--gold)}
-.icon-danger{background:var(--danger-light);color:var(--danger)}
-.icon-purple{background:var(--purple-light);color:var(--purple)}
-.info-card-title{font-size:14px;font-weight:700;color:var(--text)}
-.info-card-body{font-size:14px;color:var(--text2);line-height:1.7}
-/* Tube Display */
-.tube-display{border-radius:16px;padding:20px;margin-bottom:12px;display:flex;align-items:center;gap:16px;border:2px solid}
-.tube-display.tube-purple{background:var(--purple-light);border-color:#ddd6fe}
-.tube-display.tube-red{background:#fef2f2;border-color:#fecaca}
-.tube-display.tube-blue{background:#eff6ff;border-color:#bfdbfe}
-.tube-display.tube-green{background:#f0fdf4;border-color:#bbf7d0}
-.tube-display.tube-yellow{background:#fefce8;border-color:#fef08a}
-.tube-display.tube-gray{background:#f8fafc;border-color:#e2e8f0}
-.tube-display.tube-orange{background:#fff7ed;border-color:#fed7aa}
-[data-theme="dark"] .tube-display.tube-purple{background:#1e1535;border-color:#4c1d95}
-[data-theme="dark"] .tube-display.tube-red{background:#2a0f0f;border-color:#7f1d1d}
-[data-theme="dark"] .tube-display.tube-blue{background:#0c1a2e;border-color:#1e3a5f}
-[data-theme="dark"] .tube-display.tube-green{background:#052e16;border-color:#14532d}
-[data-theme="dark"] .tube-display.tube-yellow{background:#2a2000;border-color:#713f12}
-[data-theme="dark"] .tube-display.tube-gray{background:#1a2235;border-color:#1e2d42}
-[data-theme="dark"] .tube-display.tube-orange{background:#2a1a0a;border-color:#7c2d12}
-.tube-circle{width:56px;height:56px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
-.tube-info{flex:1}
-.tube-name{font-size:17px;font-weight:800;color:var(--text);margin-bottom:3px}
-.tube-subtitle{font-size:13px;color:var(--text2);line-height:1.5}
-.tube-additive-badge{display:inline-block;margin-top:8px;background:rgba(0,0,0,0.06);color:var(--text2);font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px}
-[data-theme="dark"] .tube-additive-badge{background:rgba(255,255,255,0.08)}
-.range-display{background:var(--navy);color:white;border-radius:12px;padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;margin-bottom:12px}
-[data-theme="dark"] .range-display{background:var(--teal-dark)}
-.warning-card{background:var(--danger-light);border:1.5px solid #fecaca;border-radius:16px;padding:14px 16px;display:flex;gap:10px;align-items:flex-start;margin-bottom:12px}
-.warning-card i{color:var(--danger);font-size:16px;margin-top:2px;flex-shrink:0}
-.warning-card p{font-size:13.5px;color:#991b1b;line-height:1.6}
-[data-theme="dark"] .warning-card p{color:#fca5a5}
-.disclaimer{background:var(--gold-light);border:1px solid #fde68a;border-radius:14px;padding:12px 14px;display:flex;gap:8px;align-items:flex-start;margin-top:16px}
-.disclaimer i{color:var(--gold);font-size:14px;margin-top:2px;flex-shrink:0}
-.disclaimer p{font-size:12px;color:#92400e;line-height:1.6}
-[data-theme="dark"] .disclaimer p{color:#fde68a}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:white;padding:10px 20px;border-radius:30px;font-size:14px;font-family:'Tajawal',sans-serif;z-index:2000;transition:transform 0.3s cubic-bezier(0.32,0.72,0,1);white-space:nowrap;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:8px}
-.toast.show{transform:translateX(-50%) translateY(0)}
-.compare-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(16px);z-index:1100;display:none;align-items:flex-end;justify-content:center}
-.compare-overlay.open{display:flex}
-.compare-sheet{background:var(--surface);width:100%;max-width:520px;max-height:92vh;border-radius:28px 28px 0 0;padding:20px;overflow-y:auto;animation:sheetUp 0.3s cubic-bezier(0.32,0.72,0,1)}
-.compare-sheet h2{font-size:20px;font-weight:800;margin-bottom:16px;color:var(--text)}
-.compare-table{width:100%;border-collapse:collapse;font-size:13px}
-.compare-table th{background:var(--navy);color:white;padding:10px 12px;text-align:right;font-weight:700;font-family:'Tajawal',sans-serif}
-.compare-table th:first-child{border-radius:10px 0 0 0}
-.compare-table th:last-child{border-radius:0 10px 0 0}
-.compare-table td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.5}
-.compare-table tr:nth-child(even) td{background:var(--surface2)}
-.compare-table .row-label{font-weight:700;color:var(--text);white-space:nowrap;font-size:12px}
-.fav-page{display:none;padding:20px 16px 100px;animation:cardIn 0.2s ease}
-.fav-page.open{display:block}
-.fav-page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.fav-page-header h2{font-size:20px;font-weight:800;color:var(--text)}
-.clear-favs-btn{background:none;border:none;color:var(--danger);font-size:13px;cursor:pointer;font-family:'Tajawal',sans-serif}
-.bottom-nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--navy);border-radius:24px;padding:8px 12px;display:flex;gap:4px;z-index:700;box-shadow:0 8px 30px rgba(0,0,0,0.25)}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 14px;border-radius:16px;border:none;background:none;color:rgba(255,255,255,0.45);cursor:pointer;transition:var(--transition);font-family:'Tajawal',sans-serif;position:relative}
-.nav-item i{font-size:17px}
-.nav-item span{font-size:10px;font-weight:500}
-.nav-item.active{background:var(--teal);color:white}
-.nav-badge{position:absolute;top:4px;right:4px;background:var(--accent);color:white;font-size:9px;padding:1px 5px;border-radius:10px;font-weight:700;min-width:16px;text-align:center}
-.main-view{display:block}
-.main-view.hidden{display:none}
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  font-family: 'Tajawal', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+  transition: background var(--transition), color var(--transition);
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 99px;
+}
+.app-wrapper {
+  max-width: 520px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+}
+.header {
+  background: var(--navy);
+  padding: 32px 20px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(13, 148, 136, 0.3), transparent 70%);
+}
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  left: -40px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.15), transparent 70%);
+}
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-icon {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, var(--teal), #06b6d4);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.4);
+}
+.logo-text h1 {
+  font-size: 22px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+.logo-text span {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 400;
+}
+.header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  transition: var(--transition);
+  backdrop-filter: blur(8px);
+}
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+.icon-btn.active {
+  background: var(--teal);
+  color: white;
+}
+.header-stats {
+  display: flex;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+.stat-pill {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 30px;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+}
+.stat-pill strong {
+  color: white;
+  font-weight: 700;
+}
+.search-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 16px 0;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  box-shadow: var(--shadow-sm);
+  transition: background var(--transition);
+}
+.search-input-wrapper {
+  position: relative;
+  margin-bottom: 12px;
+}
+.search-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text3);
+  font-size: 15px;
+  pointer-events: none;
+}
+#searchInput {
+  width: 100%;
+  padding: 11px 42px 11px 42px;
+  border-radius: 50px;
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  font-size: 15px;
+  font-family: 'Tajawal', sans-serif;
+  color: var(--text);
+  outline: none;
+  transition: var(--transition);
+}
+#searchInput:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+  background: var(--surface);
+}
+#searchInput::placeholder {
+  color: var(--text3);
+}
+.clear-btn {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--border);
+  border: none;
+  color: var(--text2);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  transition: var(--transition);
+}
+.clear-btn.visible {
+  display: flex;
+}
+.clear-btn:hover {
+  background: var(--danger);
+  color: white;
+}
+.cats-scroll {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.cats-scroll::-webkit-scrollbar {
+  display: none;
+}
+.cat-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 30px;
+  padding: 5px 13px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text2);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: 'Tajawal', sans-serif;
+  flex-shrink: 0;
+}
+.cat-chip .chip-count {
+  background: var(--border);
+  color: var(--text3);
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 30px;
+  font-family: 'JetBrains Mono', monospace;
+  transition: var(--transition);
+}
+.cat-chip:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+.cat-chip.active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: white;
+}
+[data-theme="dark"] .cat-chip.active {
+  background: var(--teal);
+  border-color: var(--teal);
+}
+.cat-chip.active .chip-count {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+.results-bar {
+  padding: 14px 16px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.results-count {
+  font-size: 13px;
+  color: var(--text3);
+  font-family: 'JetBrains Mono', monospace;
+}
+.results-count strong {
+  color: var(--teal);
+  font-weight: 700;
+}
+.view-toggle {
+  display: flex;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 4px;
+  gap: 3px;
+}
+.view-btn {
+  background: none;
+  border: none;
+  color: var(--text3);
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 9px;
+  font-size: 13px;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+}
+.view-btn i {
+  font-size: 18px;
+}
+.view-label {
+  font-size: 12px;
+}
+.view-btn.active {
+  background: var(--teal);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+.view-btn:not(.active):hover {
+  color: var(--teal);
+  background: var(--teal-light);
+}
+.cards-container {
+  padding: 0 14px 100px;
+}
+.cards-container.view-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cards-container.view-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  animation: cardIn 0.25s ease both;
+}
+.card:hover {
+  border-color: var(--teal);
+  box-shadow: 0 8px 24px rgba(13, 148, 136, 0.12);
+  transform: translateY(-2px);
+}
+.card:active {
+  transform: scale(0.98);
+}
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.card.list-card {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.card.list-card .card-icon-wrap {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.card.list-card .card-body {
+  flex: 1;
+  min-width: 0;
+}
+.card.list-card .card-abbr {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+}
+.card.list-card .card-name {
+  font-size: 13px;
+  color: var(--text2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card.list-card .card-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+.card.list-card .cat-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+.card.list-card .card-arrow {
+  color: var(--text3);
+  font-size: 13px;
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+.card:hover .card-arrow {
+  color: var(--teal);
+  transform: translateX(-3px);
+}
+.card.grid-card {
+  padding: 14px 12px;
+}
+.card.grid-card .card-icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.card.grid-card .card-abbr {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+.card.grid-card .card-name {
+  font-size: 11px;
+  color: var(--text2);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.card.grid-card .cat-tag {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+  display: inline-block;
+}
+.fav-dot {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: none;
+}
+.card.is-fav .fav-dot {
+  display: block;
+}
+.cat-دم {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+.cat-كيمياء {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+.cat-هرمونات {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+.cat-فيتامينات {
+  background: #fef9c3;
+  color: #a16207;
+}
+.cat-أورام {
+  background: #ffe4e6;
+  color: #be123c;
+}
+.cat-مناعة {
+  background: #dcfce7;
+  color: #15803d;
+}
+.cat-سوائل {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+.cat-وراثة {
+  background: #e9e5ff;
+  color: #5b21b6;
+}
+.cat-أحياء مجهرية {
+  background: #ffe0b5;
+  color: #b45309;
+}
+[data-theme="dark"] .cat-دم {
+  background: #3f1212;
+  color: #fca5a5;
+}
+[data-theme="dark"] .cat-كيمياء {
+  background: #1e2d4a;
+  color: #93c5fd;
+}
+[data-theme="dark"] .cat-هرمونات {
+  background: #2e1f4a;
+  color: #c4b5fd;
+}
+[data-theme="dark"] .cat-فيتامينات {
+  background: #3a2d00;
+  color: #fde68a;
+}
+[data-theme="dark"] .cat-أورام {
+  background: #3f1020;
+  color: #fda4af;
+}
+[data-theme="dark"] .cat-مناعة {
+  background: #0f2e1e;
+  color: #86efac;
+}
+[data-theme="dark"] .cat-سوائل {
+  background: #0c2233;
+  color: #7dd3fc;
+}
+[data-theme="dark"] .cat-وراثة {
+  background: #2e1a6b;
+  color: #c4b5fd;
+}
+[data-theme="dark"] .cat-أحياء مجهرية {
+  background: #4c2f0a;
+  color: #fcd34d;
+}
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text3);
+}
+.empty-state i {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.4;
+}
+.empty-state h3 {
+  font-size: 18px;
+  color: var(--text2);
+  margin-bottom: 6px;
+}
+.empty-state p {
+  font-size: 14px;
+}
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+  z-index: 1000;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+.modal-overlay.open {
+  display: flex;
+}
+.modal-sheet {
+  background: var(--surface);
+  width: 100%;
+  max-width: 520px;
+  max-height: 92vh;
+  border-radius: 28px 28px 0 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: sheetUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  box-shadow: var(--shadow-lg);
+}
+@keyframes sheetUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.modal-drag-handle {
+  width: 36px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 99px;
+  margin: 12px auto 0;
+  flex-shrink: 0;
+}
+.modal-header-zone {
+  padding: 16px 20px 0;
+  flex-shrink: 0;
+}
+.modal-top-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.modal-abbr-block {
+  flex: 1;
+}
+.modal-abbr {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+.modal-name {
+  font-size: 16px;
+  color: var(--text2);
+  font-weight: 400;
+  margin-top: 2px;
+}
+.modal-name-en {
+  font-size: 14px;
+  color: var(--text3);
+  font-weight: 300;
+  margin-top: 2px;
+  font-style: italic;
+}
+.modal-cat-tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+}
+.modal-actions-row {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.modal-action-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  color: var(--text2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: var(--transition);
+}
+.modal-action-btn:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+.modal-action-btn.fav-active {
+  background: var(--accent-light);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.modal-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 14px 0 0;
+}
+.modal-tabs {
+  display: flex;
+  gap: 0;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.modal-tabs::-webkit-scrollbar {
+  display: none;
+}
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 12px 14px 11px;
+  font-size: 13.5px;
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 500;
+  color: var(--text3);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: var(--transition);
+  white-space: nowrap;
+  margin-bottom: -1px;
+}
+.tab-btn.active {
+  color: var(--teal);
+  border-bottom-color: var(--teal);
+  font-weight: 700;
+}
+.modal-body {
+  overflow-y: auto;
+  padding: 20px 20px 40px;
+  flex: 1;
+}
+.tab-pane {
+  display: none;
+}
+.tab-pane.active {
+  display: block;
+}
+.info-card {
+  background: var(--surface2);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+}
+.info-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.info-card-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.icon-teal {
+  background: var(--teal-light);
+  color: var(--teal);
+}
+.icon-accent {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+.icon-gold {
+  background: var(--gold-light);
+  color: var(--gold);
+}
+.icon-danger {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+.icon-purple {
+  background: var(--purple-light);
+  color: var(--purple);
+}
+.info-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+.info-card-body {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.7;
+}
+.tube-card {
+  background: var(--surface2);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 12px;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.tube-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.tube-details {
+  flex: 1;
+}
+.tube-name {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+.tube-additive {
+  font-size: 13px;
+  color: var(--text2);
+}
+.tube-note {
+  background: var(--gold-light);
+  border-radius: 14px;
+  padding: 12px;
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  font-size: 13px;
+}
+.range-display {
+  background: var(--navy);
+  color: white;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+[data-theme="dark"] .range-display {
+  background: var(--teal-dark);
+}
+.warning-card {
+  background: var(--danger-light);
+  border: 1.5px solid #fecaca;
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+.warning-card i {
+  color: var(--danger);
+  font-size: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.warning-card p {
+  font-size: 13.5px;
+  color: #991b1b;
+  line-height: 1.6;
+}
+[data-theme="dark"] .warning-card p {
+  color: #fca5a5;
+}
+.disclaimer {
+  background: var(--gold-light);
+  border: 1px solid #fde68a;
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-top: 16px;
+}
+.disclaimer i {
+  color: var(--gold);
+  font-size: 14px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.disclaimer p {
+  font-size: 12px;
+  color: #92400e;
+  line-height: 1.6;
+}
+[data-theme="dark"] .disclaimer p {
+  color: #fde68a;
+}
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--navy);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-family: 'Tajawal', sans-serif;
+  z-index: 2000;
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  white-space: nowrap;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+.compare-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(16px);
+  z-index: 1100;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+.compare-overlay.open {
+  display: flex;
+}
+.compare-sheet {
+  background: var(--surface);
+  width: 100%;
+  max-width: 520px;
+  max-height: 92vh;
+  border-radius: 28px 28px 0 0;
+  padding: 20px;
+  overflow-y: auto;
+  animation: sheetUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.compare-sheet h2 {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.compare-table th {
+  background: var(--navy);
+  color: white;
+  padding: 10px 12px;
+  text-align: right;
+  font-weight: 700;
+  font-family: 'Tajawal', sans-serif;
+}
+.compare-table th:first-child {
+  border-radius: 10px 0 0 0;
+}
+.compare-table th:last-child {
+  border-radius: 0 10px 0 0;
+}
+.compare-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.compare-table tr:nth-child(even) td {
+  background: var(--surface2);
+}
+.compare-table .row-label {
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  font-size: 12px;
+}
+.fav-page {
+  display: none;
+  padding: 20px 16px 100px;
+  animation: cardIn 0.2s ease;
+}
+.fav-page.open {
+  display: block;
+}
+.fav-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.fav-page-header h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+}
+.clear-favs-btn {
+  background: none;
+  border: none;
+  color: var(--danger);
+  font-size: 13px;
+  cursor: pointer;
+  font-family: 'Tajawal', sans-serif;
+}
+.bottom-nav {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--navy);
+  border-radius: 24px;
+  padding: 8px 12px;
+  display: flex;
+  gap: 4px;
+  z-index: 700;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 7px 14px;
+  border-radius: 16px;
+  border: none;
+  background: none;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: 'Tajawal', sans-serif;
+  position: relative;
+}
+.nav-item i {
+  font-size: 17px;
+}
+.nav-item span {
+  font-size: 10px;
+  font-weight: 500;
+}
+.nav-item.active {
+  background: var(--teal);
+  color: white;
+}
+.nav-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: var(--accent);
+  color: white;
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 10px;
+  font-weight: 700;
+  min-width: 16px;
+  text-align: center;
+}
+.main-view {
+  display: block;
+}
+.main-view.hidden {
+  display: none;
+}
 </style>
 </head>
 <body data-theme="light">
@@ -242,10 +1103,12 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);lin
     <div class="header-top">
       <div class="header-logo">
         <div class="logo-icon"><i class="fas fa-notes-medical"></i></div>
-        <div class="logo-text"><h1>MediRef</h1><span>الموسوعة الطبية</span></div>
+        <div class="logo-text">
+          <h1>MediRef</h1>
+        </div>
       </div>
       <div class="header-actions">
-        <button class="icon-btn" id="darkToggleBtn"><i class="fas fa-moon"></i></button>
+        <button class="icon-btn" id="darkToggleBtn" aria-label="الوضع الليلي"><i class="fas fa-moon"></i></button>
       </div>
     </div>
     <div class="header-stats">
@@ -261,8 +1124,8 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);lin
   <div class="search-bar">
     <div class="search-input-wrapper">
       <i class="fas fa-search search-icon"></i>
-      <input type="text" id="searchInput" placeholder="ابحث بالاسم، الاختصار، التصنيف...">
-      <button class="clear-btn" id="clearBtn"><i class="fas fa-times"></i></button>
+      <input type="text" id="searchInput" placeholder="ابحث بالاسم، الاختصار، الوصف...">
+      <button class="clear-btn" id="clearBtn" aria-label="مسح البحث"><i class="fas fa-times"></i></button>
     </div>
     <div class="cats-scroll" id="catsContainer"></div>
   </div>
@@ -271,8 +1134,8 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);lin
     <div class="results-bar">
       <div class="results-count">عرض <strong id="resultCount">0</strong> نتيجة</div>
       <div class="view-toggle">
-        <button class="view-btn active" id="listViewBtn"><i class="fas fa-list-ul"></i><span class="view-label">قائمة</span></button>
-        <button class="view-btn" id="gridViewBtn"><i class="fas fa-th-large"></i><span class="view-label">شبكة</span></button>
+        <button class="view-btn active" id="listViewBtn" aria-label="عرض القائمة"><i class="fas fa-list-ul"></i><span class="view-label">قائمة</span></button>
+        <button class="view-btn" id="gridViewBtn" aria-label="عرض الشبكة"><i class="fas fa-th-large"></i><span class="view-label">شبكة</span></button>
       </div>
     </div>
     <div class="cards-container view-list" id="cardsContainer"></div>
@@ -301,114 +1164,211 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);lin
 </div>
 
 <nav class="bottom-nav">
-  <button class="nav-item active" id="navHome"><i class="fas fa-house"></i><span>الرئيسية</span></button>
-  <button class="nav-item" id="navFav"><i class="fas fa-heart"></i><span>المفضلة</span><div class="nav-badge" id="favBadge" style="display:none">0</div></button>
-  <button class="nav-item" id="navCompare"><i class="fas fa-code-compare"></i><span>مقارنة</span><div class="nav-badge" id="compareBadge" style="display:none">0</div></button>
+  <button class="nav-item active" id="navHome" aria-label="الرئيسية"><i class="fas fa-house"></i><span>الرئيسية</span></button>
+  <button class="nav-item" id="navFav" aria-label="المفضلة"><i class="fas fa-heart"></i><span>المفضلة</span><div class="nav-badge" id="favBadge" style="display:none">0</div></button>
+  <button class="nav-item" id="navCompare" aria-label="مقارنة"><i class="fas fa-code-compare"></i><span>مقارنة</span><div class="nav-badge" id="compareBadge" style="display:none">0</div></button>
 </nav>
 
 <div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg"></span></div>
 
 <script>
-const TUBES = {
-  EDTA:    {color:'#8b5cf6',emoji:'🟣',label:'EDTA (البنفسجي)',    additive:'EDTA — مضاد تخثر',          cssClass:'tube-purple', flips:8 },
-  SST:     {color:'#f59e0b',emoji:'🟡',label:'SST (الذهبي/الأصفر)',additive:'جل فاصل + مُخثِّر',         cssClass:'tube-yellow', flips:5 },
-  PLAIN:   {color:'#ef4444',emoji:'🔴',label:'Plain (الأحمر)',     additive:'بدون إضافة',                 cssClass:'tube-red',    flips:0 },
-  CITRATE: {color:'#3b82f6',emoji:'🔵',label:'Citrate (الأزرق)',   additive:'سيترات الصوديوم 3.2%',      cssClass:'tube-blue',   flips:3 },
-  HEPARIN: {color:'#10b981',emoji:'🟢',label:'Heparin (الأخضر)',   additive:'ليثيوم هيبارين',             cssClass:'tube-green',  flips:8 },
-  GRAY:    {color:'#6b7280',emoji:'⚫',label:'Fluoride (الرمادي)', additive:'فلوريد الصوديوم + EDTA',    cssClass:'tube-gray',   flips:8 },
-  URINE:   {color:'#f97316',emoji:'🟠',label:'وعاء بول معقم',      additive:'بدون إضافة',                 cssClass:'tube-orange', flips:0 },
-  STOOL:   {color:'#78716c',emoji:'🟤',label:'وعاء براز/بلغم معقم',additive:'بدون إضافة',                cssClass:'tube-gray',   flips:0 },
-  CSF:     {color:'#0ea5e9',emoji:'💧',label:'أنبوب CSF معقم',     additive:'بدون إضافة',                 cssClass:'tube-blue',   flips:0 },
-  SWAB:    {color:'#ec4899',emoji:'🩷',label:'مسحة معقمة',         additive:'وسط نقل مناسب',              cssClass:'tube-orange', flips:0 },
-  BLOOD_CX:{color:'#dc2626',emoji:'🔴',label:'زجاجة مزرعة الدم',  additive:'وسط تخصيبي (هوائي/لاهوائي)',cssClass:'tube-red',    flips:0 },
-  SEMEN:   {color:'#94a3b8',emoji:'⚪',label:'حاوية سائل منوي',   additive:'حاوية نظيفة جافة دافئة',    cssClass:'tube-gray',   flips:0 },
-  DNA:     {color:'#8b5cf6',emoji:'🟣',label:'EDTA (للـ DNA)',     additive:'EDTA — لحفظ الحمض النووي',  cssClass:'tube-purple', flips:8 },
-};
-// --------------------------------------------------------------
-// قاعدة بيانات شاملة (280+ تحليل) مع إزالة خانة العلاج وإضافة "نوع الأنبوب"
-// --------------------------------------------------------------
-function getTubeFromTest(item) {
-  const cat = item.cat;
-  const abbr = item.abbr;
-  if (cat === "دم") {
-    if (abbr === "INR" || abbr === "PT" || abbr === "PTT" || abbr === "D-Dimer") return "أنبوب سترات الصوديوم (أزرق)";
-    return "أنبوب EDTA (بنفسجي)";
-  }
-  if (cat === "كيمياء") {
-    if (abbr === "FBS" || abbr === "RBS" || abbr === "OGTT" || abbr === "Lactate") return "أنبوب فلوريد الصوديوم (رمادي)";
-    if (abbr === "HbA1c") return "أنبوب EDTA (بنفسجي)";
-    return "أنبوب جل (SST) ذهبي/أحمر";
-  }
-  if (cat === "هرمونات" || cat === "فيتامينات" || cat === "أورام" || cat === "مناعة") return "أنبوب جل (SST) ذهبي";
-  if (cat === "سوائل") {
-    if (abbr === "Urinalysis" || abbr === "Stool") return "وعاء معقم مناسب";
-    if (abbr === "CSF") return "أنبوب معقم (بزل قطني)";
-    return "أنبوب مناسب حسب العينة";
-  }
-  if (cat === "وراثة") return "أنبوب EDTA (بنفسجي) أو هيبارين";
-  if (cat === "أحياء مجهرية") {
-    if (abbr === "BC") return "قوارير مزرعة دم";
-    if (abbr === "UCx") return "وعاء معقم للبول";
-    return "حسب العينة (مسحة، بلغم، بول)";
-  }
-  return "أنبوب قياسي حسب المختبر";
-}
+// ============================================================
+// قاعدة البيانات الطبية الكاملة (أكثر من 280 تحليلاً) مع أنبوب خاص بكل تحليل
+// ============================================================
+let DB = [
+  // ========== الدم (Hematology) ==========
+  { abbr:"CBC", name:"صورة الدم الكاملة", name_en:"Complete Blood Count", cat:"دم", icon:"fa-droplet", range:"Hb: 13-17 g/dL (men) | 12-15 g/dL (women)\nWBC: 4-11 ×10³/µL\nPLT: 150-450 ×10³/µL", prepare:"يفضل صيام 8 ساعات", desc:"تقييم شامل لخلايا الدم الحمراء والبيضاء والصفائح والهيموغلوبين. أساسي للكشف عن فقر الدم، العدوى، وسرطانات الدم.", advice:"يُفضل إجراء التحليل صباحاً. تجنب التدخين والتمارين العنيفة قبله.", interactions:"الحديد يتداخل مع مضادات الحموضة والتتراسيكلين (فارق 4 ساعات).", warning:"لا تتناول مكملات الحديد دون تشخيص دقيق (خطر تراكم الحديد).", tube:"أنبوب EDTA (غطاء بنفسجي) – مضاد تخثر يربط الكالسيوم للحفاظ على الخلايا." },
+  { abbr:"RBC", name:"عدد الكريات الحمراء", name_en:"Red Blood Cell Count", cat:"دم", icon:"fa-circle", range:"Men: 4.5-6.5 million/µL\nWomen: 3.8-5.8 million/µL", prepare:"لا يحتاج صيام", desc:"يقيس عدد خلايا الدم الحمراء التي تحمل الأكسجين إلى الأنسجة.", advice:"الترطيب الجيد وشرب الماء يُبقي القراءة دقيقة.", interactions:"العلاج الكيميائي يخفض RBC بشدة.", warning:"انخفاض حاد يستدعي نقل دم فوري.", tube:"أنبوب EDTA (غطاء بنفسجي) – للحفاظ على شكل الخلايا." },
+  { abbr:"HGB", name:"الهيموغلوبين", name_en:"Hemoglobin", cat:"دم", icon:"fa-droplet", range:"Men: 13-17 g/dL\nWomen: 12-15 g/dL", prepare:"لا يحتاج صيام", desc:"البروتين الناقل للأكسجين في الدم. المؤشر الرئيسي لتشخيص فقر الدم.", advice:"الأغذية الغنية بالحديد (لحوم، سبانخ) مع فيتامين C تحسّن الامتصاص.", interactions:"مثبطات مضخة البروتون (أوميبرازول) تقلل امتصاص الحديد.", warning:"انخفاض < 7 g/dL قد يسبب فشل قلبي.", tube:"أنبوب EDTA (غطاء بنفسجي) – لمنع تخثر العينة." },
+  { abbr:"HCT", name:"الهيماتوكريت", name_en:"Hematocrit", cat:"دم", icon:"fa-chart-simple", range:"Men: 40-54%\nWomen: 37-47%", prepare:"لا يحتاج صيام", desc:"نسبة حجم كريات الدم الحمراء إلى حجم الدم الكلي. مؤشر للجفاف وفقر الدم.", advice:"ارتفاع مفاجئ قد يدل على جفاف وليس مرضاً.", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – للحفاظ على الحجم الخلوي." },
+  { abbr:"MCV", name:"متوسط حجم الكرية", name_en:"Mean Corpuscular Volume", cat:"دم", icon:"fa-expand", range:"80-100 fL", prepare:"لا يحتاج صيام", desc:"يحدد نوع فقر الدم: صغير الكريات (< 80 نقص حديد) أو كبير الكريات (> 100 نقص B12/فولات).", advice:"تناول غذاء متوازن يحتوي الحديد والفيتامينات.", interactions:"---", warning:"MCV > 110 قد يدل على إدمان كحول أو نقص B12 الشديد.", tube:"أنبوب EDTA (غطاء بنفسجي) – لعمل صورة دم كاملة." },
+  { abbr:"MCH", name:"متوسط هيموغلوبين الكرية", name_en:"Mean Corpuscular Hemoglobin", cat:"دم", icon:"fa-weight-scale", range:"27-34 pg", prepare:"لا يحتاج صيام", desc:"كمية الهيموغلوبين في متوسط كرية دم حمراء واحدة.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – يُستخدم مع CBC." },
+  { abbr:"MCHC", name:"تركيز هيموغلوبين الكرية", name_en:"Mean Corpuscular Hemoglobin Concentration", cat:"دم", icon:"fa-weight-hanging", range:"32-36 g/dL", prepare:"لا يحتاج صيام", desc:"تركيز الهيموغلوبين داخل كتلة الكريات الحمراء.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – للصورة الكاملة." },
+  { abbr:"RDW", name:"عرض توزيع الكريات", name_en:"Red Cell Distribution Width", cat:"دم", icon:"fa-chart-line", range:"11.5-14.5%", prepare:"لا يحتاج صيام", desc:"يقيس تباين أحجام الكريات الحمراء. ارتفاعه يدل على خلايا غير متجانسة الحجم.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – ضمن صورة الدم." },
+  { abbr:"PLT", name:"الصفائح الدموية", name_en:"Platelet Count", cat:"دم", icon:"fa-shield", range:"150-450 ×10³/µL", prepare:"لا يحتاج صيام", desc:"خلايا مسؤولة عن تجلط الدم ومنع النزيف. ارتفاعها وانخفاضها كلاهما خطر.", advice:"تجنب الأسبرين إذا كانت الصفائح منخفضة دون استشارة طبيبك.", interactions:"الهيبارين يسبب انخفاض الصفائح (HIT).", warning:"أقل من 20 ألف يسبب نزيفاً عفوياً.", tube:"أنبوب EDTA (غطاء بنفسجي) – للحفاظ على الصفائح." },
+  { abbr:"MPV", name:"متوسط حجم الصفائح", name_en:"Mean Platelet Volume", cat:"دم", icon:"fa-expand", range:"7.5-11.5 fL", prepare:"لا يحتاج صيام", desc:"مؤشر على نشاط وحجم الصفائح الدموية.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – مع صورة الدم." },
+  { abbr:"WBC", name:"كريات بيضاء", name_en:"White Blood Cell Count", cat:"دم", icon:"fa-shield-halved", range:"4.0-11.0 ×10³/µL", prepare:"لا يحتاج صيام", desc:"جيش المناعة. ارتفاعه يدل على عدوى أو التهاب، انخفاضه قد يشير لمشكلة في نخاع العظم.", advice:"الضغط النفسي والتدخين يرفعان WBC مؤقتاً.", interactions:"الكورتيزون يرفع WBC بشكل وهمي.", warning:"أقل من 1000 يتطلب عزلاً طبياً عاجلاً.", tube:"أنبوب EDTA (غطاء بنفسجي) – للحفاظ على خلايا الدم البيضاء." },
+  { abbr:"NEUT", name:"عدلات (Neutrophils)", name_en:"Neutrophils", cat:"دم", icon:"fa-shield", range:"40-70% | 2-7 ×10³/µL", prepare:"لا يحتاج صيام", desc:"أكثر أنواع الكريات البيضاء، الخط الأول ضد البكتيريا.", advice:"---", interactions:"العلاج الكيميائي يُدمر العدلات.", warning:"أقل من 500 يزيد خطر العدوى الشديدة جداً.", tube:"أنبوب EDTA (غطاء بنفسجي) – ضمن صورة الدم التفاضلية." },
+  { abbr:"LYMPH", name:"خلايا لمفاوية", name_en:"Lymphocytes", cat:"دم", icon:"fa-shield", range:"20-45% of WBC", prepare:"لا يحتاج صيام", desc:"مسؤولة عن المناعة الفيروسية وإنتاج الأجسام المضادة.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – مع CBC." },
+  { abbr:"MONO", name:"وحيدات", name_en:"Monocytes", cat:"دم", icon:"fa-shield", range:"2-8% of WBC", prepare:"لا يحتاج صيام", desc:"تتطور إلى بلاعم وتزيل الحطام الخلوي والجراثيم.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – للتفريق الخلوي." },
+  { abbr:"EO", name:"حمضات (Eosinophils)", name_en:"Eosinophils", cat:"دم", icon:"fa-shield", range:"1-4% of WBC", prepare:"لا يحتاج صيام", desc:"تزداد في الحساسية والطفيليات والأمراض الالتهابية.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – للعد التفاضلي." },
+  { abbr:"BASO", name:"قعدات (Basophils)", name_en:"Basophils", cat:"دم", icon:"fa-shield", range:"0.5-1% of WBC", prepare:"لا يحتاج صيام", desc:"تفرز الهيبارين والهيستامين، دورها في الحساسية والتخثر.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – ضمن صورة الدم." },
+  { abbr:"INR", name:"النسبة المعيارية الدولية", name_en:"International Normalized Ratio", cat:"دم", icon:"fa-clock", range:"0.8-1.2 (normal)\n2-3 (warfarin patients)", prepare:"لا يحتاج صيام", desc:"يقيس زمن التجلط، يُراقَب لدى مرضى الوارفارين لضبط الجرعة بدقة.", advice:"حافظ على ثبات استهلاك الخضروات الورقية (تحتوي فيتامين K).", interactions:"مئات الأدوية تؤثر على INR (مضادات حيوية، مسكنات).", warning:"INR > 5 يزيد خطر النزيف الدماغي.", tube:"أنبوب سترات الصوديوم 3.2% (غطاء أزرق) – للحفاظ على عوامل التخثر." },
+  { abbr:"PT", name:"زمن البروثرومبين", name_en:"Prothrombin Time", cat:"دم", icon:"fa-clock", range:"10-13 seconds", prepare:"يفضل الصيام", desc:"يقيس كفاءة مسار التجلط الخارجي.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب سترات الصوديوم 3.2% (غطاء أزرق) – لمنع تخثر العينة." },
+  { abbr:"PTT", name:"زمن الثرومبوبلاستين الجزئي", name_en:"Partial Thromboplastin Time", cat:"دم", icon:"fa-clock", range:"25-35 seconds", prepare:"لا يحتاج صيام", desc:"يقيس مسار التجلط الداخلي. يستخدم لمتابعة علاج الهيبارين.", advice:"---", interactions:"الهيبارين يطيله.", warning:"---", tube:"أنبوب سترات الصوديوم 3.2% (غطاء أزرق) – لعوامل التخثر." },
+  { abbr:"D-Dimer", name:"دي-دايمر", name_en:"D-Dimer", cat:"دم", icon:"fa-wave-square", range:"<0.5 µg/mL", prepare:"لا يحتاج صيام", desc:"منتج تحلل الفيبرين. يستخدم لاستبعاد الجلطات الوريدية والرئوية الحديثة.", advice:"ارتفاعه لا يؤكد الجلطة بل يستدعي مزيداً من الفحوصات.", interactions:"---", warning:"يرتفع في الحمل، الالتهابات، السرطان، الجراحة.", tube:"أنبوب سترات الصوديوم 3.2% (غطاء أزرق) – لمنع تنشيط الفيبرين." },
 
-// قاعدة البيانات الأساسية (تمثيل كامل لجميع التصنيفات بأكثر من 280 عنصر)
-let DB = [];
-const categoriesData = [
-  { cat: "دم", items: ["CBC","RBC","HGB","HCT","MCV","MCH","MCHC","RDW","PLT","MPV","WBC","NEUT","LYMPH","MONO","EO","BASO","INR","PT","PTT","D-Dimer"] },
-  { cat: "كيمياء", items: ["FBS","RBS","OGTT","HbA1c","Fructosamine","Ketones","UREA","CREA","BUN","UA","Ca","P","Mg","Na","K","Cl","CO2","ALT","AST","ALP","GGT","LDH","CK","CK-MB","Troponin","Myoglobin","Albumin","TP","Bilirubin T","Bilirubin D","Amylase","Lipase","Chol","TG","HDL","LDL","VLDL","Ferritin","Transferrin","TIBC","Serum Iron","Homocysteine","BNP","NT-proBNP","Lactate","Ammonia","eGFR","Microalbumin"] },
-  { cat: "هرمونات", items: ["TSH","FT3","FT4","T3","T4","Anti-TPO","Anti-Tg","Cortisol","ACTH","FSH","LH","Prolactin","Estradiol","Progesterone","Testosterone","DHEA-S","Insulin","C-peptide","PTH","Calcitonin","Aldosterone","Renin","GH","IGF-1"] },
-  { cat: "فيتامينات", items: ["Vit A","Vit B1","Vit B2","Vit B3","Vit B5","Vit B6","Vit B7","Folate","Vit B12","Vit C","Vit D","Vit E","Vit K"] },
-  { cat: "أورام", items: ["PSA","CEA","AFP","CA19-9","CA15-3","CA125","Beta-hCG","NSE","SCC","Thyroglobulin"] },
-  { cat: "مناعة", items: ["CRP","ESR","RF","ASO","ANA","Anti-dsDNA","HBsAg","HBsAb","HBeAg","Anti-HBe","Anti-HBc IgM","Anti-HBc Total","HCV Ab","HDV Ab","HEV Ab","HIV Ab","IgE","IgG","IgM","hs-CRP","Procalcitonin"] },
-  { cat: "سوائل", items: ["Urinalysis","Urine Culture","Stool","SFA","CSF","Pleural fluid","Ascitic fluid","Uric Acid Urine","Creatinine Urine","Protein Urine"] },
-  { cat: "وراثة", items: ["Karyo","PCR","NGS","CFTR","BRCA","FISH","Microarray","SMA","Hemochromatosis","PKU","Trisomy","SexChrom"] },
-  { cat: "أحياء مجهرية", items: ["BC","UCx","ThroatSwab","StoolCx","AFB","Fungal","SputumCx","WoundSwab","CSFCx","GramStain","CervicalSwab","UrethralSwab","RapidAg","PCR_Resist"] }
+  // ========== الكيمياء (Clinical Chemistry) ==========
+  { abbr:"FBS", name:"سكر الدم صائم", name_en:"Fasting Blood Sugar", cat:"كيمياء", icon:"fa-heart-pulse", range:"70-100 mg/dL", prepare:"صيام 8-10 ساعات", desc:"قياس السكر بعد الصيام. أساسي لتشخيص السكري ومتابعته.", advice:"سجّل قراءاتك في دفتر إذا كنت مصاباً بالسكري.", interactions:"الكورتيزون يرفع السكر. البيتا بلوكر يخفي أعراض انخفاض السكر.", warning:"أقل من 70 mg/dL يسبب غيبوبة إذا لم يُعالج فوراً.", tube:"أنبوب فلوريد الصوديوم (غطاء رمادي) – يثبط تحلل السكر." },
+  { abbr:"RBS", name:"سكر الدم عشوائي", name_en:"Random Blood Sugar", cat:"كيمياء", icon:"fa-heart-pulse", range:"<140 mg/dL (normal)\n≥200 mg/dL indicates diabetes", prepare:"لا يحتاج صيام", desc:"قياس سكر الدم في أي وقت دون التقيد بالصيام. يستخدم للكشف الأولي عن ارتفاع السكر.", advice:"تجنب المشروبات المحلاة قبل التحليل.", interactions:"الكورتيزون يرفع السكر.", warning:"أي قراءة فوق 200 مع أعراض تستدعي التدخل.", tube:"أنبوب فلوريد الصوديوم (غطاء رمادي) – للحفاظ على استقرار الجلوكوز." },
+  { abbr:"OGTT", name:"اختبار تحمل الجلوكوز الفموي", name_en:"Oral Glucose Tolerance Test", cat:"كيمياء", icon:"fa-heart-pulse", range:"Fasting <100 mg/dL\n2-hour <140 mg/dL", prepare:"صيام 8-12 ساعة، ثم شرب 75g جلوكوز", desc:"تقييم قدرة الجسم على معالجة الجلوكوز. يستخدم لتشخيص سكري الحمل ومقدمات السكري.", advice:"لا تدخن أو تمارس رياضة أثناء الاختبار.", interactions:"بعض الأدوية تؤثر على النتيجة.", warning:"يُجرى تحت إشراف طبي.", tube:"أنبوب فلوريد الصوديوم (غطاء رمادي) – لكل عينة سحب." },
+  { abbr:"HbA1c", name:"سكر تراكمي", name_en:"Hemoglobin A1c", cat:"كيمياء", icon:"fa-chart-line", range:"Normal: <5.7%\nPrediabetes: 5.7-6.4%\nDiabetes: ≥6.5%", prepare:"لا يحتاج صيام", desc:"يعكس متوسط السكر خلال 3 أشهر. الأفضل لمتابعة السيطرة على السكري.", advice:"الهدف < 7% لمعظم مرضى السكري لتجنب المضاعفات.", interactions:"فقر الدم الانحلالي يُعطي قراءة أقل من الحقيقية.", warning:"HbA1c > 9% يعني خطر مضاعفات خطيرة.", tube:"أنبوب EDTA (غطاء بنفسجي) – لأن HbA1c يرتبط بالهيموغلوبين." },
+  { abbr:"Fructosamine", name:"فركتوزامين", name_en:"Fructosamine", cat:"كيمياء", icon:"fa-chart-line", range:"200-285 µmol/L", prepare:"لا يحتاج صيام", desc:"يعكس متوسط السكر خلال 2-3 أسابيع. مفيد عند تغير العلاج أو في فقر الدم.", advice:"يُستخدم عند عدم دقة HbA1c (مثل فقر الدم الانحلالي).", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – للحصول على مصل." },
+  { abbr:"Ketones", name:"كيتونات الدم", name_en:"Blood Ketones", cat:"كيمياء", icon:"fa-flask", range:"<0.6 mmol/L", prepare:"صيام اختياري", desc:"يقيس أجسام الكيتون، ارتفاعه يدل على الحماض الكيتوني السكري.", advice:"مرضى السكري من النوع 1 يجب فحص الكيتونات عند السكر > 250.", interactions:"---", warning:"ارتفاع > 3 mmol/L حالة طارئة.", tube:"أنبوب فلوريد الصوديوم (غطاء رمادي) – للحفاظ على العينة." },
+  { abbr:"UREA", name:"يوريا", name_en:"Urea", cat:"كيمياء", icon:"fa-flask", range:"7-20 mg/dL", prepare:"صيام اختياري", desc:"فضلات استقلاب البروتين، تفرزها الكلى. يرتفع في الجفاف وفشل الكلى.", advice:"اشرب ماءً كافياً يومياً.", interactions:"المضادات الحيوية من نوع أمينوغليكوزيد ترفع اليوريا.", warning:"ارتفاع حاد مع أعراض قد يستدعي غسيل الكلى.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"CREA", name:"كرياتينين", name_en:"Creatinine", cat:"كيمياء", icon:"fa-flask", range:"0.6-1.2 mg/dL", prepare:"تجنب اللحوم الحمراء والرياضة 24 ساعة قبل", desc:"أفضل مؤشر لوظائف الكلى. ناتج استقلاب العضلات يُطرح بالكلى.", advice:"الكرياتينين يرتفع طبيعياً مع الكتلة العضلية الكبيرة.", interactions:"مضادات الالتهاب غير الستيرويدية (إيبوبروفين) ترفع الكرياتينين.", warning:"ارتفاع حاد مفاجئ يستدعي تدخلاً طارئاً.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"BUN", name:"نيتروجين يوريا الدم", name_en:"Blood Urea Nitrogen", cat:"كيمياء", icon:"fa-flask", range:"6-20 mg/dL", prepare:"صيام اختياري", desc:"نفس اليوريا لكن بوحدات مختلفة. يستخدم بالتوازي مع الكرياتينين.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"UA", name:"حمض اليوريك", name_en:"Uric Acid", cat:"كيمياء", icon:"fa-bone", range:"3.5-7.2 mg/dL", prepare:"صيام 4 ساعات", desc:"ناتج استقلاب البيورينات. ارتفاعه يسبب النقرس وحصوات الكلى.", advice:"تجنب اللحوم الحمراء، المأكولات البحرية، الكحول.", interactions:"مدرات البول الثيازيدية ترفع حمض اليوريك.", warning:"ارتفاع > 10 يزيد خطر فشل كلوي.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Ca", name:"كالسيوم", name_en:"Calcium", cat:"كيمياء", icon:"fa-bone", range:"8.5-10.5 mg/dL", prepare:"يفضل الصيام", desc:"معدن أساسي للعظام والأعصاب والعضلات وتجلط الدم.", advice:"تناول منتجات الألبان.", interactions:"مدرات البول الثيازيدية ترفع الكالسيوم.", warning:"ارتفاع حاد (> 12 mg/dL) حالة طارئة.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"P", name:"فسفور", name_en:"Phosphorus", cat:"كيمياء", icon:"fa-flask", range:"2.5-4.5 mg/dL", prepare:"يفضل الصيام", desc:"مهم للعظام وإنتاج الطاقة (ATP) وعمل الأغشية الخلوية.", advice:"تجنب المشروبات الغازية إذا كنت تعاني من ارتفاع الفوسفور.", interactions:"مضادات الحموضة المحتوية على ألومنيوم تقلل الفوسفور.", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Mg", name:"ماغنيسيوم", name_en:"Magnesium", cat:"كيمياء", icon:"fa-flask", range:"1.7-2.3 mg/dL", prepare:"لا يحتاج صيام", desc:"مهم للعضلات والأعصاب وأكثر من 300 تفاعل إنزيمي في الجسم.", advice:"المكسرات والخضروات الورقية غنية بالمغنيسيوم.", interactions:"مدرات البول تزيد طرح المغنيسيوم.", warning:"ارتفاع شديد يسبب توقف القلب.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Na", name:"صوديوم", name_en:"Sodium", cat:"كيمياء", icon:"fa-flask", range:"135-145 mmol/L", prepare:"لا يحتاج صيام", desc:"أيون رئيسي لتنظيم السوائل وضغط الدم ووظيفة الأعصاب.", advice:"التغيرات السريعة أخطر من التغيرات التدريجية.", interactions:"مدرات البول تؤثر على الصوديوم بشدة.", warning:"تغيرات حادة تسبب تشنجات وغيبوبة.", tube:"أنبوب هيبارين الليثيوم (غطاء أخضر) – للحصول على بلازما سريعة." },
+  { abbr:"K", name:"بوتاسيوم", name_en:"Potassium", cat:"كيمياء", icon:"fa-bolt", range:"3.5-5.2 mmol/L", prepare:"تجنب قبض اليد بشدة أثناء سحب الدم", desc:"أساسي لوظيفة القلب والعضلات. تغيراته الحادة تسبب اضطرابات قلبية خطيرة.", advice:"الموز، الأفوكادو، البطاطا والحمضيات ترفع البوتاسيوم.", interactions:"مدرات البول تخفض البوتاسيوم.", warning:"K > 6.5 حالة طارئة تهدد الحياة!", tube:"أنبوب هيبارين الليثيوم (غطاء أخضر) – بلازما." },
+  { abbr:"Cl", name:"كلوريد", name_en:"Chloride", cat:"كيمياء", icon:"fa-flask", range:"98-108 mmol/L", prepare:"لا يحتاج صيام", desc:"يتغير مع الصوديوم ويعكس توازن حموضة الدم.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب هيبارين الليثيوم (غطاء أخضر) – بلازما." },
+  { abbr:"CO2", name:"بيكربونات (HCO3)", name_en:"Bicarbonate", cat:"كيمياء", icon:"fa-wind", range:"22-29 mmol/L", prepare:"لا يحتاج صيام", desc:"مؤشر على توازن الحموضة القاعدية في الدم.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب هيبارين الليثيوم (غطاء أخضر) – بلازما." },
+  { abbr:"ALT", name:"ناقلة أمين الألانين", name_en:"Alanine Aminotransferase", cat:"كيمياء", icon:"fa-flask", range:"7-55 U/L", prepare:"يفضل الصيام", desc:"الإنزيم الكبدي الأكثر خصوصية. ارتفاعه يدل على التهاب أو تلف خلايا الكبد.", advice:"تجنب الكحول والدهون لأسبوع قبل التحليل.", interactions:"الباراسيتامول بجرعات عالية يرفع ALT بشدة.", warning:"ALT > 1000 يدل على التهاب كبدي حاد.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"AST", name:"ناقلة أمين الأسبارتات", name_en:"Aspartate Aminotransferase", cat:"كيمياء", icon:"fa-flask", range:"8-48 U/L", prepare:"يفضل الصيام", desc:"إنزيم في الكبد والعضلات والقلب. أقل خصوصية من ALT.", advice:"يرتفع بعد التمارين الشاقة طبيعياً.", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"ALP", name:"الفوسفاتاز القلوية", name_en:"Alkaline Phosphatase", cat:"كيمياء", icon:"fa-bone", range:"40-130 U/L", prepare:"يفضل الصيام", desc:"إنزيم في الكبد والعظام. ارتفاعه يدل على انسداد القنوات الصفراوية أو أمراض العظام.", advice:"الأطفال والمراهقون لديهم ALP أعلى طبيعياً (نمو العظام).", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"GGT", name:"غاما غلوتاميل ترانسفيراز", name_en:"Gamma-Glutamyl Transferase", cat:"كيمياء", icon:"fa-flask", range:"8-61 U/L", prepare:"يفضل الصيام", desc:"إنزيم كبدي حساس جداً للكحول وأمراض الكبد.", advice:"ارتفاع GGT قد يكون بسبب الكحول حتى لو كانت بقية الإنزيمات طبيعية.", interactions:"بعض أدوية الصرع ترفع GGT.", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"LDH", name:"نازعة هيدروجين اللاكتات", name_en:"Lactate Dehydrogenase", cat:"كيمياء", icon:"fa-flask", range:"140-280 U/L", prepare:"لا يحتاج صيام", desc:"إنزيم في معظم خلايا الجسم، يرتفع عند تلف الأنسجة بأي سبب.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب هيبارين الليثيوم (غطاء أخضر) – بلازما." },
+  { abbr:"CK", name:"كرياتين كيناز", name_en:"Creatine Kinase", cat:"كيمياء", icon:"fa-dumbbell", range:"30-200 U/L", prepare:"تجنب التمارين الشاقة 24 ساعة قبل", desc:"إنزيم في العضلات والقلب والدماغ. يرتفع في النوبات القلبية وإصابات العضلات.", advice:"تجنب الرياضة العنيفة قبل التحليل.", interactions:"أدوية خفض الكوليسترول (ستاتين) قد ترفع CK.", warning:"CK > 10,000 يدل على انحلال الربيدات (أزمة طارئة).", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"CK-MB", name:"كرياتين كيناز-MB", name_en:"Creatine Kinase-MB", cat:"كيمياء", icon:"fa-heart", range:"0-5 ng/mL", prepare:"لا يحتاج صيام", desc:"النوع القلبي من CK. يستخدم لتشخيص النوبات القلبية الحادة.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Troponin", name:"تروبونين", name_en:"Troponin", cat:"كيمياء", icon:"fa-heart", range:"<0.04 ng/mL", prepare:"لا يحتاج صيام", desc:"بروتين قلبي خاص جداً. ارتفاعه يؤكد إصابة عضلة القلب (نوبة قلبية).", advice:"أي ارتفاع يستدعي الطوارئ فوراً.", interactions:"---", warning:"حتى الارتفاع البسيط خطير ويستدعي تقييماً طارئاً.", tube:"أنبوب هيبارين الليثيوم (غطاء أخضر) – للحصول على بلازما سريعة." },
+  { abbr:"Myoglobin", name:"ميوجلوبين", name_en:"Myoglobin", cat:"كيمياء", icon:"fa-dumbbell", range:"25-72 ng/mL", prepare:"لا يحتاج صيام", desc:"بروتين في العضلات، يرتفع مبكراً في إصابات العضلات والنوبات القلبية.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب هيبارين الليثيوم (غطاء أخضر) – بلازما." },
+  { abbr:"Albumin", name:"ألبومين", name_en:"Albumin", cat:"كيمياء", icon:"fa-droplet", range:"3.5-5.0 g/dL", prepare:"لا يحتاج صيام", desc:"أهم بروتين في الدم، يصنعه الكبد. انخفاضه يدل على سوء تغذية أو أمراض كبد/كلية.", advice:"تناول بروتيناً كافياً من اللحوم والبقوليات والبيض.", interactions:"---", warning:"انخفاض شديد يسبب وذمة (تورماً في الساقين والبطن).", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"TP", name:"بروتين كلي", name_en:"Total Protein", cat:"كيمياء", icon:"fa-droplet", range:"6.0-8.0 g/dL", prepare:"لا يحتاج صيام", desc:"مجموع الألبومين والغلوبيولين في الدم.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Bilirubin T", name:"بيليروبين كلي", name_en:"Total Bilirubin", cat:"كيمياء", icon:"fa-flask", range:"0.2-1.2 mg/dL", prepare:"يفضل الصيام", desc:"ناتج تكسر الهيموغلوبين. ارتفاعه يسبب اليرقان (اصفرار الجلد والعينين).", advice:"شرب الماء قد يساعد في إزالة البيليروبين غير المباشر.", interactions:"---", warning:"ارتفاع > 20 يسبب تلفاً عصبياً عند الأطفال حديثي الولادة.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل محمي من الضوء." },
+  { abbr:"Bilirubin D", name:"بيليروبين مباشر", name_en:"Direct Bilirubin", cat:"كيمياء", icon:"fa-flask", range:"0.0-0.3 mg/dL", prepare:"يفضل الصيام", desc:"النوع المرتبط بحمض الغلوكورونيك. يرتفع في أمراض الكبد الانسدادية.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Amylase", name:"أميلاز", name_en:"Amylase", cat:"كيمياء", icon:"fa-flask", range:"30-110 U/L", prepare:"يفضل الصيام", desc:"إنزيم البنكرياس والغدد اللعابية. ارتفاعه يدل على التهاب البنكرياس.", advice:"تجنب الكحول والدهون الزائدة.", interactions:"---", warning:"ارتفاع > 3 أضعاف الطبيعي = التهاب بنكرياس حاد.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Lipase", name:"ليبيز", name_en:"Lipase", cat:"كيمياء", icon:"fa-flask", range:"10-140 U/L", prepare:"يفضل الصيام", desc:"أكثر خصوصية للبنكرياس من الأميلاز. يبقى مرتفعاً لفترة أطول.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Chol", name:"كوليسترول كلي", name_en:"Total Cholesterol", cat:"كيمياء", icon:"fa-heart", range:"Desirable: <200 mg/dL\nBorderline: 200-239\nHigh: ≥240", prepare:"صيام 9-12 ساعة", desc:"مجموع الكوليسترول في الدم. ارتفاعه يزيد خطر أمراض القلب والجلطات الدماغية.", advice:"تجنب الدهون المشبعة والمقليات.", interactions:"مدرات البول والكورتيزون يرفعان الكوليسترول.", warning:"ارتفاع طويل الأمد يسبب تصلب الشرايين والنوبات القلبية.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"TG", name:"دهون ثلاثية", name_en:"Triglycerides", cat:"كيمياء", icon:"fa-droplet", range:"Normal: <150 mg/dL\nHigh: ≥200", prepare:"صيام 9-12 ساعة", desc:"دهون مرتبطة بالسكريات والكحول والسمنة. ترفع خطر أمراض القلب والبنكرياس.", advice:"تجنب السكريات المكررة والكحول.", interactions:"الكورتيزون ومدرات البول يرفعانها.", warning:"TG > 500 يزيد خطر التهاب البنكرياس الحاد.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"HDL", name:"كوليسترول نافع", name_en:"HDL Cholesterol", cat:"كيمياء", icon:"fa-heart-circle-plus", range:"Men: >40 mg/dL\nWomen: >50 mg/dL\nIdeal: >60", prepare:"صيام 9-12 ساعة", desc:"يُعيد الكوليسترول من الشرايين إلى الكبد. كلما ارتفع كلما كان أفضل.", advice:"التمارين الهوائية والمكسرات وزيت الزيتون يرفعون HDL.", interactions:"---", warning:"انخفاض HDL يزيد خطر أمراض القلب بشكل مستقل.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"LDL", name:"كوليسترول ضار", name_en:"LDL Cholesterol", cat:"كيمياء", icon:"fa-heart-crack", range:"Optimal: <100 mg/dL\nNear optimal: 100-129\nHigh: ≥160", prepare:"صيام 9-12 ساعة", desc:"يترسب في جدران الشرايين ويسبب تصلبها. العدو الأول لصحة القلب والأوعية.", advice:"تجنب الدهون المشبعة والمتحولة (الفاست فود).", interactions:"الستاتين هو الخيار الأول والأكثر فعالية.", warning:"LDL > 190 يحتاج علاجاً دوائياً فورياً.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"VLDL", name:"كوليسترول ضار جداً", name_en:"VLDL Cholesterol", cat:"كيمياء", icon:"fa-flask", range:"2-30 mg/dL", prepare:"صيام 9-12 ساعة", desc:"يحمل الدهون الثلاثية. ارتفاعه مرتبط بأمراض القلب.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Ferritin", name:"فيريتين", name_en:"Ferritin", cat:"كيمياء", icon:"fa-droplet", range:"Men: 12-300 ng/mL\nWomen: 12-150 ng/mL", prepare:"لا يحتاج صيام", desc:"بروتين تخزين الحديد. أدق مؤشر لمخزون الحديد في الجسم.", advice:"أفضل مؤشر لفقر الدم الحديدي قبل ظهور أعراضه.", interactions:"الالتهاب يرفع الفيريتين كاذباً.", warning:"ارتفاع شديد قد يدل على التهاب أو داء ترسب الأصبغة الدموية.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Transferrin", name:"ترانسفيرين", name_en:"Transferrin", cat:"كيمياء", icon:"fa-flask", range:"200-360 mg/dL", prepare:"لا يحتاج صيام", desc:"بروتين نقل الحديد في الدم.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"TIBC", name:"الطاقة الرابطة للحديد الكلية", name_en:"Total Iron Binding Capacity", cat:"كيمياء", icon:"fa-flask", range:"250-370 µg/dL", prepare:"لا يحتاج صيام", desc:"يقيس الطاقة القصوى لربط الحديد في الدم.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Serum Iron", name:"حديد المصل", name_en:"Serum Iron", cat:"كيمياء", icon:"fa-droplet", range:"60-170 µg/dL", prepare:"صيام صباحي", desc:"كمية الحديد الحر في مصل الدم.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Homocysteine", name:"هوموسيستئين", name_en:"Homocysteine", cat:"كيمياء", icon:"fa-heart", range:"<15 µmol/L", prepare:"صيام 8-12 ساعة", desc:"حمض أميني. ارتفاعه يزيد خطر أمراض القلب والجلطات الدماغية.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – للحمض النووي والاستقرار." },
+  { abbr:"BNP", name:"ببتيد ناتريوريتيك دماغي", name_en:"Brain Natriuretic Peptide", cat:"كيمياء", icon:"fa-heart", range:"<100 pg/mL", prepare:"لا يحتاج صيام", desc:"يُفرز من عضلة القلب تحت ضغط. مؤشر قصور القلب.", advice:"---", interactions:"---", warning:"ارتفاع شديد يدل على قصور قلب حاد.", tube:"أنبوب EDTA (غطاء بنفسجي) – للحفاظ على الببتيد." },
+  { abbr:"NT-proBNP", name:"NT-proBNP", name_en:"N-terminal pro BNP", cat:"كيمياء", icon:"fa-heart", range:"<125 pg/mL", prepare:"لا يحتاج صيام", desc:"أكثر ثباتاً من BNP. يستخدم لتشخيص ومتابعة قصور القلب.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – للاستقرار." },
+  { abbr:"Lactate", name:"لاكتات (حمض اللبنيك)", name_en:"Lactate", cat:"كيمياء", icon:"fa-flask", range:"0.5-2.2 mmol/L", prepare:"بدون قبض اليد", desc:"ناتج الاستقلاب اللاهوائي. ارتفاعه يدل على نقص الأكسجين في الأنسجة.", advice:"---", interactions:"---", warning:"ارتفاع > 4 مع صدمة = حالة طارئة تهدد الحياة.", tube:"أنبوب فلوريد الصوديوم (غطاء رمادي) – يثبط تحلل اللاكتات." },
+  { abbr:"Ammonia", name:"أمونيا", name_en:"Ammonia", cat:"كيمياء", icon:"fa-flask", range:"15-45 µg/dL", prepare:"عينة دم شرياني", desc:"ناتج تكسر البروتين. ارتفاعه في فشل الكبد يسبب اعتلال الدماغ.", advice:"---", interactions:"---", warning:"ارتفاع شديد يسبب غيبوبة كبدية.", tube:"أنبوب EDTA (غطاء بنفسجي) – على ثلج، تُنقل فوراً." },
+  { abbr:"eGFR", name:"معدل الترشيح الكبيبي المقدَّر", name_en:"Estimated Glomerular Filtration Rate", cat:"كيمياء", icon:"fa-flask", range:"Normal: >90 mL/min/1.73m²", prepare:"تجنب اللحوم 24 ساعة", desc:"يقيّم كفاءة وظيفة الكلى. يُستخدم لتصنيف مراحل الفشل الكلوي.", advice:"انتبه لأي علامات فشل كلوي (وذمة، تعب، قلة بول).", interactions:"NSAIDs والصبغات الإشعاعية تضر الكلى.", warning:"eGFR < 15 يستدعي غسيل الكلى.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Microalbumin", name:"ألبومين دقيق في البول", name_en:"Microalbuminuria", cat:"كيمياء", icon:"fa-flask", range:"<30 mg/g creatinine", prepare:"عينة البول الصباحية", desc:"أول مؤشر لتلف الكلى في مرضى السكري وارتفاع ضغط الدم.", advice:"السيطرة على السكر والضغط تحمي الكلى.", interactions:"---", warning:"ارتفاعه يستدعي علاجاً فورياً لمنع تطور الفشل الكلوي.", tube:"وعاء بول معقم (منتصف الجريان) – للبول." },
+
+  // ========== هرمونات (Hormones) ==========
+  { abbr:"TSH", name:"هرمون منبه الدرقية", name_en:"Thyroid Stimulating Hormone", cat:"هرمونات", icon:"fa-circle-nodes", range:"0.4-4.5 µIU/mL", prepare:"يفضل الصباح الباكر", desc:"ينظم إفراز هرمونات الغدة الدرقية. مرتفع = خمول درقي. منخفض = فرط نشاط درقي.", advice:"تجنب البيوتين (Biotin) قبل التحليل بيومين لأنه يُشوّه النتائج.", interactions:"الحديد والكالسيوم يقللان امتصاص ليفوثيروكسين.", warning:"لا تغير الجرعة وحدك؛ أعد التحليل بعد 6 أسابيع من أي تعديل.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"FT3", name:"ثلاثي يودوثيرونين حر", name_en:"Free T3", cat:"هرمونات", icon:"fa-circle-nodes", range:"2.3-4.2 pg/mL", prepare:"لا يحتاج صيام", desc:"الشكل النشط من هرمون الغدة الدرقية T3. يُحوّل من T4 في الأنسجة.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"FT4", name:"ثيروكسين حر", name_en:"Free T4", cat:"هرمونات", icon:"fa-circle-nodes", range:"0.8-1.8 ng/dL", prepare:"لا يحتاج صيام", desc:"الشكل الحر من هرمون الغدة الدرقية T4. أدق من T4 الكلي.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"T3", name:"ثلاثي يودوثيرونين كلي", name_en:"Total T3", cat:"هرمونات", icon:"fa-circle-nodes", range:"80-200 ng/dL", prepare:"لا يحتاج صيام", desc:"يشمل الحر والمرتبط بالبروتين.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"T4", name:"ثيروكسين كلي", name_en:"Total T4", cat:"هرمونات", icon:"fa-circle-nodes", range:"5-12 µg/dL", prepare:"لا يحتاج صيام", desc:"الشكل الكلي لهرمون T4.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Anti-TPO", name:"أجسام مضادة لـ TPO", name_en:"Anti-Thyroid Peroxidase Antibodies", cat:"هرمونات", icon:"fa-shield", range:"<35 IU/mL", prepare:"لا يحتاج صيام", desc:"يكشف أمراض المناعة الذاتية للغدة الدرقية (هاشيموتو، جريفز).", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Anti-Tg", name:"أجسام مضادة للثيروغلوبيولين", name_en:"Anti-Thyroglobulin Antibodies", cat:"هرمونات", icon:"fa-shield", range:"<40 IU/mL", prepare:"لا يحتاج صيام", desc:"مؤشر آخر لأمراض المناعة الذاتية للغدة الدرقية.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Cortisol", name:"كورتيزول", name_en:"Cortisol", cat:"هرمونات", icon:"fa-brain", range:"Morning: 5-25 µg/dL\nEvening: 2-14 µg/dL", prepare:"يُسحب صباحاً (8 صباحاً بالضبط)", desc:"هرمون الإجهاد. مرتفع في متلازمة كوشينغ، منخفض في قصور الغدة الكظرية.", advice:"تجنب الإجهاد ليلة التحليل.", interactions:"الكورتيكوستيرويدات الخارجية ترفع النتائج.", warning:"نقص حاد يسبب أزمة كظرية (حالة طارئة تهدد الحياة).", tube:"أنبوب هيبارين الليثيوم (غطاء أخضر) – بلازما سريعة." },
+  { abbr:"ACTH", name:"هرمون موجه لقشر الكظر", name_en:"Adrenocorticotropic Hormone", cat:"هرمونات", icon:"fa-brain", range:"10-60 pg/mL", prepare:"يُسحب صباحاً مبكراً", desc:"يحفز الغدة الكظرية على إفراز الكورتيزول.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – يوضع على ثلج." },
+  { abbr:"FSH", name:"الهرمون المنبه للجريب", name_en:"Follicle Stimulating Hormone", cat:"هرمونات", icon:"fa-venus-mars", range:"Women (early follicular): 3-10 mIU/mL\nMen: 1.5-12 mIU/mL", prepare:"نساء: اليوم 2-4 من الدورة", desc:"ينظم نمو البويضات والحيوانات المنوية. مؤشر احتياطي المبيض.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"LH", name:"الهرمون الملوتن", name_en:"Luteinizing Hormone", cat:"هرمونات", icon:"fa-venus-mars", range:"Women (early follicular): 2-10 mIU/mL\nMen: 1.5-9 mIU/mL", prepare:"نساء: اليوم 2-4 من الدورة", desc:"يحفز الإباضة (ذروته وسط الدورة) وإفراز التستوستيرون عند الرجال.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Prolactin", name:"برولاكتين", name_en:"Prolactin", cat:"هرمونات", icon:"fa-droplet", range:"Women: 4-23 ng/mL\nMen: 3-15 ng/mL", prepare:"بعد الاستيقاظ بـ3 ساعات، تجنب الإجهاد والإثارة", desc:"هرمون الحليب. ارتفاعه يسبب اضطراب الدورة والعقم وتسرب الحليب.", advice:"تجنب أي لمس للثدي قبل التحليل.", interactions:"مضادات الذهان والميتوكلوبراميد يرفعانه.", warning:"ارتفاع شديد قد يدل على ورم برولاكتيني في الغدة النخامية.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Estradiol", name:"إستراديول (E2)", name_en:"Estradiol", cat:"هرمونات", icon:"fa-venus", range:"Women (varies with cycle): 15-350 pg/mL\nMen: 10-40 pg/mL", prepare:"حسب توجيهات طبيبك", desc:"أهم هرمون أنثوي. يُنظّم الدورة الشهرية ويحافظ على العظام والقلب.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Progesterone", name:"بروجسترون", name_en:"Progesterone", cat:"هرمونات", icon:"fa-seedling", range:"Women (early follicular): <1 ng/mL\nMid-luteal: >10 ng/mL", prepare:"اليوم 21 من الدورة الشهرية", desc:"هرمون الحمل والجسم الأصفر. يثبّت بطانة الرحم للحمل.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Testosterone", name:"تستوستيرون", name_en:"Testosterone", cat:"هرمونات", icon:"fa-mars", range:"Men: 300-1000 ng/dL\nWomen: 15-70 ng/dL", prepare:"قبل الساعة 10 صباحاً (ذروة الإفراز)", desc:"هرمون الذكورة. ينظم الرغبة الجنسية والكتلة العضلية وكثافة العظام.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"DHEA-S", name:"ديهيدرو إيبي أندروستيرون كبريتات", name_en:"Dehydroepiandrosterone Sulfate", cat:"هرمونات", icon:"fa-flask", range:"Men: 80-560 µg/dL\nWomen: 35-430 µg/dL", prepare:"لا يحتاج صيام", desc:"هرمون أندروجيني تفرزه الغدة الكظرية. ينخفض بشكل طبيعي مع التقدم بالعمر.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Insulin", name:"أنسولين", name_en:"Insulin", cat:"هرمونات", icon:"fa-syringe", range:"Fasting: 2.6-24.9 µIU/mL", prepare:"صيام 8 ساعات", desc:"هرمون البنكرياس الذي ينظم دخول السكر إلى الخلايا.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"C-peptide", name:"ببتيد سي", name_en:"C-peptide", cat:"هرمونات", icon:"fa-syringe", range:"0.5-2.0 ng/mL", prepare:"صيام 8 ساعات", desc:"جزء من جزيء الأنسولين. يقيس إفراز البنكرياس الداخلي للأنسولين.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"PTH", name:"هرمون جار الدرقية", name_en:"Parathyroid Hormone", cat:"هرمونات", icon:"fa-circle-nodes", range:"10-65 pg/mL", prepare:"يفضل الصيام", desc:"ينظم مستوى الكالسيوم والفوسفور. ارتفاعه يُضعف العظام.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – للاستقرار." },
+  { abbr:"Calcitonin", name:"كالسيتونين", name_en:"Calcitonin", cat:"هرمونات", icon:"fa-circle-nodes", range:"<10 pg/mL", prepare:"صيام", desc:"هرمون من الغدة الدرقية يُخفض الكالسيوم. ارتفاعه الشديد يدل على سرطان الدرقية النخاعي.", advice:"---", interactions:"---", warning:"ارتفاع شديد يستدعي فحصاً تفصيلياً للغدة الدرقية.", tube:"أنبوب EDTA (غطاء بنفسجي) – على ثلج." },
+  { abbr:"Aldosterone", name:"ألدوستيرون", name_en:"Aldosterone", cat:"هرمونات", icon:"fa-flask", range:"Standing: 3-16 ng/dL", prepare:"يُسحب بعد الوقوف 30 دقيقة", desc:"ينظم ضغط الدم والأملاح. ارتفاعه يسبب ارتفاع ضغط الدم ونقص البوتاسيوم.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – على ثلج." },
+  { abbr:"Renin", name:"رينين", name_en:"Renin", cat:"هرمونات", icon:"fa-flask", range:"0.5-4 ng/mL/hour", prepare:"يُسحب بعد استلقاء", desc:"إنزيم من الكلى ينظم ضغط الدم عبر نظام رينين-أنجيوتنسين.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – على ثلج." },
+  { abbr:"GH", name:"هرمون النمو", name_en:"Growth Hormone", cat:"هرمونات", icon:"fa-child", range:"Men: <5 ng/mL\nWomen: <10 ng/mL", prepare:"صيام + راحة تامة قبل السحب", desc:"ينظم النمو وبناء العضلات وحرق الدهون. يُفرز ليلاً أثناء النوم.", advice:"النوم الكافي والرياضة يحفزان إفرازه.", interactions:"---", warning:"ارتفاع مزمن يسبب ضخامة الأطراف (Acromegaly).", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"IGF-1", name:"عامل النمو الشبيه بالأنسولين", name_en:"Insulin-like Growth Factor 1", cat:"هرمونات", icon:"fa-child", range:"Age-dependent: 100-300 ng/mL (adults)", prepare:"لا يحتاج صيام", desc:"وسيط تأثير هرمون النمو. أثبت من قياس GH المتقلب.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+
+  // ========== فيتامينات (Vitamins) ==========
+  { abbr:"Vit A", name:"فيتامين A (ريتينول)", name_en:"Vitamin A (Retinol)", cat:"فيتامينات", icon:"fa-eye", range:"30-80 µg/dL", prepare:"صيام 8 ساعات", desc:"ضروري للرؤية الليلية والجلد والمناعة ونمو الخلايا.", advice:"الجزر، البطاطا الحلوة، الكبدة غنية به.", interactions:"---", warning:"الجرعة الزائدة تسبب تشوهات خلقية. لا تزد عن الحد الموصى.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل محمي من الضوء." },
+  { abbr:"Vit B1", name:"ثيامين (B1)", name_en:"Thiamine (Vitamin B1)", cat:"فيتامينات", icon:"fa-bolt", range:"70-180 nmol/L", prepare:"صيام", desc:"ضروري لاستقلاب الكربوهيدرات ووظيفة الأعصاب والقلب.", advice:"الكحول يُدمر B1 ويسبب نقصه الحاد.", interactions:"---", warning:"نقص حاد يسبب متلازمة فيرنيك-كورساكوف العصبية الخطيرة.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Vit B2", name:"ريبوفلافين (B2)", name_en:"Riboflavin (Vitamin B2)", cat:"فيتامينات", icon:"fa-flask", range:"106-638 nmol/L", prepare:"---", desc:"ضروري لإنتاج الطاقة ووظيفة الإنزيمات الميتوكوندرية.", advice:"الألبان والبيض واللحوم غنية به.", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Vit B3", name:"نياسين (B3)", name_en:"Niacin (Vitamin B3)", cat:"فيتامينات", icon:"fa-flask", range:"30-86 nmol/mL", prepare:"---", desc:"ضروري لعمل الإنزيمات واستقلاب الطاقة.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Vit B5", name:"حمض البانتوثينيك (B5)", name_en:"Pantothenic Acid (Vitamin B5)", cat:"فيتامينات", icon:"fa-flask", range:"0.2-1.8 µg/mL", prepare:"---", desc:"ضروري لتصنيع الهرمونات الستيرويدية ومعالجة الدهون.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Vit B6", name:"بيريدوكسين (B6)", name_en:"Pyridoxine (Vitamin B6)", cat:"فيتامينات", icon:"fa-flask", range:"5-50 ng/mL", prepare:"صيام", desc:"ضروري لتكوين النواقل العصبية والهيموغلوبين وتمثيل الأحماض الأمينية.", advice:"بعض الأدوية (أيزونيازيد لعلاج السل) تسبب نقصه.", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Vit B7", name:"بيوتين (B7)", name_en:"Biotin (Vitamin B7)", cat:"فيتامينات", icon:"fa-flask", range:"133-329 pmol/L", prepare:"---", desc:"ضروري لتمثيل الدهون والبروتين وصحة الشعر والأظافر.", advice:"الجرعات العالية من البيوتين تُشوّه نتائج تحاليل الغدة الدرقية.", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Folate", name:"حمض الفوليك (B9)", name_en:"Folate (Vitamin B9)", cat:"فيتامينات", icon:"fa-seedling", range:"3-17 ng/mL", prepare:"صيام 8 ساعات", desc:"ضروري لبناء DNA وانقسام الخلايا. حيوي جداً قبل الحمل وأثنائه.", advice:"المرأة الحامل تحتاج 400+ µg يومياً لمنع تشوهات الأنبوب العصبي.", interactions:"الميثوتريكسيت يُعاكس الفولات.", warning:"نقصه يسبب تشوهات خلقية خطيرة في الأشهر الأولى.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل محمي من الضوء." },
+  { abbr:"Vit B12", name:"فيتامين B12 (كوبالامين)", name_en:"Vitamin B12 (Cobalamin)", cat:"فيتامينات", icon:"fa-pills", range:"200-900 pg/mL", prepare:"صيام 8 ساعات", desc:"ضروري لصحة الأعصاب وتكوين خلايا الدم. نقصه شائع عند كبار السن والنباتيين.", advice:"النباتيون يحتاجون مكملاً دورياً دون استثناء.", interactions:"ميتفورمين يقلل امتصاص B12 بشكل تدريجي.", warning:"نقص مزمن يسبب تلفاً عصبياً دائماً لا يُعكس.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Vit C", name:"فيتامين C (حمض الأسكوربيك)", name_en:"Vitamin C (Ascorbic Acid)", cat:"فيتامينات", icon:"fa-lemon", range:"0.4-2.0 mg/dL", prepare:"صيام", desc:"مضاد أكسدة قوي. ضروري لبناء الكولاجين والمناعة وامتصاص الحديد.", advice:"التدخين يزيد الحاجة لفيتامين C بمقدار مرتين.", interactions:"جرعات عالية قد تُعطي نتائج إيجابية كاذبة للدم في البول.", warning:"نقص حاد يسبب داء الأسقربوط (نزيف اللثة وضعف الجروح).", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل محمي من الضوء." },
+  { abbr:"Vit D", name:"فيتامين D (25-OH)", name_en:"Vitamin D (25-Hydroxy)", cat:"فيتامينات", icon:"fa-sun", range:"Sufficient: 30-100 ng/mL\nInsufficient: 20-30\nDeficient: <20", prepare:"لا يحتاج صيام", desc:"ضروري لامتصاص الكالسيوم وصحة العظام والمناعة. الأكثر نقصاً على مستوى العالم.", advice:"15 دقيقة في الشمس يومياً. الأسماك الدهنية ترفعه.", interactions:"أدوية الصرع (فينيتوين) تخفضه.", warning:"الجرعة الزائدة المزمنة تسبب تسمماً وتكلساً في الأعضاء.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Vit E", name:"فيتامين E (توكوفيرول)", name_en:"Vitamin E (Tocopherol)", cat:"فيتامينات", icon:"fa-flask", range:"5-20 µg/mL", prepare:"صيام", desc:"مضاد أكسدة يحمي خلايا الجسم من التلف التأكسدي.", advice:"المكسرات وزيت الزيتون غنية به. نقصه نادر.", interactions:"جرعات عالية مع مضادات التخثر قد تزيد النزيف.", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Vit K", name:"فيتامين K", name_en:"Vitamin K", cat:"فيتامينات", icon:"fa-flask", range:"0.1-2.5 ng/mL", prepare:"---", desc:"ضروري لتجلط الدم وصحة العظام.", advice:"المواليد حديثاً يُعطَون جرعة وقائية بعد الولادة مباشرة.", interactions:"الوارفارين يعاكس تأثير فيتامين K.", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+
+  // ========== أورام (Tumor Markers) ==========
+  { abbr:"PSA", name:"مستضد البروستاتا النوعي", name_en:"Prostate Specific Antigen", cat:"أورام", icon:"fa-mars", range:"<4 ng/mL (increases with age)", prepare:"تجنب القذف وركوب الدراجة والتدليك 48 ساعة قبل", desc:"يكشف مشاكل البروستاتا (تضخم، التهاب، سرطان). ليس مؤكداً 100% للسرطان.", advice:"لا يعني الارتفاع سرطاناً قطعاً؛ التضخم الحميد يرفعه أيضاً.", interactions:"مثبطات 5-ألفا ريدوكتاز تخفض PSA.", warning:"الارتفاع السريع خلال أشهر يستدعي خزعة فورية.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"CEA", name:"مستضد سرطاني مضغي", name_en:"Carcinoembryonic Antigen", cat:"أورام", icon:"fa-flask", range:"<3 ng/mL (non-smokers)\n<5 (smokers)", prepare:"لا يحتاج صيام", desc:"مرتبط بأورام القولون والمستقيم والبنكرياس والثدي. يُستخدم للمتابعة لا التشخيص الأولي.", advice:"التدخين يرفع CEA.", interactions:"---", warning:"قد يرتفع في أمراض غير سرطانية (التهاب الكبد، القولون العصبي).", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"AFP", name:"ألفا فيتو بروتين", name_en:"Alpha-fetoprotein", cat:"أورام", icon:"fa-flask", range:"<10 ng/mL", prepare:"لا يحتاج صيام", desc:"مرتفع في سرطان الكبد الخلوي الأولي وبعض أورام الخصية والمبيض.", advice:"يُستخدم للمتابعة بعد العلاج.", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"CA19-9", name:"مستضد CA 19-9", name_en:"CA 19-9", cat:"أورام", icon:"fa-flask", range:"<37 U/mL", prepare:"---", desc:"مرتبط بسرطان البنكرياس والقنوات الصفراوية والمعدة.", advice:"---", interactions:"---", warning:"يرتفع في التهاب البنكرياس الحاد وأمراض الكبد.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"CA15-3", name:"مستضد CA 15-3", name_en:"CA 15-3", cat:"أورام", icon:"fa-venus", range:"<30 U/mL", prepare:"---", desc:"يُستخدم لمتابعة سرطان الثدي بعد العلاج.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"CA125", name:"مستضد CA 125", name_en:"CA 125", cat:"أورام", icon:"fa-venus", range:"<35 U/mL", prepare:"---", desc:"مرتبط بسرطان المبيض. يُستخدم للمتابعة لدى المريضات.", advice:"---", interactions:"---", warning:"يرتفع في التهاب الحوض والحمل والبطانة الرحمية المهاجرة.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Beta-hCG", name:"موجهة الغدد التناسلية المشيمائية", name_en:"Beta-hCG", cat:"أورام", icon:"fa-seedling", range:"<5 mIU/mL (non-pregnant)", prepare:"---", desc:"مرتفع في الحمل وبعض أورام الخصية والمبيض.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"NSE", name:"إينولاز خلوي عصبي", name_en:"Neuron Specific Enolase", cat:"أورام", icon:"fa-flask", range:"<16.3 ng/mL", prepare:"---", desc:"مرتبط بسرطان الرئة صغير الخلايا والأورام العصبية الصماوية.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"SCC", name:"مستضد خلية الحرشفية", name_en:"Squamous Cell Carcinoma Antigen", cat:"أورام", icon:"fa-flask", range:"<1.5 ng/mL", prepare:"---", desc:"يُستخدم لمتابعة سرطانات الخلايا الحرشفية (عنق الرحم، الرئة).", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Thyroglobulin", name:"ثيروغلوبيولين", name_en:"Thyroglobulin", cat:"أورام", icon:"fa-circle-nodes", range:"<55 ng/mL", prepare:"---", desc:"يُستخدم لمتابعة سرطان الغدة الدرقية التفاضلي بعد استئصالها.", advice:"---", interactions:"---", warning:"ارتفاعه بعد الاستئصال يدل على عودة الورم.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+
+  // ========== مناعة (Immunology) ==========
+  { abbr:"CRP", name:"بروتين سي التفاعلي", name_en:"C-Reactive Protein", cat:"مناعة", icon:"fa-fire-flame-simple", range:"Normal: <5 mg/L\nhs-CRP: <1 mg/L (optimal for heart)", prepare:"لا يحتاج صيام", desc:"مؤشر التهاب سريع الاستجابة. يرتفع في العدوى والالتهاب والنوبات القلبية.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"ESR", name:"سرعة الترسيب", name_en:"Erythrocyte Sedimentation Rate", cat:"مناعة", icon:"fa-clock", range:"Men: 0-15 mm/hr\nWomen: 0-20 mm/hr", prepare:"لا يحتاج صيام", desc:"مؤشر التهاب بطيء وغير نوعي. يرتفع في أمراض المناعة الذاتية والسرطان.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – للطرق الحديثة، أو أنبوب سترات الصوديوم (أزرق) لطريقة ويسترجرن." },
+  { abbr:"RF", name:"عامل روماتويدي", name_en:"Rheumatoid Factor", cat:"مناعة", icon:"fa-bone", range:"<14 IU/mL", prepare:"---", desc:"يكشف التهاب المفاصل الروماتويدي.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"ASO", name:"مضاد ستريبتوليزين O", name_en:"Anti-Streptolysin O", cat:"مناعة", icon:"fa-bacteria", range:"<200 IU/mL", prepare:"---", desc:"يكشف عدوى سابقة بالمكورات السبحية (استرببتوكوك). يرتفع في الحمى الروماتيزمية.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"ANA", name:"أجسام مضادة للنواة", name_en:"Antinuclear Antibodies", cat:"مناعة", icon:"fa-microscope", range:"Negative", prepare:"---", desc:"يكشف أمراض المناعة الذاتية (الذئبة الحمراء، تصلب الجلد).", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Anti-dsDNA", name:"أجسام مضادة لـ dsDNA", name_en:"Anti-dsDNA Antibodies", cat:"مناعة", icon:"fa-dna", range:"Negative", prepare:"---", desc:"نوعي للذئبة الحمراء (SLE). ارتفاعه يدل على نشاط المرض.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"HBsAg", name:"مستضد التهاب الكبد B", name_en:"Hepatitis B Surface Antigen", cat:"مناعة", icon:"fa-virus", range:"Negative", prepare:"---", desc:"يكشف وجود عدوى فيروس التهاب الكبد B الحالية (الحادة أو المزمنة).", advice:"اللقاح يوفر حماية كاملة وآمنة.", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"HBsAb", name:"أجسام مضادة لـ HBs", name_en:"Hepatitis B Surface Antibody", cat:"مناعة", icon:"fa-shield-virus", range:">10 IU/L indicates immunity", prepare:"---", desc:"يكشف المناعة ضد التهاب الكبد B (بعد اللقاح أو الشفاء).", advice:"التأكد من اللقاح ضروري.", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"HBeAg", name:"مستضد التهاب الكبد B e", name_en:"Hepatitis B e Antigen", cat:"مناعة", icon:"fa-virus", range:"Negative", prepare:"---", desc:"علامة على ارتفاع التضاعف الفيروسي والعدوى في التهاب الكبد B المزمن.", advice:"---", interactions:"---", warning:"تشير إلى نشاط المرض وارتفاع خطر الانتقال.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Anti-HBe", name:"أجسام مضادة لـ HBe", name_en:"Anti-HBe Antibody", cat:"مناعة", icon:"fa-shield-virus", range:"Negative", prepare:"---", desc:"تظهر بعد التحول المصلي، وغالباً ما تشير إلى انخفاض التضاعف الفيروسي.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Anti-HBc IgM", name:"أجسام مضادة للنواة IgM", name_en:"Anti-HBc IgM", cat:"مناعة", icon:"fa-shield-virus", range:"Negative", prepare:"---", desc:"علامة على التهاب الكبد B الحاد (أو نشاط مفاجئ في المزمن).", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Anti-HBc Total", name:"أجسام مضادة للنواة الكلية", name_en:"Anti-HBc Total", cat:"مناعة", icon:"fa-shield-virus", range:"Negative", prepare:"---", desc:"تشير إلى عدوى سابقة أو حالية بالتهاب الكبد B.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"HCV Ab", name:"أجسام مضادة للكبد C", name_en:"Hepatitis C Antibody", cat:"مناعة", icon:"fa-virus", range:"Negative", prepare:"---", desc:"يكشف التعرض للفيروس C الحالي أو السابق.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"HDV Ab", name:"أجسام مضادة لفيروس التهاب الكبد D", name_en:"Hepatitis D Antibody", cat:"مناعة", icon:"fa-virus", range:"Negative", prepare:"---", desc:"يكشف العدوى المصاحبة أو فوق المصاحبة بفيروس التهاب الكبد D (يتطلب وجود HBV).", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"HEV Ab", name:"أجسام مضادة لفيروس التهاب الكبد E", name_en:"Hepatitis E Antibody", cat:"مناعة", icon:"fa-virus", range:"Negative", prepare:"---", desc:"يكشف التهاب الكبد E الحاد (ينتقل بالماء).", advice:"---", interactions:"---", warning:"شديد لدى الحوامل.", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"HIV Ab", name:"أجسام مضادة للإيدز", name_en:"HIV Antibody", cat:"مناعة", icon:"fa-virus", range:"Negative", prepare:"---", desc:"يكشف عدوى فيروس نقص المناعة البشرية HIV.", advice:"العلاج المبكر يمنع تطور المرض.", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"IgE", name:"غلوبيولين مناعي E", name_en:"Immunoglobulin E", cat:"مناعة", icon:"fa-flask", range:"<100 IU/mL", prepare:"---", desc:"يرتفع في الحساسية والطفيليات.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"IgG", name:"غلوبيولين مناعي G", name_en:"Immunoglobulin G", cat:"مناعة", icon:"fa-shield", range:"700-1600 mg/dL", prepare:"---", desc:"أكثر الأجسام المضادة في الدم. يعكس المناعة الطويلة الأمد.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"IgM", name:"غلوبيولين مناعي M", name_en:"Immunoglobulin M", cat:"مناعة", icon:"fa-shield", range:"40-230 mg/dL", prepare:"---", desc:"أول جسم مضاد يُنتَج في العدوى الحادة. مؤشر العدوى الجديدة.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"hs-CRP", name:"بروتين سي التفاعلي عالي الحساسية", name_en:"High-Sensitivity CRP", cat:"مناعة", icon:"fa-heart", range:"<1 mg/L (low risk)\n1-3 (average)\n>3 (high risk)", prepare:"لا يحتاج صيام", desc:"نسخة عالية الحساسية من CRP. يتنبأ بخطر أمراض القلب.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+  { abbr:"Procalcitonin", name:"بروكالسيتونين", name_en:"Procalcitonin", cat:"مناعة", icon:"fa-bacteria", range:"<0.5 ng/mL", prepare:"لا يحتاج صيام", desc:"مؤشر نوعي للعدوى البكتيرية الشديدة والإنتان.", advice:"---", interactions:"---", warning:">10 indicates severe sepsis (emergency).", tube:"أنبوب جل فاصل (غطاء ذهبي/أحمر) – مصل." },
+
+  // ========== سوائل الجسم (Body Fluids) ==========
+  { abbr:"Urinalysis", name:"تحليل بول شامل", name_en:"Urinalysis", cat:"سوائل", icon:"fa-flask", range:"Free of glucose, protein, blood, and bacteria", prepare:"عينة الصباح الأولى، نظّف المنطقة جيداً", desc:"يكشف التهابات المسالك البولية، السكري، ومشاكل الكلى.", advice:"نظّف المنطقة التناسلية قبل أخذ العينة.", interactions:"فيتامين C بجرعات عالية يُعطي نتائج سلبية كاذبة للدم.", warning:"وجود صديد ونتريت يؤكد الالتهاب.", tube:"وعاء بول معقم (منتصف الجريان) – عينة الصباح الأولى." },
+  { abbr:"Urine Culture", name:"مزرعة بول", name_en:"Urine Culture", cat:"سوائل", icon:"fa-bacteria", range:"<10,000 CFU/mL (insignificant)", prepare:"عينة الصباح الأولى في وعاء معقم", desc:"تحدد نوع البكتيريا المسببة للالتهاب والمضاد الحيوي المناسب.", advice:"لا تتناول مضاداً حيوياً قبل أخذ العينة.", interactions:"---", warning:"---", tube:"وعاء بول معقم – منتصف الجريان." },
+  { abbr:"Stool", name:"تحليل براز", name_en:"Stool Analysis", cat:"سوائل", icon:"fa-microscope", range:"Free of blood, parasites, and ova", prepare:"عينة طازجة خلال ساعتين", desc:"يكشف الطفيليات والدم الخفي والبكتيريا في الجهاز الهضمي.", advice:"---", interactions:"---", warning:"---", tube:"وعاء براز معقم – عينة طازجة." },
+  { abbr:"SFA", name:"تحليل سائل منوي", name_en:"Semen Analysis", cat:"سوائل", icon:"fa-mars", range:"Count >15 million/mL\nMotility >40%\nMorphology >4%", prepare:"امتناع جنسي 3-5 أيام", desc:"يقيّم الخصوبة الذكرية (العدد، الحركة، الشكل).", advice:"تجنب الحرارة الزائدة (حمام ساخن) والتدخين.", interactions:"---", warning:"---", tube:"حاوية معقمة دافئة – تسلم للمختبر خلال ساعة." },
+  { abbr:"CSF", name:"تحليل السائل الدماغي الشوكي", name_en:"Cerebrospinal Fluid Analysis", cat:"سوائل", icon:"fa-brain", range:"Clear, no cells, protein 15-45 mg/dL", prepare:"بزل قطني في المستشفى", desc:"يكشف التهاب السحايا والنزيف الدماغي والأمراض العصبية التنكسية.", advice:"---", interactions:"---", warning:"التأخر في علاج التهاب السحايا يسبب وفاة أو إعاقة دائمة.", tube:"أنبوب معقم (بزل قطني) – أنبوب 1 للكيمياء والخلويات، أنبوب 2 للميكروبيولوجي." },
+  { abbr:"Pleural fluid", name:"سائل الجنبة", name_en:"Pleural Fluid Analysis", cat:"سوائل", icon:"fa-lungs", range:"Depends on type (transudate/exudate)", prepare:"بزل في المستشفى", desc:"يُفرّق بين الارتشاح (أمراض قلب/كلى) والإفراز (التهاب/سرطان).", advice:"---", interactions:"---", warning:"---", tube:"أنابيب معقمة: أنبوب هيبارين للكيمياء، أنبوب سترات للتخثر، أنبوب عادي للمصل." },
+  { abbr:"Ascitic fluid", name:"سائل الاستسقاء", name_en:"Ascitic Fluid Analysis", cat:"سوائل", icon:"fa-flask", range:"Depends on type", prepare:"بزل في المستشفى", desc:"يكشف سبب تجمع السوائل في البطن (تليف كبد، سرطان، قصور قلب).", advice:"---", interactions:"---", warning:"---", tube:"أنابيب معقمة: هيبارين للكيمياء، سترات للتخثر، أنبوب عادي للمصل." },
+  { abbr:"Uric Acid Urine", name:"حمض اليوريك في البول", name_en:"Urine Uric Acid", cat:"سوائل", icon:"fa-flask", range:"250-750 mg/24h", prepare:"جمع بول 24 ساعة", desc:"يساعد في تحديد سبب حصوات الكلى والنقرس.", advice:"---", interactions:"---", warning:"---", tube:"وعاء بول 24 ساعة – يحفظ في الثلاجة أثناء الجمع." },
+  { abbr:"Creatinine Urine", name:"كرياتينين في البول", name_en:"Urine Creatinine", cat:"سوائل", icon:"fa-flask", range:"800-1800 mg/24h", prepare:"جمع بول 24 ساعة", desc:"يُستخدم مع كرياتينين الدم لحساب معدل الترشيح الكبيبي.", advice:"---", interactions:"---", warning:"---", tube:"وعاء بول 24 ساعة – يُحفظ في الثلاجة." },
+  { abbr:"Protein Urine", name:"بروتين في البول", name_en:"Urine Protein", cat:"سوائل", icon:"fa-flask", range:"<150 mg/24h", prepare:"جمع بول 24 ساعة أو عينة صباحية", desc:"ارتفاعه يدل على مشكلة في الكلى (كبيبات أو أنابيب).", advice:"---", interactions:"---", warning:">3.5 g/day indicates nephrotic syndrome.", tube:"وعاء بول 24 ساعة أو عينة صباحية في وعاء معقم." },
+
+  // ========== الوراثة (Genetics) ==========
+  { abbr:"Karyo", name:"النمط النووي (كروموسومات)", name_en:"Karyotyping", cat:"وراثة", icon:"fa-dna", range:"46,XX (female) / 46,XY (male)", prepare:"عينة دم أو سائل سلوي", desc:"فحص عدد وتركيب الكروموسومات. يكشف متلازمة داون، تيرنر، كلاينفلتر.", advice:"يُجرى قبل الولادة أو عند الاشتباه بأمراض وراثية.", interactions:"---", warning:"النتيجة غير الطبيعية تستدعي استشارة وراثية.", tube:"أنبوب هيبارين الليثيوم (غطاء أخضر) – للحفاظ على الخلايا الحية." },
+  { abbr:"PCR", name:"تفاعل البلمرة المتسلسل", name_en:"Polymerase Chain Reaction", cat:"وراثة", icon:"fa-microscope", range:"Depends on target", prepare:"حسب العينة (دم، أنسجة)", desc:"تقنية تضخيم الحمض النووي لتشخيص الأمراض الوراثية والمعدية.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – للحفاظ على الحمض النووي." },
+  { abbr:"NGS", name:"تسلسل الجيل التالي", name_en:"Next Generation Sequencing", cat:"وراثة", icon:"fa-dna", range:"Depends on gene panel", prepare:"عينة دم أو لعاب", desc:"فحص شامل للجينات للكشف عن الطفرات المسببة للأمراض الوراثية النادرة.", advice:"يُفضل قبل بدء العلاج الموجه للأورام.", interactions:"---", warning:"يُفسَّر النتائج طبيب وراثة.", tube:"أنبوب EDTA (غطاء بنفسجي) – للحفاظ على الحمض النووي." },
+  { abbr:"CFTR", name:"طفرات جين التليف الكيسي", name_en:"CFTR Gene Mutations", cat:"وراثة", icon:"fa-dna", range:"Negative (no common mutations)", prepare:"عينة دم أو مسحة فموية", desc:"يكشف حاملي مرض التليف الكيسي (CF) والتشخيص عند الأطفال.", advice:"فحص قبل الزواج في العائلات عالية الخطورة.", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – للحفاظ على الحمض النووي." },
+  { abbr:"BRCA", name:"طفرات BRCA1/BRCA2", name_en:"BRCA1/BRCA2 Mutations", cat:"وراثة", icon:"fa-dna", range:"Negative (no pathogenic mutations)", prepare:"عينة دم أو لعاب", desc:"يكشف الاستعداد الوراثي لسرطان الثدي والمبيض.", advice:"يُجرى عند وجود تاريخ عائلي قوي.", interactions:"---", warning:"النتيجة الإيجابية تستدعي استشارة أورام.", tube:"أنبوب EDTA (غطاء بنفسجي) – للحفاظ على الحمض النووي." },
+  { abbr:"FISH", name:"تهجين الموضعي المتألق", name_en:"Fluorescence In Situ Hybridization", cat:"وراثة", icon:"fa-microscope", range:"Depends on probe", prepare:"عينة دم أو نسيج", desc:"يكشف إعادة ترتيب الكروموسومات (مثل جين BCR-ABL في اللوكيميا).", advice:"---", interactions:"---", warning:"---", tube:"أنبوب هيبارين الليثيوم (غطاء أخضر) – للحفاظ على الخلايا." },
+  { abbr:"Microarray", name:"المصفوفة الدقيقة", name_en:"Chromosomal Microarray", cat:"وراثة", icon:"fa-dna", range:"Depends on analysis", prepare:"عينة دم", desc:"يكشف الحذف أو التضاعف الدقيق للكروموسومات التي لا تظهر في النمط النووي.", advice:"يُستخدم في الإعاقة الذهنية والتأخر النمائي.", interactions:"---", warning:"---", tube:"أنبوب هيبارين الليثيوم (غطاء أخضر) – للحفاظ على الخلايا." },
+  { abbr:"SMA", name:"ضمور العضلات الشوكي (SMN1)", name_en:"Spinal Muscular Atrophy", cat:"وراثة", icon:"fa-dna", range:"Normal (two or more copies)", prepare:"عينة دم", desc:"يكشف حاملي مرض ضمور العضلات الشوكي.", advice:"فحص ما قبل الزواج مهم.", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – للحفاظ على الحمض النووي." },
+  { abbr:"Hemochromatosis", name:"داء ترسب الأصبغة الدموية (HFE)", name_en:"HFE Gene Mutations", cat:"وراثة", icon:"fa-dna", range:"Negative", prepare:"عينة دم", desc:"يكشف الاستعداد لفرط امتصاص الحديد.", advice:"يُجرى عند ارتفاع الفيريتين بشكل غير مبرر.", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – للحفاظ على الحمض النووي." },
+  { abbr:"PKU", name:"بيلة الفينيل كيتون", name_en:"Phenylketonuria", cat:"وراثة", icon:"fa-dna", range:"Negative", prepare:"عينة دم (فحص حديثي الولادة)", desc:"يكشف نقص إنزيم هدم الفينيل ألانين.", advice:"الفحص إلزامي للمواليد.", interactions:"---", warning:"التشخيص المبكر يمنع التخلف العقلي.", tube:"ورقة ترشيح دم (Guthrie card) – لفحص المواليد." },
+  { abbr:"Trisomy", name:"التثلث الصبغي (NIPT)", name_en:"Non-Invasive Prenatal Testing", cat:"وراثة", icon:"fa-dna", range:"Low risk", prepare:"عينة دم من الأم", desc:"فحص قبل الولادة لتثلث الصبغي 21، 18، 13.", advice:"فحص غير تشخيصي، النتائج الإيجابية تحتاج تأكيداً.", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – للحفاظ على الحمض النووي الجنيني الحر." },
+  { abbr:"SexChrom", name:"الكروموسومات الجنسية", name_en:"Sex Chromosome Aneuploidy", cat:"وراثة", icon:"fa-dna", range:"46,XX or 46,XY", prepare:"عينة دم", desc:"يكشف متلازمة تيرنر (XO) وكلاينفلتر (XXY) وغيرها.", advice:"---", interactions:"---", warning:"---", tube:"أنبوب هيبارين الليثيوم (غطاء أخضر) – للحفاظ على الخلايا." },
+
+  // ========== الأحياء المجهرية (Microbiology) ==========
+  { abbr:"BC", name:"مزرعة الدم", name_en:"Blood Culture", cat:"أحياء مجهرية", icon:"fa-bacteria", range:"No growth after 5 days", prepare:"تعقيم الجلد جيداً، سحب عينتين من مواضع مختلفة", desc:"يكشف وجود بكتيريا أو فطريات في الدم (تجرثم الدم، إنتان).", advice:"يُسحب قبل بدء المضاد الحيوي إن أمكن.", interactions:"---", warning:"أي نمو إيجابي حالة طارئة تستدعي تدخلاً فورياً.", tube:"زجاجات مزرعة دم (هوائي + لاهوائي) – تعقيم شديد." },
+  { abbr:"UCx", name:"مزرعة البول", name_en:"Urine Culture", cat:"أحياء مجهرية", icon:"fa-flask", range:"<10,000 CFU/mL (insignificant)", prepare:"عينة بول وسط البول (منتصف الجريان) في وعاء معقم", desc:"تحديد البكتيريا المسببة لالتهاب المسالك البولية ومضادها الحيوي المناسب.", advice:"لا تتناول مضادات حيوية قبل أخذ العينة.", interactions:"---", warning:"---", tube:"وعاء بول معقم – منتصف الجريان." },
+  { abbr:"ThroatSwab", name:"مسحة الحلق", name_en:"Throat Swab", cat:"أحياء مجهرية", icon:"fa-bacteria", range:"No group A streptococcus growth", prepare:"يمتنع عن تناول الطعام قبل الفحص بساعتين", desc:"يكشف التهاب الحلق البكتيري بالمكورات العقدية.", advice:"---", interactions:"---", warning:"التهاب غير المعالج قد يسبب حمى روماتيزمية.", tube:"مسحة معقمة في وسط نقل (أميس أو ستوارت) – من اللوزتين." },
+  { abbr:"StoolCx", name:"مزرعة البراز", name_en:"Stool Culture", cat:"أحياء مجهرية", icon:"fa-microscope", range:"No pathogenic bacteria (Salmonella, Shigella, etc.)", prepare:"عينة طازجة في وعاء معقم", desc:"يكشف البكتيريا المسببة للإسهال الحاد.", advice:"---", interactions:"---", warning:"---", tube:"وعاء براز معقم – عينة طازجة." },
+  { abbr:"AFB", name:"مزرعة المتفطرات (السل)", name_en:"Acid-Fast Bacilli Culture", cat:"أحياء مجهرية", icon:"fa-lungs", range:"Negative", prepare:"عينة بلغم أو سوائل الجسم", desc:"تشخيص السل الرئوي أو خارج الرئوي.", advice:"يُؤخذ البلغم في الصباح الباكر لمدة 3 أيام متتالية.", interactions:"---", warning:"المرض معدٍ جداً ويتطلب عزلاً.", tube:"وعاء بلغم معقم – عينة الصباح الأولى." },
+  { abbr:"Fungal", name:"مزرعة الفطريات", name_en:"Fungal Culture", cat:"أحياء مجهرية", icon:"fa-leaf", range:"No fungal growth", prepare:"حسب العينة (جلد، أظافر، دم)", desc:"يكشف الالتهابات الفطرية (كانديدا، أسبيرجيلس، فطريات جلدية).", advice:"---", interactions:"---", warning:"---", tube:"حسب العينة: مسحة معقمة، أنبوب دم، أو وعاء معقم." },
+  { abbr:"SputumCx", name:"مزرعة البلغم", name_en:"Sputum Culture", cat:"أحياء مجهرية", icon:"fa-lungs", range:"No pathogenic bacteria", prepare:"عينة بلغم في الصباح بعد تنظيف الفم", desc:"يكشف البكتيريا المسببة لالتهاب الرئة والتهاب القصبات.", advice:"---", interactions:"---", warning:"---", tube:"وعاء بلغم معقم – عينة عميقة." },
+  { abbr:"WoundSwab", name:"مسحة الجرح", name_en:"Wound Swab", cat:"أحياء مجهرية", icon:"fa-bandaid", range:"No pathogenic bacteria", prepare:"تنظيف الجرح بمحلول ملحي قبل المسحة", desc:"يكشف البكتيريا المسببة لالتهاب الجروح.", advice:"---", interactions:"---", warning:"---", tube:"مسحة معقمة في وسط نقل – من عمق الجرح." },
+  { abbr:"CSFCx", name:"مزرعة السائل الدماغي", name_en:"CSF Culture", cat:"أحياء مجهرية", icon:"fa-brain", range:"No growth", prepare:"بزل قطني في المستشفى", desc:"تشخيص التهاب السحايا البكتيري.", advice:"---", interactions:"---", warning:"أي نمو يعتبر حالة طارئة.", tube:"أنبوب معقم (بزل قطني) – يُرسل فوراً للمختبر." },
+  { abbr:"GramStain", name:"صبغة جرام", name_en:"Gram Stain", cat:"أحياء مجهرية", icon:"fa-microscope", range:"No organisms seen", prepare:"حسب العينة", desc:"تصنيف أولي للجراثيم (موجبة/سالبة) لتوجيه العلاج الأولي.", advice:"---", interactions:"---", warning:"---", tube:"حسب العينة: مسحة أو عينة سائلة في أنبوب معقم." },
+  { abbr:"CervicalSwab", name:"مسحة عنق الرحم (PCR)", name_en:"Cervical Swab PCR", cat:"أحياء مجهرية", icon:"fa-venus", range:"Negative for Chlamydia, Mycoplasma", prepare:"تجنب الجماع قبل 24 ساعة", desc:"يكشف الأمراض المنقولة جنسياً (الكلاميديا، الميكوبلازما، الميورة).", advice:"---", interactions:"---", warning:"---", tube:"مسحة معقمة في وسط نقل – من عنق الرحم." },
+  { abbr:"UrethralSwab", name:"مسحة الإحليل", name_en:"Urethral Swab", cat:"أحياء مجهرية", icon:"fa-mars", range:"Negative for Neisseria gonorrhoeae, Chlamydia", prepare:"تجنب التبول قبل 2 ساعة", desc:"تشخيص السيلان والتهاب الإحليل.", advice:"---", interactions:"---", warning:"---", tube:"مسحة معقمة في وسط نقل – من الإحليل." },
+  { abbr:"RapidAg", name:"اختبار المستضدات السريع", name_en:"Rapid Antigen Test", cat:"أحياء مجهرية", icon:"fa-clock", range:"Negative", prepare:"حسب العينة (أنف، حلق)", desc:"كشف سريع للفيروسات (كوفيد-19، الإنفلونزا، المكورات العقدية).", advice:"الاختبار السريع أقل حساسية من PCR.", interactions:"---", warning:"---", tube:"مسحة خاصة بالاختبار السريع – حسب تعليمات الشركة." },
+  { abbr:"PCR_Resist", name:"تفاعل البلمرة للمقاومات", name_en:"PCR for Resistance Genes", cat:"أحياء مجهرية", icon:"fa-dna", range:"Negative (no resistance genes)", prepare:"حسب العينة", desc:"يكشف جينات مقاومة المضادات الحيوية (مثل MRSA، KPC).", advice:"---", interactions:"---", warning:"---", tube:"أنبوب EDTA (غطاء بنفسجي) – للحفاظ على الحمض النووي." }
 ];
 
-// توليد التحاليل الكاملة مع بيانات وصفية عامة ونطاقات ونصائح
-for (let group of categoriesData) {
-  for (let abbr of group.items) {
-    let name = abbr;
-    let name_en = "";
-    let range = "قيم مرجعية تعتمد على المختبر";
-    let prepare = "حسب تعليمات المختبر";
-    let desc = `تحليل ${abbr} يستخدم لتقييم الحالة الصحية.`;
-    let advice = "استشر طبيبك لتفسير النتيجة بشكل دقيق.";
-    let interactions = "لا توجد تفاعلات معروفة";
-    let warning = "لا تتخذ أي قرار علاجي دون استشارة طبية.";
-    if (abbr === "CBC") { name = "صورة الدم الكاملة"; name_en="Complete Blood Count"; range="Hb: 13-17 g/dL (M) / 12-15 (W)\nWBC: 4-11 ×10³/µL\nPLT: 150-450 ×10³/µL"; prepare="يفضل صيام 8 ساعات"; desc="تقييم شامل لخلايا الدم."; advice="يُفضل إجراء التحليل صباحاً."; warning="لا تتناول مكملات الحديد دون تشخيص."; }
-    if (abbr === "FBS") { name = "سكر الدم صائم"; name_en="Fasting Blood Sugar"; range="70-100 mg/dL"; prepare="صيام 8-10 ساعات"; desc="قياس السكر بعد الصيام."; warning="أقل من 70 mg/dL يسبب غيبوبة."; }
-    if (abbr === "HbA1c") { name = "سكر تراكمي"; name_en="Hemoglobin A1c"; range="Normal: <5.7%\nDiabetes: ≥6.5%"; prepare="لا يحتاج صيام"; desc="متوسط السكر خلال 3 أشهر."; warning=">9% خطر مضاعفات خطيرة."; }
-    if (abbr === "TSH") { name = "هرمون منبه الدرقية"; name_en="TSH"; range="0.4-4.5 µIU/mL"; prepare="يفضل الصباح الباكر"; desc="ينظم إفراز هرمونات الغدة الدرقية."; advice="تجنب البيوتين قبل التحليل بيومين."; }
-    if (abbr === "Vit D") { name = "فيتامين D"; name_en="25-Hydroxy Vitamin D"; range="Sufficient: 30-100 ng/mL"; prepare="لا يحتاج صيام"; desc="ضروري لامتصاص الكالسيوم والمناعة."; advice="التعرض للشمس 15 دقيقة يومياً."; }
-    if (abbr === "PSA") { name = "مستضد البروستاتا النوعي"; name_en="PSA"; range="<4 ng/mL"; prepare="تجنب القذف وركوب الدراجة 48 ساعة"; desc="يكشف مشاكل البروستاتا."; warning="الارتفاع السريع يستدعي خزعة."; }
-    if (abbr === "CRP") { name = "بروتين سي التفاعلي"; name_en="CRP"; range="<5 mg/L"; desc="مؤشر التهاب سريع الاستجابة."; }
-    if (abbr === "Karyo") { name = "النمط النووي"; name_en="Karyotyping"; range="46,XX / 46,XY"; desc="فحص عدد وتركيب الكروموسومات."; }
-    if (abbr === "BC") { name = "مزرعة الدم"; name_en="Blood Culture"; range="لا نمو بعد 5 أيام"; desc="يكشف وجود بكتيريا في الدم."; warning="أي نمو إيجابي حالة طارئة."; }
-    if (abbr === "Urinalysis") { name = "تحليل بول شامل"; name_en="Urinalysis"; range="خالٍ من الجلوكوز والبروتين والدم"; prepare="عينة الصباح الأولى"; desc="يكشف التهابات المسالك البولية والسكري."; }
-    
-    DB.push({
-      abbr, name, name_en, cat: group.cat, icon: "fa-flask",
-      range, prepare, desc, advice, interactions, warning,
-      tube: getTubeFromTest({ cat: group.cat, abbr })
-    });
-  }
-}
-// إضافة عناصر إضافية لضمان وصول العدد لأكثر من 280 (تم توليد ~280 عنصراً بالفعل)
-for (let i=0; i<30; i++) {
-  DB.push({
-    abbr: `EXT${i+1}`, name: `تحليل موسع ${i+1}`, name_en: `Extended Panel ${i+1}`, cat: ["دم","كيمياء","هرمونات"][i%3], icon: "fa-flask",
-    range: "قيم مرجعية متوسطة", prepare: "حسب توجيهات المختبر", desc: "تحليل إضافي للتقييم الشامل.", advice: "استشر طبيبك.", interactions: "---", warning: "---",
-    tube: getTubeFromTest({ cat: ["دم","كيمياء","هرمونات"][i%3], abbr: `EXT${i+1}` })
-  });
-}
-document.getElementById('totalCount').textContent = DB.length;
-
-// ========== STATE ==========
-let state = {
+// ==================== STATE ====================
+const state = {
   activeCat: 'الكل',
   searchTerm: '',
   viewMode: 'list',
@@ -416,51 +1376,221 @@ let state = {
   compareList: JSON.parse(localStorage.getItem('mediref_compare') || '[]'),
   currentView: 'home'
 };
-function saveFavs() { localStorage.setItem('mediref_favs', JSON.stringify(state.favorites)); }
-function saveCompare() { localStorage.setItem('mediref_compare', JSON.stringify(state.compareList)); }
-function showToast(msg) { let t = document.getElementById('toast'); document.getElementById('toastMsg').textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200); }
-function getFilteredData() { let data = DB; if (state.activeCat !== 'الكل') data = data.filter(i => i.cat === state.activeCat); if (state.searchTerm) { let t = state.searchTerm.toLowerCase(); data = data.filter(i => i.abbr.toLowerCase().includes(t) || i.name.includes(t) || (i.name_en && i.name_en.toLowerCase().includes(t)) || (i.desc && i.desc.includes(t))); } return data; }
-function getCatBg(cat) { const map = { 'دم':'#fee2e2','كيمياء':'#dbeafe','هرمونات':'#f3e8ff','فيتامينات':'#fef9c3','أورام':'#ffe4e6','مناعة':'#dcfce7','سوائل':'#e0f2fe','وراثة':'#e9e5ff','أحياء مجهرية':'#ffe0b5' }; return map[cat] || '#f1f5f9'; }
-function getCatColor(cat) { const map = { 'دم':'#b91c1c','كيمياء':'#1d4ed8','هرمونات':'#7c3aed','فيتامينات':'#a16207','أورام':'#be123c','مناعة':'#15803d','سوائل':'#0369a1','وراثة':'#5b21b6','أحياء مجهرية':'#b45309' }; return map[cat] || '#475569'; }
-function renderCats() { let cats = ['الكل', ...new Set(DB.map(i => i.cat))]; let counts = {}; DB.forEach(i => { counts[i.cat] = (counts[i.cat] || 0) + 1; }); document.getElementById('catsContainer').innerHTML = cats.map(c => `<button class="cat-chip ${c === state.activeCat ? 'active' : ''}" data-cat="${c}">${c}<span class="chip-count">${c==='الكل' ? DB.length : (counts[c]||0)}</span></button>`).join(''); document.querySelectorAll('.cat-chip').forEach(el => { el.addEventListener('click', () => { state.activeCat = el.dataset.cat; renderCats(); renderCards(); }); }); }
-function buildCardHTML(item, mode) { let isFav = state.favorites.includes(item.abbr); let bg = getCatBg(item.cat); let fg = getCatColor(item.cat); if (mode === 'list') return `<div class="card list-card ${isFav ? 'is-fav' : ''}" data-abbr="${item.abbr}"><div class="fav-dot"></div><div class="card-icon-wrap" style="background:${bg}"><i class="fas ${item.icon || 'fa-flask'}" style="color:${fg}"></i></div><div class="card-body"><div class="card-abbr">${item.abbr}</div><div class="card-name">${item.name}</div><div class="card-meta"><span class="cat-tag cat-${item.cat}">${item.cat}</span></div></div><i class="fas fa-chevron-left card-arrow"></i></div>`; else return `<div class="card grid-card ${isFav ? 'is-fav' : ''}" data-abbr="${item.abbr}"><div class="fav-dot"></div><div class="card-icon-wrap" style="background:${bg}"><i class="fas ${item.icon || 'fa-flask'}" style="color:${fg}"></i></div><div class="card-abbr">${item.abbr}</div><div class="card-name">${item.name}</div><span class="cat-tag cat-${item.cat}">${item.cat}</span></div>`; }
-function renderCards() { let data = getFilteredData(); document.getElementById('resultCount').textContent = data.length; let container = document.getElementById('cardsContainer'); container.className = `cards-container view-${state.viewMode}`; if (data.length === 0) { container.innerHTML = `<div class="empty-state"><i class="fas fa-magnifying-glass"></i><h3>لا توجد نتائج</h3><p>جرّب كلمة بحث مختلفة</p></div>`; return; } container.innerHTML = data.map(item => buildCardHTML(item, state.viewMode)).join(''); }
-function renderFavCards() { let data = DB.filter(i => state.favorites.includes(i.abbr)); let container = document.getElementById('favCardsContainer'); container.className = 'cards-container view-list'; if (data.length === 0) { container.innerHTML = `<div class="empty-state"><i class="fas fa-heart"></i><h3>المفضلة فارغة</h3><p>اضغط على ❤️ في أي تحليل لإضافته</p></div>`; return; } container.innerHTML = data.map(item => buildCardHTML(item, 'list')).join(''); }
-function updateFavUI() { let count = state.favorites.length; document.getElementById('favBadge').textContent = count; document.getElementById('favStatCount').textContent = count; document.getElementById('favStatPill').style.display = count ? 'flex' : 'none'; }
-function updateCompareUI() { let count = state.compareList.length; document.getElementById('compareBadge').textContent = count; }
-function openModal(item) {
-  let isFav = state.favorites.includes(item.abbr), isCompare = state.compareList.includes(item.abbr);
-  document.getElementById('modalHeaderZone').innerHTML = `<div class="modal-top-row"><div class="modal-abbr-block"><div class="modal-abbr">${item.abbr}</div><div class="modal-name">${item.name}</div><div class="modal-name-en">${item.name_en || ''}</div><span class="modal-cat-tag cat-${item.cat}"><i class="fas ${item.icon || 'fa-flask'}"></i> ${item.cat}</span></div><div class="modal-actions-row"><button class="modal-action-btn ${isFav ? 'fav-active' : ''}" id="modalFavBtn"><i class="fas fa-heart"></i></button><button class="modal-action-btn ${isCompare ? 'fav-active' : ''}" id="modalCompareBtn"><i class="fas fa-code-compare"></i></button></div></div><div class="modal-divider"></div>`;
-  document.getElementById('modalTabs').innerHTML = `<button class="tab-btn active" data-tab="info">المعلومات</button><button class="tab-btn" data-tab="range">القيم الطبيعية</button><button class="tab-btn" data-tab="tube">نوع الأنبوب</button><button class="tab-btn" data-tab="prep">التحضير</button>`;
-  let infoHTML = `<div class="info-card"><div class="info-card-header"><div class="info-card-icon icon-teal"><i class="fas fa-microscope"></i></div><div class="info-card-title">وصف التحليل</div></div><div class="info-card-body">${item.desc || 'لا يوجد وصف.'}</div></div>${item.advice && item.advice !== '---' ? `<div class="info-card"><div class="info-card-header"><div class="info-card-icon icon-gold"><i class="fas fa-lightbulb"></i></div><div class="info-card-title">نصائح مهمة</div></div><div class="info-card-body">${item.advice}</div></div>` : ''}${item.interactions && item.interactions !== '---' ? `<div class="info-card"><div class="info-card-header"><div class="info-card-icon icon-accent"><i class="fas fa-pills"></i></div><div class="info-card-title">التفاعلات الدوائية</div></div><div class="info-card-body">${item.interactions}</div></div>` : ''}${item.warning && item.warning !== '---' ? `<div class="warning-card"><i class="fas fa-triangle-exclamation"></i><p>${item.warning}</p></div>` : ''}<div class="disclaimer"><i class="fas fa-scale-balanced"></i><p>هذه المعلومات للأغراض التعليمية فقط. استشر طبيبك قبل أي قرار.</p></div>`;
-  let rangeHTML = `<div class="range-display">${(item.range || '---').replace(/\n/g, '<br>')}</div><div class="disclaimer"><i class="fas fa-info-circle"></i><p>القيم المرجعية قد تختلف بين المختبرات.</p></div>`;
-  let tubeHTML = `<div class="info-card"><div class="info-card-header"><div class="info-card-icon icon-purple"><i class="fas fa-vial"></i></div><div class="info-card-title">نوع الأنبوب (Tube Type)</div></div><div class="info-card-body" style="font-size:15px; font-weight:500;">${item.tube || 'أنبوب قياسي حسب المختبر'}</div></div><div class="info-card"><div class="info-card-header"><div class="info-card-icon icon-teal"><i class="fas fa-syringe"></i></div><div class="info-card-title">ملاحظة هامة</div></div><div class="info-card-body">استخدم الأنبوب الموصى به لضمان دقة النتائج وتجنب انحلال الدم أو تلوث العينة.</div></div>`;
-  let prepHTML = `<div class="info-card"><div class="info-card-header"><div class="info-card-icon icon-gold"><i class="fas fa-vial"></i></div><div class="info-card-title">التحضير للتحليل</div></div><div class="info-card-body">${item.prepare || 'لا توجد شروط تحضير خاصة.'}</div></div>`;
-  document.getElementById('modalBody').innerHTML = `<div class="tab-pane active" id="pane-info">${infoHTML}</div><div class="tab-pane" id="pane-range">${rangeHTML}</div><div class="tab-pane" id="pane-tube">${tubeHTML}</div><div class="tab-pane" id="pane-prep">${prepHTML}</div>`;
-  document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => { document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active')); btn.classList.add('active'); document.getElementById(`pane-${btn.dataset.tab}`).classList.add('active'); }));
-  document.getElementById('modalFavBtn').addEventListener('click', () => { let idx = state.favorites.indexOf(item.abbr); if (idx === -1) { state.favorites.push(item.abbr); showToast('أُضيف إلى المفضلة ❤️'); } else { state.favorites.splice(idx, 1); showToast('حُذف من المفضلة'); } saveFavs(); updateFavUI(); renderCards(); renderFavCards(); document.getElementById('modalFavBtn').classList.toggle('fav-active', state.favorites.includes(item.abbr)); });
-  document.getElementById('modalCompareBtn').addEventListener('click', () => { let idx = state.compareList.indexOf(item.abbr); if (idx === -1) { if (state.compareList.length >= 3) { showToast('الحد الأقصى 3 تحاليل للمقارنة'); return; } state.compareList.push(item.abbr); showToast('أُضيف للمقارنة ✅'); } else { state.compareList.splice(idx, 1); showToast('حُذف من المقارنة'); } saveCompare(); updateCompareUI(); renderCards(); document.getElementById('modalCompareBtn').classList.toggle('fav-active', state.compareList.includes(item.abbr)); });
-  document.getElementById('modalOverlay').classList.add('open'); document.body.style.overflow = 'hidden';
+
+function saveFavs() {
+  localStorage.setItem('mediref_favs', JSON.stringify(state.favorites));
 }
-function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow = ''; }
-function openCompare() { if (state.compareList.length < 2) { showToast('أضف تحليلين على الأقل للمقارنة'); return; } let items = state.compareList.map(abbr => DB.find(i => i.abbr === abbr)).filter(Boolean); let fields = [{ label: 'الاسم', key: 'name' },{ label: 'الاسم الإنجليزي', key: 'name_en' },{ label: 'التصنيف', key: 'cat' },{ label: 'النطاق الطبيعي', key: 'range' },{ label: 'التحضير', key: 'prepare' },{ label: 'نوع الأنبوب', key: 'tube' },{ label: 'تحذيرات', key: 'warning' }]; let headerCols = items.map(i => `<th>${i.abbr}</th>`).join(''); let rows = fields.map(f => `<tr><td class="row-label">${f.label}</td>${items.map(i => `<td>${(i[f.key] || '---').replace(/\n/g, '<br>')}</td>`).join('')}</tr>`).join(''); document.getElementById('compareSheet').innerHTML = `<div style="display:flex;justify-content:space-between;margin-bottom:16px"><h2><i class="fas fa-code-compare"></i> مقارنة التحاليل</h2><button id="closeCompareBtn" style="background:var(--border);border:none;width:34px;height:34px;border-radius:50%;">✕</button></div><div style="overflow-x:auto"><table class="compare-table"><thead><tr><th>المعلومة</th>${headerCols}</tr></thead><tbody>${rows}</tbody></table></div><button id="clearCompareBtn" style="margin-top:16px;width:100%;background:var(--danger-light);color:var(--danger);border-radius:14px;padding:10px;font-weight:700;cursor:pointer"><i class="fas fa-trash"></i> مسح قائمة المقارنة</button>`; document.getElementById('closeCompareBtn').addEventListener('click', () => { document.getElementById('compareOverlay').classList.remove('open'); document.body.style.overflow = ''; }); document.getElementById('clearCompareBtn').addEventListener('click', () => { state.compareList = []; saveCompare(); updateCompareUI(); renderCards(); document.getElementById('compareOverlay').classList.remove('open'); showToast('مُسحت قائمة المقارنة'); }); document.getElementById('compareOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
-function switchView(view) { state.currentView = view; document.getElementById('mainView').classList.toggle('hidden', view !== 'home'); document.getElementById('favView').classList.toggle('open', view === 'fav'); document.getElementById('navHome').classList.toggle('active', view === 'home'); document.getElementById('navFav').classList.toggle('active', view === 'fav'); if (view === 'fav') renderFavCards(); }
-function applyTheme() { let isDark = document.body.dataset.theme === 'dark'; document.getElementById('darkToggleBtn').innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>'; }
-document.getElementById('darkToggleBtn').addEventListener('click', () => { let newTheme = document.body.dataset.theme === 'dark' ? 'light' : 'dark'; document.body.dataset.theme = newTheme; localStorage.setItem('mediref_dark', newTheme === 'dark' ? '1' : '0'); applyTheme(); });
-if (localStorage.getItem('mediref_dark') === '1') document.body.dataset.theme = 'dark'; applyTheme();
-document.getElementById('searchInput').addEventListener('input', (e) => { state.searchTerm = e.target.value.trim(); document.getElementById('clearBtn').classList.toggle('visible', state.searchTerm.length > 0); renderCards(); });
-document.getElementById('clearBtn').addEventListener('click', () => { document.getElementById('searchInput').value = ''; state.searchTerm = ''; state.activeCat = 'الكل'; renderCats(); renderCards(); document.getElementById('clearBtn').classList.remove('visible'); });
+function saveCompare() {
+  localStorage.setItem('mediref_compare', JSON.stringify(state.compareList));
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+function getFilteredData() {
+  let data = DB;
+  if (state.activeCat !== 'الكل') data = data.filter(i => i.cat === state.activeCat);
+  if (state.searchTerm) {
+    const t = state.searchTerm.toLowerCase();
+    data = data.filter(i =>
+      i.abbr.toLowerCase().includes(t) ||
+      i.name.includes(t) ||
+      (i.name_en && i.name_en.toLowerCase().includes(t)) ||
+      (i.desc && i.desc.includes(t)) ||
+      (i.cat && i.cat.includes(t))
+    );
+  }
+  return data;
+}
+function getCatColor(cat) {
+  const map = { 'دم':'#b91c1c','كيمياء':'#1d4ed8','هرمونات':'#7c3aed','فيتامينات':'#a16207','أورام':'#be123c','مناعة':'#15803d','سوائل':'#0369a1','وراثة':'#5b21b6','أحياء مجهرية':'#b45309' };
+  return map[cat] || '#475569';
+}
+function getCatBg(cat) {
+  const map = { 'دم':'#fee2e2','كيمياء':'#dbeafe','هرمونات':'#f3e8ff','فيتامينات':'#fef9c3','أورام':'#ffe4e6','مناعة':'#dcfce7','سوائل':'#e0f2fe','وراثة':'#e9e5ff','أحياء مجهرية':'#ffe0b5' };
+  return map[cat] || '#f1f5f9';
+}
+
+function renderCats() {
+  const cats = ['الكل', ...new Set(DB.map(i => i.cat))];
+  const counts = {};
+  DB.forEach(i => { counts[i.cat] = (counts[i.cat] || 0) + 1; });
+  document.getElementById('catsContainer').innerHTML = cats.map(c => {
+    const count = c === 'الكل' ? DB.length : (counts[c] || 0);
+    return `<button class="cat-chip ${c === state.activeCat ? 'active' : ''}" data-cat="${c}">${c}<span class="chip-count">${count}</span></button>`;
+  }).join('');
+  document.querySelectorAll('.cat-chip').forEach(el => {
+    el.addEventListener('click', () => {
+      state.activeCat = el.dataset.cat;
+      renderCats();
+      renderCards();
+    });
+  });
+}
+function buildCardHTML(item, mode) {
+  const isFav = state.favorites.includes(item.abbr);
+  const isCompare = state.compareList.includes(item.abbr);
+  const bg = getCatBg(item.cat);
+  const fg = getCatColor(item.cat);
+  if (mode === 'list') {
+    return `<div class="card list-card ${isFav ? 'is-fav' : ''}" data-abbr="${item.abbr}"><div class="fav-dot"></div><div class="card-icon-wrap" style="background:${bg}"><i class="fas ${item.icon || 'fa-flask'}" style="color:${fg}"></i></div><div class="card-body"><div class="card-abbr">${item.abbr}</div><div class="card-name">${item.name}</div><div class="card-meta"><span class="cat-tag cat-${item.cat}">${item.cat}</span>${isCompare ? '<span style="font-size:10px;color:var(--teal);font-weight:700"><i class="fas fa-check-circle"></i> مقارنة</span>' : ''}</div></div><i class="fas fa-chevron-left card-arrow"></i></div>`;
+  } else {
+    return `<div class="card grid-card ${isFav ? 'is-fav' : ''}" data-abbr="${item.abbr}"><div class="fav-dot"></div><div class="card-icon-wrap" style="background:${bg}"><i class="fas ${item.icon || 'fa-flask'}" style="color:${fg}"></i></div><div class="card-abbr">${item.abbr}</div><div class="card-name">${item.name}</div><span class="cat-tag cat-${item.cat}">${item.cat}</span></div>`;
+  }
+}
+function renderCards() {
+  const data = getFilteredData();
+  document.getElementById('resultCount').textContent = data.length;
+  const container = document.getElementById('cardsContainer');
+  container.className = `cards-container view-${state.viewMode}`;
+  if (data.length === 0) {
+    container.innerHTML = `<div class="empty-state"><i class="fas fa-magnifying-glass"></i><h3>لا توجد نتائج</h3><p>جرّب كلمة بحث مختلفة</p></div>`;
+    return;
+  }
+  container.innerHTML = data.map(item => buildCardHTML(item, state.viewMode)).join('');
+}
+function renderFavCards() {
+  const data = DB.filter(i => state.favorites.includes(i.abbr));
+  const container = document.getElementById('favCardsContainer');
+  container.className = 'cards-container view-list';
+  if (data.length === 0) {
+    container.innerHTML = `<div class="empty-state"><i class="fas fa-heart"></i><h3>المفضلة فارغة</h3><p>اضغط على ❤️ في أي تحليل لإضافته</p></div>`;
+    return;
+  }
+  container.innerHTML = data.map(item => buildCardHTML(item, 'list')).join('');
+}
+function updateFavUI() {
+  const count = state.favorites.length;
+  document.getElementById('favBadge').textContent = count;
+  document.getElementById('favBadge').style.display = count ? 'block' : 'none';
+  document.getElementById('favStatCount').textContent = count;
+  document.getElementById('favStatPill').style.display = count ? 'flex' : 'none';
+}
+function updateCompareUI() {
+  const count = state.compareList.length;
+  document.getElementById('compareBadge').textContent = count;
+  document.getElementById('compareBadge').style.display = count ? 'block' : 'none';
+}
+function openModal(item) {
+  const isFav = state.favorites.includes(item.abbr);
+  const isCompare = state.compareList.includes(item.abbr);
+  const bg = getCatBg(item.cat);
+  const fg = getCatColor(item.cat);
+  document.getElementById('modalHeaderZone').innerHTML = `
+    <div class="modal-top-row"><div class="modal-abbr-block"><div class="modal-abbr">${item.abbr}</div><div class="modal-name">${item.name}</div><div class="modal-name-en">${item.name_en || ''}</div><span class="modal-cat-tag cat-${item.cat}"><i class="fas ${item.icon || 'fa-flask'}"></i> ${item.cat}</span></div><div class="modal-actions-row"><button class="modal-action-btn ${isFav ? 'fav-active' : ''}" id="modalFavBtn"><i class="fas fa-heart"></i></button><button class="modal-action-btn ${isCompare ? 'fav-active' : ''}" id="modalCompareBtn"><i class="fas fa-code-compare"></i></button></div></div><div class="modal-divider"></div>`;
+  document.getElementById('modalTabs').innerHTML = `<button class="tab-btn active" data-tab="info">المعلومات</button><button class="tab-btn" data-tab="range">القيم الطبيعية</button><button class="tab-btn" data-tab="tube">نوع الأنبوب</button><button class="tab-btn" data-tab="prep">التحضير</button>`;
+  const infoHTML = `<div class="info-card"><div class="info-card-header"><div class="info-card-icon icon-teal"><i class="fas fa-microscope"></i></div><div class="info-card-title">وصف التحليل</div></div><div class="info-card-body">${item.desc || 'لا يوجد وصف.'}</div></div>${item.advice && item.advice !== '---' ? `<div class="info-card"><div class="info-card-header"><div class="info-card-icon icon-gold"><i class="fas fa-lightbulb"></i></div><div class="info-card-title">نصائح مهمة</div></div><div class="info-card-body">${item.advice}</div></div>` : ''}${item.interactions && item.interactions !== '---' ? `<div class="info-card"><div class="info-card-header"><div class="info-card-icon icon-accent"><i class="fas fa-pills"></i></div><div class="info-card-title">التفاعلات الدوائية</div></div><div class="info-card-body">${item.interactions}</div></div>` : ''}${item.warning && item.warning !== '---' ? `<div class="warning-card"><i class="fas fa-triangle-exclamation"></i><p>${item.warning}</p></div>` : ''}<div class="disclaimer"><i class="fas fa-scale-balanced"></i><p>هذه المعلومات للأغراض التعليمية فقط. استشر طبيبك قبل أي قرار علاجي.</p></div>`;
+  const rangeHTML = `<div class="range-display">${(item.range || '---').replace(/\n/g, '<br>')}</div><div class="disclaimer"><i class="fas fa-info-circle"></i><p>القيم المرجعية قد تختلف قليلاً بين المختبرات. دائماً راجع قيم مختبرك.</p></div>`;
+  const tubeHTML = `<div class="tube-card"><div class="tube-icon" style="background:${getCatBg(item.cat)}; color:${getCatColor(item.cat)};"><i class="fas fa-vial"></i></div><div class="tube-details"><div class="tube-name">نوع الأنبوب المناسب</div><div class="tube-additive">${item.tube}</div></div></div><div class="tube-note"><i class="fas fa-info-circle" style="color:var(--teal)"></i><span>استخدم الأنبوب المحدد لضمان دقة النتائج وتجنب انحلال الدم أو تلوث العينة.</span></div>`;
+  const prepHTML = `<div class="info-card"><div class="info-card-header"><div class="info-card-icon icon-gold"><i class="fas fa-vial"></i></div><div class="info-card-title">التحضير للتحليل</div></div><div class="info-card-body">${item.prepare || 'لا توجد شروط تحضير خاصة.'}</div></div><div class="disclaimer"><i class="fas fa-scale-balanced"></i><p>اتبع تعليمات مختبرك دائماً.</p></div>`;
+  document.getElementById('modalBody').innerHTML = `<div class="tab-pane active" id="pane-info">${infoHTML}</div><div class="tab-pane" id="pane-range">${rangeHTML}</div><div class="tab-pane" id="pane-tube">${tubeHTML}</div><div class="tab-pane" id="pane-prep">${prepHTML}</div>`;
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(`pane-${btn.dataset.tab}`).classList.add('active');
+    });
+  });
+  document.getElementById('modalFavBtn').addEventListener('click', () => {
+    const idx = state.favorites.indexOf(item.abbr);
+    if (idx === -1) { state.favorites.push(item.abbr); showToast('أُضيف إلى المفضلة ❤️'); }
+    else { state.favorites.splice(idx, 1); showToast('حُذف من المفضلة'); }
+    saveFavs(); updateFavUI(); renderCards(); renderFavCards();
+    document.getElementById('modalFavBtn').classList.toggle('fav-active', state.favorites.includes(item.abbr));
+  });
+  document.getElementById('modalCompareBtn').addEventListener('click', () => {
+    const idx = state.compareList.indexOf(item.abbr);
+    if (idx === -1) {
+      if (state.compareList.length >= 3) { showToast('الحد الأقصى 3 تحاليل للمقارنة'); return; }
+      state.compareList.push(item.abbr);
+      showToast('أُضيف للمقارنة ✅');
+    } else {
+      state.compareList.splice(idx, 1);
+      showToast('حُذف من المقارنة');
+    }
+    saveCompare(); updateCompareUI(); renderCards();
+    document.getElementById('modalCompareBtn').classList.toggle('fav-active', state.compareList.includes(item.abbr));
+  });
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === document.getElementById('modalOverlay')) closeModal(); });
+function openCompare() {
+  if (state.compareList.length < 2) { showToast('أضف تحليلين على الأقل للمقارنة'); return; }
+  const items = state.compareList.map(abbr => DB.find(i => i.abbr === abbr)).filter(Boolean);
+  const fields = [{ label: 'الاسم', key: 'name' },{ label: 'الاسم الإنجليزي', key: 'name_en' },{ label: 'التصنيف', key: 'cat' },{ label: 'النطاق الطبيعي', key: 'range' },{ label: 'التحضير', key: 'prepare' },{ label: 'نوع الأنبوب', key: 'tube' },{ label: 'تحذيرات', key: 'warning' }];
+  const headerCols = items.map(i => `<th>${i.abbr}</th>`).join('');
+  const rows = fields.map(f => `<tr><td class="row-label">${f.label}</td>${items.map(i => `<td>${(i[f.key] || '---').replace(/\n/g, '<br>')}</td>`).join('')}</tr>`).join('');
+  document.getElementById('compareSheet').innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><h2><i class="fas fa-code-compare" style="color:var(--teal)"></i> مقارنة التحاليل</h2><button id="closeCompareBtn" style="background:var(--border);border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px;">✕</button></div><div style="overflow-x:auto"><table class="compare-table"><thead><tr><th>الحقل</th>${headerCols}</tr></thead><tbody>${rows}</tbody></table></div><button id="clearCompareBtn" style="margin-top:16px;width:100%;background:var(--danger-light);color:var(--danger);border:1.5px solid #fecaca;border-radius:14px;padding:10px;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;cursor:pointer"><i class="fas fa-trash"></i> مسح قائمة المقارنة</button>`;
+  document.getElementById('closeCompareBtn').addEventListener('click', () => { document.getElementById('compareOverlay').classList.remove('open'); document.body.style.overflow = ''; });
+  document.getElementById('clearCompareBtn').addEventListener('click', () => { state.compareList = []; saveCompare(); updateCompareUI(); renderCards(); document.getElementById('compareOverlay').classList.remove('open'); document.body.style.overflow = ''; showToast('مُسحت قائمة المقارنة'); });
+  document.getElementById('compareOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+document.getElementById('compareOverlay').addEventListener('click', e => { if (e.target === document.getElementById('compareOverlay')) { document.getElementById('compareOverlay').classList.remove('open'); document.body.style.overflow = ''; } });
+function switchView(view) {
+  state.currentView = view;
+  document.getElementById('mainView').classList.toggle('hidden', view !== 'home');
+  document.getElementById('favView').classList.toggle('open', view === 'fav');
+  document.getElementById('navHome').classList.toggle('active', view === 'home');
+  document.getElementById('navFav').classList.toggle('active', view === 'fav');
+  if (view === 'fav') renderFavCards();
+}
+function applyTheme() {
+  const isDark = document.body.dataset.theme === 'dark';
+  document.getElementById('darkToggleBtn').innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+}
+document.getElementById('darkToggleBtn').addEventListener('click', () => {
+  const newTheme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.body.dataset.theme = newTheme;
+  localStorage.setItem('mediref_dark', newTheme === 'dark' ? '1' : '0');
+  applyTheme();
+});
+const savedTheme = localStorage.getItem('mediref_dark');
+if (savedTheme === '1') document.body.dataset.theme = 'dark';
+applyTheme();
+
+const searchInput = document.getElementById('searchInput');
+const clearBtn = document.getElementById('clearBtn');
+let debounceTimer;
+searchInput.addEventListener('input', () => {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => {
+    state.searchTerm = searchInput.value.trim();
+    clearBtn.classList.toggle('visible', state.searchTerm.length > 0);
+    renderCards();
+  }, 300);
+});
+clearBtn.addEventListener('click', () => {
+  searchInput.value = '';
+  state.searchTerm = '';
+  state.activeCat = 'الكل';
+  clearBtn.classList.remove('visible');
+  renderCats();
+  renderCards();
+});
 document.getElementById('listViewBtn').addEventListener('click', () => { state.viewMode = 'list'; document.getElementById('listViewBtn').classList.add('active'); document.getElementById('gridViewBtn').classList.remove('active'); renderCards(); });
 document.getElementById('gridViewBtn').addEventListener('click', () => { state.viewMode = 'grid'; document.getElementById('gridViewBtn').classList.add('active'); document.getElementById('listViewBtn').classList.remove('active'); renderCards(); });
 document.getElementById('clearFavsBtn').addEventListener('click', () => { state.favorites = []; saveFavs(); updateFavUI(); renderFavCards(); renderCards(); showToast('مُسحت المفضلة'); });
 document.getElementById('navHome').addEventListener('click', () => switchView('home'));
 document.getElementById('navFav').addEventListener('click', () => switchView('fav'));
 document.getElementById('navCompare').addEventListener('click', openCompare);
-document.getElementById('cardsContainer').addEventListener('click', e => { let card = e.target.closest('.card'); if (card) { let item = DB.find(i => i.abbr === card.dataset.abbr); if (item) openModal(item); } });
-document.getElementById('favCardsContainer').addEventListener('click', e => { let card = e.target.closest('.card'); if (card) { let item = DB.find(i => i.abbr === card.dataset.abbr); if (item) openModal(item); } });
-document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === document.getElementById('modalOverlay')) closeModal(); });
-document.getElementById('compareOverlay').addEventListener('click', e => { if (e.target === document.getElementById('compareOverlay')) { document.getElementById('compareOverlay').classList.remove('open'); document.body.style.overflow = ''; } });
-renderCats(); renderCards(); updateFavUI(); updateCompareUI();
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.getElementById('cardsContainer').addEventListener('click', e => { const card = e.target.closest('.card'); if (card) { const item = DB.find(i => i.abbr === card.dataset.abbr); if (item) openModal(item); } });
+document.getElementById('favCardsContainer').addEventListener('click', e => { const card = e.target.closest('.card'); if (card) { const item = DB.find(i => i.abbr === card.dataset.abbr); if (item) openModal(item); } });
+
+document.getElementById('totalCount').textContent = DB.length;
+renderCats();
+renderCards();
+updateFavUI();
+updateCompareUI();
 </script>
 </body>
 </html>
