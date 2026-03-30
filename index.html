@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>MediRef · الموسوعة الطبية الشاملة · أنابيب دقيقة لكل تحليل</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -80,16 +80,29 @@ body {
   border-radius: 99px;
 }
 .app-wrapper {
-  max-width: 520px;
+  max-width: 1400px;
   margin: 0 auto;
   min-height: 100vh;
   position: relative;
+  background: var(--bg);
+}
+@media (min-width: 768px) {
+  .app-wrapper {
+    padding: 0 24px;
+  }
+}
+@media (min-width: 1200px) {
+  .app-wrapper {
+    padding: 0 32px;
+  }
 }
 .header {
   background: var(--navy);
   padding: 32px 20px 28px;
   position: relative;
   overflow: hidden;
+  border-radius: 0 0 28px 28px;
+  margin-bottom: 8px;
 }
 .header::before {
   content: '';
@@ -181,6 +194,7 @@ body {
   gap: 12px;
   position: relative;
   z-index: 1;
+  flex-wrap: wrap;
 }
 .stat-pill {
   background: rgba(255, 255, 255, 0.08);
@@ -207,6 +221,13 @@ body {
   z-index: 900;
   box-shadow: var(--shadow-sm);
   transition: background var(--transition);
+}
+@media (min-width: 768px) {
+  .search-bar {
+    border-radius: 24px;
+    margin: 0 0 16px 0;
+    padding: 14px 24px 0;
+  }
 }
 .search-input-wrapper {
   position: relative;
@@ -325,6 +346,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 .results-count {
   font-size: 13px;
@@ -386,6 +409,18 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+}
+@media (min-width: 640px) {
+  .cards-container.view-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+}
+@media (min-width: 1024px) {
+  .cards-container.view-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
 }
 .card {
   background: var(--surface);
@@ -635,12 +670,25 @@ body {
   animation: sheetUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
   box-shadow: var(--shadow-lg);
 }
-@keyframes sheetUp {
-  from {
-    transform: translateY(100%);
+@media (min-width: 640px) {
+  .modal-sheet {
+    max-width: 600px;
+    border-radius: 28px;
+    margin-bottom: 20px;
+    max-height: 90vh;
   }
-  to {
-    transform: translateY(0);
+  .modal-overlay {
+    align-items: center;
+  }
+  @keyframes sheetUp {
+    from {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
   }
 }
 .modal-drag-handle {
@@ -969,6 +1017,16 @@ body {
   overflow-y: auto;
   animation: sheetUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
+@media (min-width: 640px) {
+  .compare-sheet {
+    max-width: 800px;
+    border-radius: 28px;
+    margin-bottom: 20px;
+  }
+  .compare-overlay {
+    align-items: center;
+  }
+}
 .compare-sheet h2 {
   font-size: 20px;
   font-weight: 800;
@@ -1049,6 +1107,12 @@ body {
   gap: 4px;
   z-index: 700;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+@media (min-width: 768px) {
+  .bottom-nav {
+    bottom: 24px;
+    padding: 10px 16px;
+  }
 }
 .nav-item {
   display: flex;
